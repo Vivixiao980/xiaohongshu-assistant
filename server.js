@@ -8,11 +8,11 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-// 关键修复：优先使用Railway提供的PORT，否则回退到3000
-const port = process.env.PORT || 3000;
+// 最终修复：强制应用在容器内部监听3000端口，以匹配Dockerfile的EXPOSE指令和Railway的流量路由
+const port = 3000;
 console.log(`环境变量 NODE_ENV: ${process.env.NODE_ENV}`);
 console.log(`环境变量 PORT (from Railway, if any): ${process.env.PORT}`);
-console.log(`应用将监听端口: ${port}`);
+console.log(`应用将强制监听端口: ${port}，以匹配Dockerfile的EXPOSE设置。`);
 
 const app = express();
 
