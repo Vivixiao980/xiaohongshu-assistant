@@ -1,6 +1,7 @@
-const { sequelize } = require('../config/database');
-const User = require('../models/User');
-const Usage = require('../models/Usage');
+// const { sequelize } = require('../config/database');
+// const User = require('../models/User');
+// const Usage = require('../models/Usage');
+const { sequelize, User, Usage } = require('../config/database'); // 从config/database获取初始化后的模型
 const bcrypt = require('bcryptjs');
 
 async function initializeDatabase() {
