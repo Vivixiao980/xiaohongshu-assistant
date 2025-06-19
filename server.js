@@ -73,7 +73,7 @@ app.use(helmet({
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://*.railway.app', 'https://*.up.railway.app'] // 允许Railway域名
+    ? true // 生产环境允许所有域名
     : ['http://localhost:3000', 'http://127.0.0.1:3000'], // 开发环境
   credentials: true
 }));
@@ -130,30 +130,34 @@ app.use((error, req, res, next) => {
 // 启动服务器
 async function startServer() {
   try {
-    // 测试数据库连接
-    try {
-      await sequelize.authenticate();
-      logger.info('数据库连接成功');
-      
-      // 同步数据库表（开发环境）
-      if (process.env.NODE_ENV !== 'production') {
-        await sequelize.sync({ alter: true });
-        logger.info('数据库表同步完成');
-      }
-    } catch (dbError) {
-      logger.warn('数据库连接失败，但应用将继续启动:', dbError.message);
-      logger.info('数据库将在连接可用时自动重连');
-    }
-    
-    // 启动HTTP服务器
+    // 先启动HTTP服务器，确保健康检查能通过
     app.listen(port, () => {
       logger.info(`服务器启动成功，端口: ${port}`);
       logger.info(`环境: ${process.env.NODE_ENV || 'development'}`);
       logger.info(`访问地址: http://localhost:${port}`);
+      
+      // 异步初始化数据库，不阻塞服务器启动
+      initializeDatabaseAsync();
     });
   } catch (error) {
     logger.error('服务器启动失败:', error);
     process.exit(1);
+  }
+}
+
+// 异步数据库初始化函数
+async function initializeDatabaseAsync() {
+  try {
+    logger.info('开始异步初始化数据库...');
+    
+    // 导入数据库初始化函数
+    const initializeDatabase = require('./scripts/init-db');
+    await initializeDatabase();
+    
+    logger.info('数据库初始化完成');
+  } catch (error) {
+    logger.warn('数据库初始化失败，但服务器继续运行:', error.message);
+    logger.info('数据库将在连接可用时自动重连');
   }
 }
 
