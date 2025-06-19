@@ -1,0 +1,22 @@
+# 忽略开发文件
+node_modules/
+.env
+.env.local
+.env.development
+.env.test
+*.log
+logs/
+.DS_Store
+.vscode/
+.idea/
+
+# 保留必要文件
+!package.json
+!package-lock.json
+!server.js
+!public/
+!routes/
+!models/
+!config/
+!services/
+!scripts/ 
