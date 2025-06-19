@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const { User } = require('../config/database');
 const router = express.Router();
+const bcrypt = require('bcrypt');
+const { Op } = require('sequelize');
 
 // 注册
 router.post('/register', [
@@ -22,67 +24,41 @@ router.post('/register', [
     .isIn(['trial', 'student'])
     .withMessage('用户类型无效')
 ], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ success: false, message: errors.array()[0].msg });
+  }
+
+  const { username, email, password } = req.body;
+
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        message: '输入验证失败',
-        errors: errors.array()
-      });
+    let user = await User.findOne({ where: { [Op.or]: [{ username }, { email }] } });
+
+    if (user) {
+      return res.status(400).json({ success: false, message: '用户名或邮箱已被注册' });
     }
 
-    const { username, email, password, userType = 'trial' } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // 检查用户是否已存在
-    const existingUser = await User.findByEmailOrUsername(email);
-    if (existingUser) {
-      return res.status(409).json({
-        success: false,
-        message: '用户名或邮箱已存在'
-      });
-    }
-
-    // 创建用户
-    const userData = {
+    // 强制新用户类型为 'trial'
+    user = await User.create({
       username,
       email,
-      password,
-      userType,
-      credits: userType === 'trial' ? 3 : 100,
-      maxCredits: userType === 'trial' ? 3 : 100
-    };
-
-    const user = await User.create(userData);
-
-    // 生成JWT token
-    const token = jwt.sign(
-      { userId: user.id, userType: user.userType },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
-    );
-
-    res.status(201).json({
-      success: true,
-      message: '注册成功',
-      data: {
-        token,
-        user: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          userType: user.userType,
-          credits: user.credits,
-          maxCredits: user.maxCredits
-        }
-      }
+      password: hashedPassword,
+      userType: 'trial', // 忽略任何来自前端的userType，强制设为trial
+      credits: 3, // 体验用户初始积分为3
+      creditsResetAt: new Date()
     });
+
+    const payload = { user: { id: user.id } };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    res.json({ success: true, token });
+
   } catch (error) {
-    console.error('注册失败:', error);
-    res.status(500).json({
-      success: false,
-      message: '注册失败，请稍后重试'
-    });
+    console.error('注册错误:', error.message);
+    res.status(500).json({ success: false, message: '服务器错误' });
   }
 });
 
