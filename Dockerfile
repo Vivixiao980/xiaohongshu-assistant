@@ -16,12 +16,10 @@ COPY . .
 # 创建日志目录
 RUN mkdir -p logs
 
-# 暴露端口
+# 移除固定的HEALTHCHECK，让Railway来处理
+# HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=10 CMD curl -f http://localhost:3000/health || exit 1
+
 EXPOSE 3000
 
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
-
-# 启动应用
-CMD ["npm", "start"] 
+# 启动命令
+CMD ["node", "server.js"] 
