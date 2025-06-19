@@ -54,19 +54,39 @@ async function initializeDatabase() {
     console.log('🎉 数据库初始化完成！');
     console.log('📊 数据库状态: 正常');
     console.log('👥 用户账户: 已创建');
-    console.log('🔧 系统准备就绪');
+    console.log('�� 系统准备就绪');
     
-    process.exit(0);
+    return true;
   } catch (error) {
-    console.error('❌ 数据库初始化失败:', error);
-    console.error('🔍 错误详情:', error.message);
-    process.exit(1);
+    console.error('❌ 数据库初始化失败:', error.message);
+    console.error('🔍 错误详情:', error);
+    
+    // 在Railway环境中，如果数据库连接失败，我们仍然继续启动应用
+    if (process.env.NODE_ENV === 'production') {
+      console.log('⚠️  生产环境：继续启动应用，数据库将在连接可用时自动重连');
+      return false;
+    } else {
+      throw error;
+    }
   }
 }
 
 // 如果直接运行此脚本
 if (require.main === module) {
-  initializeDatabase();
+  initializeDatabase()
+    .then((success) => {
+      if (success) {
+        console.log('✅ 数据库初始化成功');
+        process.exit(0);
+      } else {
+        console.log('⚠️  数据库初始化部分失败，但应用将继续启动');
+        process.exit(0);
+      }
+    })
+    .catch((error) => {
+      console.error('❌ 数据库初始化失败:', error);
+      process.exit(1);
+    });
 }
 
 module.exports = initializeDatabase; 

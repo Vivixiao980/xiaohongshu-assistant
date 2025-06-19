@@ -8,10 +8,9 @@
     "npm": ">=8.0.0"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node scripts/init-db.js && node server.js",
     "dev": "nodemon server.js",
     "build": "echo 'No build step required'",
-    "postinstall": "npm run init-db",
     "init-db": "node scripts/init-db.js"
   },
   "dependencies": {

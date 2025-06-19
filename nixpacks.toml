@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs_18", "npm"]
+nixPkgs = ["nodejs_18"]
 
 [phases.install]
 cmds = ["npm install --production"]
@@ -8,4 +8,4 @@ cmds = ["npm install --production"]
 cmds = ["echo 'Build completed'"]
 
 [start]
-cmd = "npm run postinstall && npm start" 
+cmd = "npm start" 
