@@ -16,7 +16,12 @@ const { sequelize } = require('./config/database');
 
 // 创建Express应用
 const app = express();
-const port = process.env.PORT || 3000;
+
+// 强制应用在容器内部监听3000端口，以匹配Dockerfile的EXPOSE和HEALTHCHECK
+const port = 3000;
+console.log(`环境变量 NODE_ENV: ${process.env.NODE_ENV}`);
+console.log(`环境变量 PORT (from Railway, if any): ${process.env.PORT}`);
+console.log(`应用将监听端口: ${port}`);
 
 // 配置日志
 const logger = winston.createLogger({
