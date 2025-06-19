@@ -98,6 +98,23 @@ async function initializeDatabaseAsync(logger) {
   }
 }
 
+// =================================================================
+// 关键：添加全局错误捕获，确保任何崩溃都会被记录
+// =================================================================
+process.on('uncaughtException', (err, origin) => {
+  console.error(`捕获到未处理的异常: ${err.message}`);
+  console.error(`异常源头: ${origin}`);
+  console.error(err.stack);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('未处理的Promise拒绝:');
+  console.error(reason);
+  // 在生产环境中，关键任务应该在此处退出
+  // process.exit(1);
+});
+
 process.on('SIGTERM', () => {
   console.log('接收到SIGTERM信号，准备关闭服务器...');
   // 在这里可以添加清理逻辑，比如关闭数据库连接
