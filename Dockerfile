@@ -16,10 +16,8 @@ COPY . .
 # 创建日志目录
 RUN mkdir -p logs
 
-# 移除固定的HEALTHCHECK，让Railway来处理
-# HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=10 CMD curl -f http://localhost:3000/health || exit 1
-
-EXPOSE 3000
+# 移除所有网络相关的静态指令，让平台完全接管
+# EXPOSE 3000
 
 # 启动命令
 CMD ["node", "server.js"] 
