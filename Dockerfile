@@ -16,14 +16,6 @@ COPY . .
 # 创建日志目录
 RUN mkdir -p logs
 
-# 创建非root用户
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-
-# 更改文件所有权
-RUN chown -R nextjs:nodejs /app
-USER nextjs
-
 # 暴露端口
 EXPOSE 3000
 

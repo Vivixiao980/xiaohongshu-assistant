@@ -73,7 +73,7 @@ app.use(helmet({
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://yourdomain.com'] // 生产环境域名
+    ? ['https://*.railway.app', 'https://*.up.railway.app'] // 允许Railway域名
     : ['http://localhost:3000', 'http://127.0.0.1:3000'], // 开发环境
   credentials: true
 }));
@@ -131,13 +131,18 @@ app.use((error, req, res, next) => {
 async function startServer() {
   try {
     // 测试数据库连接
-    await sequelize.authenticate();
-    logger.info('数据库连接成功');
-    
-    // 同步数据库表（开发环境）
-    if (process.env.NODE_ENV !== 'production') {
-      await sequelize.sync({ alter: true });
-      logger.info('数据库表同步完成');
+    try {
+      await sequelize.authenticate();
+      logger.info('数据库连接成功');
+      
+      // 同步数据库表（开发环境）
+      if (process.env.NODE_ENV !== 'production') {
+        await sequelize.sync({ alter: true });
+        logger.info('数据库表同步完成');
+      }
+    } catch (dbError) {
+      logger.warn('数据库连接失败，但应用将继续启动:', dbError.message);
+      logger.info('数据库将在连接可用时自动重连');
     }
     
     // 启动HTTP服务器
