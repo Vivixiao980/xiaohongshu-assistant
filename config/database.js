@@ -1,5 +1,8 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config();
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 // 从环境变量获取数据库配置
 const databaseUrl = process.env.DATABASE_URL;

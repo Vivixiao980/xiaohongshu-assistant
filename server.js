@@ -4,7 +4,10 @@ const helmet = require('helmet');
 const path = require('path');
 const { RateLimiterMemory } = require('rate-limiter-flexible');
 const winston = require('winston');
-require('dotenv').config();
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 // 导入路由
 const authRoutes = require('./routes/auth');
