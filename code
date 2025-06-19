@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小红书爆文助手</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .markdown-body h1 { font-size: 1.8em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+        .markdown-body h2 { font-size: 1.5em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+        .markdown-body h3 { font-size: 1.3em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+        .markdown-body p { margin: 0.5em 0; }
+        .markdown-body ul, .markdown-body ol { padding-left: 2em; margin: 0.5em 0; }
+        .markdown-body li { margin: 0.25em 0; }
+        .markdown-body pre { background-color: #f0f0f0; padding: 1em; border-radius: 4px; overflow-x: auto; margin: 1em 0; }
+        .dark .markdown-body pre { background-color: #2d3748; }
+        .loading-dot { animation: loadingDot 1.4s infinite both; opacity: 0; }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes loadingDot {
+            0%, 80%, 100% { opacity: 0; }
+            40% { opacity: 1; }
+        }
+        /* 深色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            body { background-color: #1a202c; color: #e2e8f0; }
+            textarea, select, input { background-color: #2d3748; color: #e2e8f0; border-color: #4a5568; }
+            .card { background-color: #2d3748; border-color: #4a5568; }
+        }
+        .tab-active {
+            border-bottom-width: 2px;
+            border-color: #FF2442;
+            color: #FF2442;
+        }
+        .thinking-section {
+            background-color: #f9f5ff;
+            border-left: 4px solid #8b5cf6;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .dark .thinking-section {
+            background-color: #322659;
+            border-left: 4px solid #a78bfa;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen p-4">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold text-center mb-6 text-red-500">小红书爆文助手</h1>
+        
+        <!-- 标签页按钮 -->
+        <div class="flex border-b mb-6">
+            <button id="tab-analyze" class="py-2 px-4 font-medium tab-active">拆解爆文结构</button>
+            <button id="tab-generate" class="py-2 px-4 font-medium">生成类似爆文</button>
+        </div>
+        
+        <!-- 拆解功能区域 -->
+        <div id="analyze-section">
+            <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md mb-6 card">
+                <div class="mb-4">
+                    <label for="content" class="block font-medium mb-2">粘贴小红书笔记内容:</label>
+                    <textarea id="content" rows="8" class="w-full p-3 border rounded-lg text-base" 
+                        placeholder="将小红书笔记内容粘贴到这里..."></textarea>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block font-medium mb-2">选择模型:</label>
+                    <div class="flex gap-4 flex-wrap">
+                        <label class="flex items-center mb-2">
+                            <input type="radio" name="model" value="claude" checked class="mr-2">
+                            <span>Claude-3.7-Sonnet</span>
+                        </label>
+                        <label class="flex items-center mb-2">
+                            <input type="radio" name="model" value="deepseek" class="mr-2">
+                            <span>DeepSeek-R1</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block font-medium mb-2">高级选项:</label>
+                    <div class="flex flex-col gap-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="show-thinking" class="mr-2" checked>
+                            <span>显示思考过程</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="deep-analysis" class="mr-2">
+                            <span>深度分析模式（使用更多算力）</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button id="analyze-btn" class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                    拆解文案结构
+                </button>
+            </div>
+        </div>
+        
+        <!-- 生成功能区域 -->
+        <div id="generate-section" class="hidden">
+            <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md mb-6 card">
+                <div class="mb-4">
+                    <label for="original-content" class="block font-medium mb-2">原始爆文内容:</label>
+                    <textarea id="original-content" rows="6" class="w-full p-3 border rounded-lg text-base" 
+                        placeholder="将小红书笔记内容粘贴到这里（例如：口红测评）..."></textarea>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="new-topic" class="block font-medium mb-2">新主题或产品:</label>
+                    <input type="text" id="new-topic" class="w-full p-3 border rounded-lg text-base" 
+                        placeholder="输入新产品或主题（例如：粉底液）">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block font-medium mb-2">选择模型:</label>
+                    <div class="flex gap-4 flex-wrap">
+                        <label class="flex items-center mb-2">
+                            <input type="radio" name="gen-model" value="claude" checked class="mr-2">
+                            <span>Claude-3.7-Sonnet</span>
+                        </label>
+                        <label class="flex items-center mb-2">
+                            <input type="radio" name="gen-model" value="deepseek" class="mr-2">
+                            <span>DeepSeek-R1</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block font-medium mb-2">高级选项:</label>
+                    <div class="flex flex-col gap-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="gen-show-thinking" class="mr-2" checked>
+                            <span>显示思考过程</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="gen-deep-analysis" class="mr-2">
+                            <span>高质量生成（使用更多算力）</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button id="generate-btn" class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                    生成类似爆文
+                </button>
+            </div>
+        </div>
+        
+        <!-- 加载状态 -->
+        <div id="loading" class="hidden text-center mb-6">
+            <div class="flex justify-center items-center space-x-2">
+                <div class="w-3 h-3 bg-red-500 rounded-full loading-dot"></div>
+                <div class="w-3 h-3 bg-red-500 rounded-full loading-dot"></div>
+                <div class="w-3 h-3 bg-red-500 rounded-full loading-dot"></div>
+            </div>
+            <p class="mt-2 text-gray-600 dark:text-gray-400" id="loading-text">处理中...</p>
+        </div>
+        
+        <!-- 结果区域 -->
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md card">
+            <div class="flex justify-between mb-4">
+                <h2 class="font-bold text-lg" id="result-title">拆解结果</h2>
+                <button id="copy-btn" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded text-sm">
+                    复制结果
+                </button>
+            </div>
+            
+            <div id="result" class="markdown-body">
+                <p class="text-gray-500 dark:text-gray-400 text-center py-10">
+                    选择功能并点击相应按钮获取结果
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取DOM元素
+            const tabAnalyze = document.getElementById('tab-analyze');
+            const tabGenerate = document.getElementById('tab-generate');
+            const analyzeSection = document.getElementById('analyze-section');
+            const generateSection = document.getElementById('generate-section');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const generateBtn = document.getElementById('generate-btn');
+            const content = document.getElementById('content');
+            const originalContent = document.getElementById('original-content');
+            const newTopic = document.getElementById('new-topic');
+            const result = document.getElementById('result');
+            const resultTitle = document.getElementById('result-title');
+            const copyBtn = document.getElementById('copy-btn');
+            const loading = document.getElementById('loading');
+            const loadingText = document.getElementById('loading-text');
+            const showThinking = document.getElementById('show-thinking');
+            const deepAnalysis = document.getElementById('deep-analysis');
+            const genShowThinking = document.getElementById('gen-show-thinking');
+            const genDeepAnalysis = document.getElementById('gen-deep-analysis');
+            
+            let currentResult = '';
+            let activeTab = 'analyze';
+            
+            // 标签页切换
+            tabAnalyze.addEventListener('click', () => {
+                activeTab = 'analyze';
+                tabAnalyze.classList.add('tab-active');
+                tabGenerate.classList.remove('tab-active');
+                analyzeSection.classList.remove('hidden');
+                generateSection.classList.add('hidden');
+                resultTitle.textContent = '拆解结果';
+            });
+            
+            tabGenerate.addEventListener('click', () => {
+                activeTab = 'generate';
+                tabGenerate.classList.add('tab-active');
+                tabAnalyze.classList.remove('tab-active');
+                generateSection.classList.remove('hidden');
+                analyzeSection.classList.add('hidden');
+                resultTitle.textContent = '生成结果';
+            });
+            
+            // 复制功能
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(currentResult || result.textContent.trim())
+                    .then(() => {
+                        const originalText = copyBtn.textContent;
+                        copyBtn.textContent = '已复制';
+                        setTimeout(() => {
+                            copyBtn.textContent = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('复制失败:', err);
+                    });
+            });
+            
+            // 获取选中的模型
+            function getSelectedModel(name) {
+                const modelRadios = document.getElementsByName(name);
+                for (const radio of modelRadios) {
+                    if (radio.checked) {
+                        return radio.value;
+                    }
+                }
+                return 'claude';
+            }
+            
+            // 拆解按钮处理
+            analyzeBtn.addEventListener('click', async () => {
+                const contentText = content.value.trim();
+                
+                if (!contentText) {
+                    alert('请先粘贴小红书笔记内容');
+                    return;
+                }
+                
+                // 获取选中的模型和选项
+                const selectedModel = getSelectedModel('model');
+                const modelName = selectedModel === 'claude' ? 'Claude-3.7-Sonnet' : 'DeepSeek-R1';
+                const showThinkingProcess = showThinking.checked;
+                const useDeepAnalysis = deepAnalysis.checked;
+                
+                // 显示加载状态
+                loading.classList.remove('hidden');
+                loadingText.textContent = `正在使用${modelName}拆解文案${useDeepAnalysis ? '（深度分析中）' : ''}...`;
+                result.innerHTML = '';
+                
+                // 注册处理函数
+                const handlerId = 'analyze-' + Date.now();
+                
+                window.Poe.registerHandler(handlerId, (responseData) => {
+                    try {
+                        const response = responseData.responses[0];
+                        
+                        if (response.status === 'error') {
+                            loading.classList.add('hidden');
+                            result.innerHTML = `<div class="text-red-500 p-4 border border-red-300 rounded bg-red-50 dark:bg-red-900 dark:border-red-700">
+                                分析失败: ${response.statusText || '未知错误'}
+                            </div>`;
+                        } else if (response.status === 'incomplete' || response.status === 'complete') {
+                            // 更新内容
+                            currentResult = response.content;
+                            
+                            // 处理思考过程的显示
+                            if (showThinkingProcess && selectedModel === 'claude') {
+                                // 查找思考部分（在"### 思考过程："和"### 结果："之间）
+                                const thinkingMatch = currentResult.match(/### 思考过程：([\s\S]*?)(?=### 结果：)/);
+                                const resultMatch = currentResult.match(/### 结果：([\s\S]*)/);
+                                
+                                if (thinkingMatch && resultMatch) {
+                                    const thinkingContent = thinkingMatch[1].trim();
+                                    const resultContent = resultMatch[1].trim();
+                                    
+                                    // 格式化显示思考过程和结果
+                                    const formattedContent = `
+                                        <div class="thinking-section">
+                                            <h3 class="text-purple-600 dark:text-purple-400 font-medium">思考过程</h3>
+                                            ${marked.parse(thinkingContent)}
+                                        </div>
+                                        <h3 class="text-red-500 font-medium">结果</h3>
+                                        ${marked.parse(resultContent)}
+                                    `;
+                                    
+                                    result.innerHTML = formattedContent;
+                                } else {
+                                    // 如果没有找到预期的格式，直接显示全部内容
+                                    result.innerHTML = marked.parse(currentResult);
+                                }
+                            } else {
+                                // 如果不显示思考过程，或者是DeepSeek模型，直接显示内容
+                                result.innerHTML = marked.parse(currentResult);
+                            }
+                            
+                            if (response.status === 'complete') {
+                                loading.classList.add('hidden');
+                            }
+                        }
+                    } catch (err) {
+                        loading.classList.add('hidden');
+                        result.innerHTML = `<div class="text-red-500 p-4 border border-red-300 rounded">
+                            处理响应出错: ${err.message || '未知错误'}
+                        </div>`;
+                        console.error('Response error:', err);
+                    }
+                });
+                
+                try {
+                    // 构建提示词，根据模型和选项调整
+                    let prompt = '';
+                    
+                    if (selectedModel === 'claude') {
+                        if (showThinkingProcess) {
+                            prompt = `@Claude-3.7-Sonnet 
+我需要你详细拆解一篇小红书笔记的文案结构。请先进行思考，然后提供结果，按照下面的格式输出：
+
+### 思考过程：
+在这里详细分析这篇小红书笔记，包括你看到的结构特点、句式模式、表达技巧等。展示你的分析思路，着重关注：
+- 标题结构和组成元素
+- 各段落的具体功能和作用
+- 句式变化和模式
+- 特殊表达方式和词汇选择
+- 互动设计和话术技巧
+- 整体框架和写作风格
+
+### 结果：
+在这里提供最终的结构化分析结果，包括：
+
+1. 标题解构：
+   - 标题的组成部分和词语选择
+   - 标题中的关键词和吸引点
+   - 标题使用的修辞手法
+
+2. 开场白分析：
+   - 第一段的具体写作方式和句式特点
+   - 如何建立共鸣或引起好奇
+   - 使用的表达技巧和句型
+
+3. 正文段落结构：
+   - 每个段落的写作目的和功能
+   - 段落的长短控制和节奏变化
+   - 每段的句式模式和关键表达
+   - 衔接词和过渡句的使用方法
+
+4. 叙事手法：
+   - 故事性元素的编排
+   - 情感调动的具体表达方式
+   - 话语权建立的细节
+
+5. 关键词和修饰词：
+   - 频繁使用的形容词和副词分析
+   - 强调词和限定词的使用模式
+   - 数字和具体细节的呈现方式
+
+6. 互动设计：
+   - 互动引导语的具体句式
+   - 设问和悬念的创建方法
+   - 评论转化的语言策略
+
+7. 套用模板：
+   - 将整篇文章转换为可套用的详细模板
+   - 用[方括号]标注需要替换的内容
+   - 保留原文的句式结构和表达方式
+
+以下是小红书笔记内容：
+
+"""
+${contentText}
+"""
+
+${useDeepAnalysis ? '请进行非常深入和详细的分析，不遗漏任何细节，提供最全面的结构拆解。' : '提供细致但直接的分析，避免过于冗长。'}
+在"结果"部分，避免使用表情符号，语言要简洁专业，不要有AI风格的解释和客套话。`;
+                        } else {
+                            prompt = `@Claude-3.7-Sonnet 
+请详细拆解这篇小红书笔记的文案结构，分析到句式和表达方式的细节层面：
+
+"""
+${contentText}
+"""
+
+请提供以下详细分析（颗粒度要非常细致）：
+
+1. 标题解构：
+   - 标题的组成部分和词语选择
+   - 标题中的关键词和吸引点
+   - 标题使用的修辞手法
+
+2. 开场白分析：
+   - 第一段的具体写作方式和句式特点
+   - 如何建立共鸣或引起好奇
+   - 使用的表达技巧和句型
+
+3. 正文段落结构：
+   - 每个段落的写作目的和功能
+   - 段落的长短控制和节奏变化
+   - 每段的句式模式和关键表达
+   - 衔接词和过渡句的使用方法
+
+4. 叙事手法：
+   - 故事性元素的编排
+   - 情感调动的具体表达方式
+   - 话语权建立的细节
+
+5. 关键词和修饰词：
+   - 频繁使用的形容词和副词分析
+   - 强调词和限定词的使用模式
+   - 数字和具体细节的呈现方式
+
+6. 互动设计：
+   - 互动引导语的具体句式
+   - 设问和悬念的创建方法
+   - 评论转化的语言策略
+
+7. 套用模板：
+   - 将整篇文章转换为可套用的详细模板
+   - 用[方括号]标注需要替换的内容
+   - 保留原文的句式结构和表达方式
+
+${useDeepAnalysis ? '请进行非常深入和详细的分析，不遗漏任何细节，提供最全面的结构拆解。' : ''}
+请避免使用表情符号，语言要简洁专业，不要有AI风格的解释和客套话。直接提供结构化的拆解结果，让人能够看懂并模仿这种写作模式。`;
+                        }
+                    } else {
+                        prompt = `@DeepSeek-R1 
+详细拆解分析这篇小红书笔记的写作结构和特点：
+
+"""
+${contentText}
+"""
+
+请提供细致的结构分析：
+
+1. 标题构造：
+   - 标题包含哪些元素组成
+   - 使用了什么吸引注意的技巧
+   - 关键词的选择和排列方式
+
+2. 开头设计：
+   - 第一句话的写法和功能
+   - 开场白的句式结构
+   - 如何快速吸引读者注意
+
+3. 文章框架：
+   - 每个段落的具体功能
+   - 段落之间如何衔接过渡
+   - 不同段落的长度和密度安排
+
+4. 句式分析：
+   - 常用句型和句式模式
+   - 重复使用的句式结构
+   - 短句与长句的搭配节奏
+
+5. 词汇使用：
+   - 高频使用的形容词和动词
+   - 关键修饰词的使用模式
+   - 如何选词来增强表达效果
+
+6. 互动技巧：
+   - 文中设置的问题和引导
+   - 互动语句的具体写法
+   - 如何鼓励读者评论和点赞
+
+7. 可套用模板：
+   - 提供一个精确到句式的完整模板
+   - 用[方括号]标注需要替换的部分
+   - 保留原文的语言风格和结构特点
+
+${useDeepAnalysis ? '请进行最详细的分析，不放过任何句式和结构细节，提供专业级别的拆解。' : ''}
+请直接给出分析结果，不要加入AI风格的客套话，也不要使用表情符号。分析要细致到句式结构层面，让人能够完全理解并复制这种写作模式。`;
+                    }
+                    
+                    await window.Poe.sendUserMessage(prompt, {
+                        handler: handlerId,
+                        stream: true,
+                        openChat: false
+                    });
+                } catch (err) {
+                    loading.classList.add('hidden');
+                    result.innerHTML = `<div class="text-red-500 p-4 border border-red-300 rounded">
+                        发送请求失败: ${err.message || '未知错误'}
+                    </div>`;
+                    console.error('Request error:', err);
+                }
+            });
+            
+            // 生成按钮处理
+            generateBtn.addEventListener('click', async () => {
+                const originalText = originalContent.value.trim();
+                const topic = newTopic.value.trim();
+                
+                if (!originalText) {
+                    alert('请先粘贴原始小红书笔记内容');
+                    return;
+                }
+                
+                if (!topic) {
+                    alert('请输入新的主题或产品');
+                    return;
+                }
+                
+                // 获取选中的模型和选项
+                const selectedModel = getSelectedModel('gen-model');
+                const modelName = selectedModel === 'claude' ? 'Claude-3.7-Sonnet' : 'DeepSeek-R1';
+                const showThinkingProcess = genShowThinking.checked;
+                const useDeepAnalysis = genDeepAnalysis.checked;
+                
+                // 显示加载状态
+                loading.classList.remove('hidden');
+                loadingText.textContent = `正在使用${modelName}生成新文案${useDeepAnalysis ? '（高质量模式）' : ''}...`;
+                result.innerHTML = '';
+                
+                // 注册处理函数
+                const handlerId = 'generate-' + Date.now();
+                
+                window.Poe.registerHandler(handlerId, (responseData) => {
+                    try {
+                        const response = responseData.responses[0];
+                        
+                        if (response.status === 'error') {
+                            loading.classList.add('hidden');
+                            result.innerHTML = `<div class="text-red-500 p-4 border border-red-300 rounded bg-red-50 dark:bg-red-900 dark:border-red-700">
+                                生成失败: ${response.statusText || '未知错误'}
+                            </div>`;
+                        } else if (response.status === 'incomplete' || response.status === 'complete') {
+                            // 更新内容
+                            currentResult = response.content;
+                            
+                            // 处理思考过程的显示
+                            if (showThinkingProcess && selectedModel === 'claude') {
+                                // 查找思考部分（在"### 思考过程："和"### 结果："之间）
+                                const thinkingMatch = currentResult.match(/### 思考过程：([\s\S]*?)(?=### 结果：)/);
+                                const resultMatch = currentResult.match(/### 结果：([\s\S]*)/);
+                                
+                                if (thinkingMatch && resultMatch) {
+                                    const thinkingContent = thinkingMatch[1].trim();
+                                    const resultContent = resultMatch[1].trim();
+                                    
+                                    // 格式化显示思考过程和结果
+                                    const formattedContent = `
+                                        <div class="thinking-section">
+                                            <h3 class="text-purple-600 dark:text-purple-400 font-medium">思考过程</h3>
+                                            ${marked.parse(thinkingContent)}
+                                        </div>
+                                        <h3 class="text-red-500 font-medium">结果</h3>
+                                        ${marked.parse(resultContent)}
+                                    `;
+                                    
+                                    result.innerHTML = formattedContent;
+                                } else {
+                                    // 如果没有找到预期的格式，直接显示全部内容
+                                    result.innerHTML = marked.parse(currentResult);
+                                }
+                            } else {
+                                // 如果不显示思考过程，或者是DeepSeek模型，直接显示内容
+                                result.innerHTML = marked.parse(currentResult);
+                            }
+                            
+                            if (response.status === 'complete') {
+                                loading.classList.add('hidden');
+                            }
+                        }
+                    } catch (err) {
+                        loading.classList.add('hidden');
+                        result.innerHTML = `<div class="text-red-500 p-4 border border-red-300 rounded">
+                            处理响应出错: ${err.message || '未知错误'}
+                        </div>`;
+                        console.error('Response error:', err);
+                    }
+                });
+                
+                try {
+                    // 构建提示词，根据模型和选项调整
+                    let prompt = '';
+                    
+                    if (selectedModel === 'claude') {
+                        if (showThinkingProcess) {
+                            prompt = `@Claude-3.7-Sonnet 
+我有一篇关于某个产品的小红书爆文，现在需要你分析它的结构，然后用相同的句式和结构写一篇关于新主题的爆文。请按照下面的格式输出：
+
+### 思考过程：
+在这部分，分析原始爆文的结构特点：
+- 标题的构成方式和吸引点
+- 开头段落的设计和功能
+- 每个段落的作用和衔接方式
+- 常用句式和表达模式
+- 互动引导技巧
+- 产品描述方式
+- 如何根据这些特点为新主题创作内容
+
+### 结果：
+在这部分直接提供完整的新爆文，保持与原文相同的结构和句式风格。
+
+原始爆文：
+"""
+${originalText}
+"""
+
+新主题：${topic}
+
+${useDeepAnalysis ? '请投入更多思考，确保新文案在保持原文结构的同时，针对新主题进行了最合适的调整，质量极高。' : ''}`;
+                        } else {
+                            prompt = `@Claude-3.7-Sonnet 
+我有一篇关于某个产品的小红书爆文，现在需要你分析它的结构，然后用相同的句式和结构写一篇关于新主题的爆文。
+
+原始爆文：
+"""
+${originalText}
+"""
+
+新主题：${topic}
+
+请执行以下步骤：
+
+1. 分析原始爆文的结构、句式和写作技巧
+2. 使用完全相同的结构和句式，创作一篇关于新主题"${topic}"的小红书爆文
+3. 保持原文的段落划分、句式特点、关键词使用模式和互动设计
+4. 如果原文中有具体数据、价格或专业术语，请为新主题提供相应的替代内容
+
+${useDeepAnalysis ? '请投入更多思考，确保新文案在保持原文结构的同时，针对新主题进行了最合适的调整，质量极高。' : ''}
+最终输出只需要提供完整的新爆文，不要包含分析过程，不要使用表情符号，保持语言风格与原文一致。`;
+                        }
+                    } else {
+                        prompt = `@DeepSeek-R1 
+分析下面这篇小红书爆文的结构和表达方式，然后按照完全相同的结构写一篇关于新主题的文章。
+
+原文：
+"""
+${originalText}
+"""
+
+新主题：${topic}
+
+要求：
+1. 分析原文的结构、句式和表达特点
+2. 使用完全相同的框架、段落结构、句式风格创作新文章
+3. 保留原文的修辞手法、强调方式和互动设计
+4. 替换具体内容为新主题"${topic}"相关的信息
+5. 保持原文的语言风格、节奏感和吸引力
+
+${useDeepAnalysis ? '请在保持原文结构的同时，确保新文案针对新主题有最专业、最适合的内容，质量必须极高。' : ''}
+直接输出新文章内容，不要包含分析部分。不使用表情符号，文风与原文保持一致。`;
+                    }
+                    
+                    await window.Poe.sendUserMessage(prompt, {
+                        handler: handlerId,
+                        stream: true,
+                        openChat: false
+                    });
+                } catch (err) {
+                    loading.classList.add('hidden');
+                    result.innerHTML = `<div class="text-red-500 p-4 border border-red-300 rounded">
+                        发送请求失败: ${err.message || '未知错误'}
+                    </div>`;
+                    console.error('Request error:', err);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
