@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 小红书爆文助手</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        'dark-bg': '#181818'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 dark:bg-dark-bg text-gray-900 dark:text-white transition-colors">
+    <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-100 via-white to-blue-100 dark:from-gray-800 dark:via-dark-bg dark:to-gray-900 px-4">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-primary">加入我们</h1>
+            <p class="text-gray-600 dark:text-gray-300 mt-2">创建您的账户，开启智能创作之旅</p>
+        </div>
+
+        <div class="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <form id="standalone-register-form">
+                <div class="space-y-6">
+                    <div>
+                        <label for="register-username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">用户名</label>
+                        <input type="text" id="register-username" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700" placeholder="请输入您的用户名" required>
+                    </div>
+                    <div>
+                        <label for="register-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">邮箱</label>
+                        <input type="email" id="register-email" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700" placeholder="请输入您的邮箱地址" required>
+                    </div>
+                    <div>
+                        <label for="register-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">密码</label>
+                        <input type="password" id="register-password" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700" placeholder="请输入至少6位密码" required>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button type="submit" class="w-full bg-primary hover:bg-purple-600 text-white font-medium py-3 rounded-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                        立即注册
+                    </button>
+                </div>
+            </form>
+             <div class="mt-6 text-center">
+                <a href="/index.html" class="text-sm text-primary hover:underline">已有账户？返回登录</a>
+            </div>
+        </div>
+        
+        <div id="alert-container" class="fixed top-5 right-5 z-50"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/register.js" defer></script>
+</body>
+</html> 
