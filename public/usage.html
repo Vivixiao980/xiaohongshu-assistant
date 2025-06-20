@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用量统计 - 小红书爆文助手</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-gray-900">用量统计</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-blue-600 hover:text-blue-800">返回主页</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 概览卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <span class="text-white text-sm">📊</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">总调用次数</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="total-calls">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                            <span class="text-white text-sm">🤖</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">主要模型</p>
+                        <p class="text-lg font-semibold text-gray-900" id="primary-model">Claude</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
+                            <span class="text-white text-sm">⚡</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">平均响应时间</p>
+                        <p class="text-lg font-semibold text-gray-900" id="avg-response">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                            <span class="text-white text-sm">✅</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">成功率</p>
+                        <p class="text-lg font-semibold text-gray-900" id="success-rate">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">模型使用分布</h3>
+                <canvas id="modelChart" width="400" height="200"></canvas>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">功能使用分布</h3>
+                <canvas id="actionChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- 详细记录 -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">最近使用记录</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">功能</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">模型</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">响应时间</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usage-table" class="bg-white divide-y divide-gray-200">
+                        <!-- 数据将通过JavaScript填充 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        $(document).ready(function() {
+            loadUsageStats();
+        });
+
+        async function loadUsageStats() {
+            try {
+                // 模拟数据（在免登录模式下）
+                const mockData = {
+                    totalCalls: 156,
+                    primaryModel: 'Claude-3.5-Haiku',
+                    avgResponseTime: '2.3s',
+                    successRate: '98.7%',
+                    modelDistribution: {
+                        'Claude': 85,
+                        'DeepSeek': 15
+                    },
+                    actionDistribution: {
+                        '拆解分析': 60,
+                        '生成仿写': 40
+                    },
+                    recentUsage: [
+                        { time: '2024-01-20 14:30', action: '拆解分析', model: 'Claude', responseTime: '2.1s', status: '成功' },
+                        { time: '2024-01-20 14:25', action: '生成仿写', model: 'Claude', responseTime: '3.2s', status: '成功' },
+                        { time: '2024-01-20 14:20', action: '拆解分析', model: 'DeepSeek', responseTime: '1.8s', status: '成功' },
+                        { time: '2024-01-20 14:15', action: '生成仿写', model: 'Claude', responseTime: '2.9s', status: '成功' },
+                        { time: '2024-01-20 14:10', action: '拆解分析', model: 'Claude', responseTime: '2.4s', status: '成功' }
+                    ]
+                };
+
+                // 填充概览数据
+                $('#total-calls').text(mockData.totalCalls);
+                $('#primary-model').text(mockData.primaryModel);
+                $('#avg-response').text(mockData.avgResponseTime);
+                $('#success-rate').text(mockData.successRate);
+
+                // 创建模型分布图
+                const modelCtx = document.getElementById('modelChart').getContext('2d');
+                new Chart(modelCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(mockData.modelDistribution),
+                        datasets: [{
+                            data: Object.values(mockData.modelDistribution),
+                            backgroundColor: ['#3B82F6', '#10B981'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+
+                // 创建功能分布图
+                const actionCtx = document.getElementById('actionChart').getContext('2d');
+                new Chart(actionCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(mockData.actionDistribution),
+                        datasets: [{
+                            data: Object.values(mockData.actionDistribution),
+                            backgroundColor: ['#8B5CF6', '#F59E0B'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+
+                // 填充使用记录表格
+                const tableBody = $('#usage-table');
+                mockData.recentUsage.forEach(record => {
+                    const statusClass = record.status === '成功' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
+                    tableBody.append(`
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${record.time}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${record.action}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${record.model}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${record.responseTime}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusClass}">
+                                    ${record.status}
+                                </span>
+                            </td>
+                        </tr>
+                    `);
+                });
+
+            } catch (error) {
+                console.error('加载统计数据失败:', error);
+            }
+        }
+    </script>
+</body>
+</html> 

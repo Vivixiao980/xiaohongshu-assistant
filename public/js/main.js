@@ -238,9 +238,20 @@ $(document).ready(function () {
     }
 
     function displayAnalysisResult(content) {
-        // 使用marked.js来渲染Markdown
-        const formattedContent = marked.parse(content);
-        $('#analysisContent').html(formattedContent);
+        try {
+            // 使用美化显示功能
+            const container = document.getElementById('analysisContent');
+            const analysis = parseAnalysisText(content);
+            const html = createBeautifulAnalysisHTML(analysis);
+            container.innerHTML = html;
+            animateAnalysisDisplay();
+        } catch (error) {
+            console.error('美化显示失败，使用降级方案:', error);
+            // 降级方案：使用marked.js来渲染Markdown
+            const formattedContent = marked.parse(content);
+            $('#analysisContent').html(formattedContent);
+        }
+        
         $('#analysisSection').removeClass('hidden');
         
         // 平滑滚动到结果区域
@@ -250,6 +261,218 @@ $(document).ready(function () {
                 block: 'start' 
             });
         }, 100);
+    }
+
+    // 美化显示相关函数
+    function parseAnalysisText(text) {
+        const sections = {
+            summary: '',
+            structure: '',
+            keywords: [],
+            writingStyle: '',
+            engagement: '',
+            segments: []
+        };
+        
+        // 简单的文本解析逻辑
+        const lines = text.split('\n');
+        let currentSection = '';
+        
+        lines.forEach(line => {
+            line = line.trim();
+            if (!line) return;
+            
+            if (line.includes('思考过程') || line.includes('总结')) {
+                currentSection = 'summary';
+                sections.summary += line + '\n';
+            } else if (line.includes('标题') || line.includes('结构')) {
+                currentSection = 'structure';
+                sections.structure += line + '\n';
+            } else if (line.includes('关键词') || line.includes('标签')) {
+                currentSection = 'keywords';
+                // 提取关键词
+                const keywords = line.match(/[\u4e00-\u9fa5]+/g);
+                if (keywords) {
+                    sections.keywords.push(...keywords);
+                }
+            } else if (line.includes('写作手法') || line.includes('方法')) {
+                currentSection = 'writingStyle';
+                sections.writingStyle += line + '\n';
+            } else if (line.includes('互动') || line.includes('引导')) {
+                currentSection = 'engagement';
+                sections.engagement += line + '\n';
+            } else {
+                // 其他内容添加到当前section
+                if (currentSection === 'summary') {
+                    sections.summary += line + '\n';
+                } else if (currentSection === 'structure') {
+                    sections.structure += line + '\n';
+                } else if (currentSection === 'writingStyle') {
+                    sections.writingStyle += line + '\n';
+                } else if (currentSection === 'engagement') {
+                    sections.engagement += line + '\n';
+                }
+            }
+        });
+        
+        return sections;
+    }
+
+    function createBeautifulAnalysisHTML(analysis) {
+        return `
+            <div class="analysis-container space-y-8">
+                <!-- 概览卡片 -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-200">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white text-xl">📝</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-blue-900">内容概览</h3>
+                    </div>
+                    <div class="prose prose-lg max-w-none text-gray-700">
+                        ${formatAnalysisText(analysis.summary)}
+                    </div>
+                </div>
+
+                <!-- 结构分析 -->
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 border border-purple-200">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white text-xl">🏗️</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-purple-900">结构分析</h3>
+                    </div>
+                    <div class="prose prose-lg max-w-none text-gray-700">
+                        ${formatAnalysisText(analysis.structure)}
+                    </div>
+                </div>
+
+                <!-- 关键词云 -->
+                ${analysis.keywords.length > 0 ? `
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-200">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white text-xl">🏷️</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-green-900">关键词分析</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        ${analysis.keywords.map(keyword => `
+                            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200 hover:bg-green-200 transition-colors">
+                                ${keyword}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- 写作手法 -->
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl p-8 border border-orange-200">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white text-xl">✍️</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-orange-900">写作技巧</h3>
+                    </div>
+                    <div class="prose prose-lg max-w-none text-gray-700">
+                        ${formatAnalysisText(analysis.writingStyle)}
+                    </div>
+                </div>
+
+                <!-- 互动策略 -->
+                <div class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-2xl p-8 border border-teal-200">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white text-xl">💬</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-teal-900">互动策略</h3>
+                    </div>
+                    <div class="prose prose-lg max-w-none text-gray-700">
+                        ${formatAnalysisText(analysis.engagement)}
+                    </div>
+                </div>
+
+                <!-- 核心要点总结 -->
+                <div class="bg-gradient-to-r from-gray-50 to-slate-50 rounded-2xl p-8 border border-gray-200">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white text-xl">💡</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">核心要点</h3>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-white text-xs">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">内容模式</h4>
+                                    <p class="text-gray-600 text-sm">分享式 + 建议式</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-white text-xs">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">文案模式</h4>
+                                    <p class="text-gray-600 text-sm">个人化表达 + 实用建议</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-white text-xs">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">互动设计</h4>
+                                    <p class="text-gray-600 text-sm">问答引导 + 经验分享</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-white text-xs">4</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">表达手法</h4>
+                                    <p class="text-gray-600 text-sm">对比突出 + 情感共鸣</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function formatAnalysisText(text) {
+        if (!text) return '';
+        
+        // 将文本转换为HTML，保持换行和格式
+        return text
+            .replace(/\n/g, '<br>')
+            .replace(/【([^】]+)】/g, '<span class="font-semibold text-blue-600">【$1】</span>')
+            .replace(/(\d+\.\s)/g, '<span class="font-semibold text-purple-600">$1</span>')
+            .replace(/(✓|√)/g, '<span class="text-green-500">✓</span>')
+            .replace(/(✗|×)/g, '<span class="text-red-500">✗</span>');
+    }
+
+    function animateAnalysisDisplay() {
+        // 为每个卡片添加进入动画
+        const cards = document.querySelectorAll('.analysis-container > div');
+        
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
     }
 
     function displayGeneratedNotes(content) {
