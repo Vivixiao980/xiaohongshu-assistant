@@ -1,9 +1,9 @@
 $(document).ready(function () {
+    console.log('Main.js loaded successfully');
+    
     // =================================================================
     // 1. 认证和用户状态管理
     // =================================================================
-    const token = localStorage.getItem('token');
-
     function fetchUserInfo() {
         const currentToken = localStorage.getItem('token');
         if (!currentToken) {
@@ -48,28 +48,39 @@ $(document).ready(function () {
     // 初始加载时检查用户信息
     fetchUserInfo();
 
-    // 登录/注册按钮点击 - 使用多种方式确保事件绑定成功
-    $(document).on('click', '#login-btn', function(e) {
-        e.preventDefault();
-        console.log('Login button clicked');
-        window.location.href = '/auth.html';
-    });
+    // 登录按钮事件绑定
+    function bindLoginButton() {
+        console.log('Binding login button...');
+        const loginBtn = document.getElementById('login-btn');
+        if (loginBtn) {
+            console.log('Login button found, binding click event');
+            // 移除之前的事件监听器
+            loginBtn.onclick = null;
+            // 绑定新的事件
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Login button clicked - redirecting to auth page');
+                window.location.href = '/auth.html';
+            });
+            
+            // 备用方法
+            loginBtn.onclick = function(e) {
+                e.preventDefault();
+                console.log('Login button clicked (onclick) - redirecting to auth page');
+                window.location.href = '/auth.html';
+                return false;
+            };
+        } else {
+            console.log('Login button not found, will retry...');
+        }
+    }
     
-    // 备用事件绑定方式
-    $('#login-btn').off('click').on('click', function(e) {
-        e.preventDefault();
-        console.log('Login button clicked (backup method)');
-        window.location.href = '/auth.html';
-    });
-
-    // DOM加载完成后再次绑定
-    setTimeout(function() {
-        $('#login-btn').off('click').on('click', function(e) {
-            e.preventDefault();
-            console.log('Login button clicked (delayed binding)');
-            window.location.href = '/auth.html';
-        });
-    }, 1000);
+    // 多次尝试绑定登录按钮
+    bindLoginButton();
+    setTimeout(bindLoginButton, 100);
+    setTimeout(bindLoginButton, 500);
+    setTimeout(bindLoginButton, 1000);
 
     // 退出登录
     $('#logout-button').on('click', function() {

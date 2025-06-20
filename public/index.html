@@ -98,7 +98,7 @@
                     
                     <!-- 登录按钮 -->
                     <div id="auth-buttons">
-                        <button id="login-btn" class="btn-primary text-white font-semibold py-3 px-7 rounded-lg text-lg">
+                        <button id="login-btn" class="btn-primary text-white font-semibold py-3 px-7 rounded-lg text-lg" onclick="goToAuth()">
                             登录/注册
                         </button>
                     </div>
@@ -241,6 +241,13 @@
     <!-- 脚本 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <script>
+        // 简单的登录跳转函数
+        function goToAuth() {
+            console.log('登录按钮被点击 - 跳转到认证页面');
+            window.location.href = '/auth.html';
+        }
+    </script>
     <script src="/js/main.js"></script>
 </body>
 </html> 
