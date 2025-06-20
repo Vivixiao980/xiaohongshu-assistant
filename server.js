@@ -20,11 +20,18 @@ const app = express();
 // 关键：立即注册健康检查路由，不依赖任何外部模块
 // =================================================================
 app.get('/health', (req, res) => {
-  res.json({
+  res.status(200).json({
     success: true,
     message: 'Healthcheck OK',
     timestamp: new Date().toISOString(),
+    port: port,
+    env: process.env.NODE_ENV
   });
+});
+
+// 添加根路径健康检查
+app.get('/healthz', (req, res) => {
+  res.status(200).send('OK');
 });
 
 // 基本中间件
@@ -90,11 +97,21 @@ app.listen(port, () => {
 async function initializeDatabaseAsync(logger) {
   try {
     logger.info('开始异步初始化数据库...');
-    const initializeDatabase = require('./scripts/init-db');
-    await initializeDatabase();
-    logger.info('数据库初始化成功完成。');
+    
+    // 使用setTimeout确保不阻塞主线程
+    setTimeout(async () => {
+      try {
+        const initializeDatabase = require('./scripts/init-db');
+        await initializeDatabase();
+        logger.info('数据库初始化成功完成。');
+      } catch (error) {
+        logger.error('数据库初始化过程中发生错误:', error);
+        // 不退出进程，让应用继续运行
+      }
+    }, 1000); // 延迟1秒启动数据库初始化
+    
   } catch (error) {
-    logger.error('数据库初始化过程中发生错误:', error);
+    logger.error('数据库初始化准备过程中发生错误:', error);
   }
 }
 

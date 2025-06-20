@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务状态</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .status { padding: 20px; border-radius: 8px; margin: 10px 0; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 10px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-success { background-color: #28a745; color: white; }
+        .btn-warning { background-color: #ffc107; color: black; }
+    </style>
+</head>
+<body>
+    <h1>🚀 小红书助手 - 服务状态</h1>
+    
+    <div id="status-container">
+        <div class="status info">
+            <h3>📊 系统状态检查</h3>
+            <p>正在检查服务状态...</p>
+        </div>
+    </div>
+    
+    <div>
+        <button class="btn-primary" onclick="checkHealth()">检查健康状态</button>
+        <button class="btn-success" onclick="testLogin()">测试登录页面</button>
+        <button class="btn-warning" onclick="openDebug()">打开调试页面</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        async function checkHealth() {
+            const container = document.getElementById('status-container');
+            
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                container.innerHTML = `
+                    <div class="status success">
+                        <h3>✅ 健康检查通过</h3>
+                        <p><strong>状态:</strong> ${data.message}</p>
+                        <p><strong>时间:</strong> ${data.timestamp}</p>
+                        <p><strong>端口:</strong> ${data.port}</p>
+                        <p><strong>环境:</strong> ${data.env}</p>
+                    </div>
+                `;
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="status error">
+                        <h3>❌ 健康检查失败</h3>
+                        <p><strong>错误:</strong> ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function testLogin() {
+            window.open('/auth.html', '_blank');
+        }
+        
+        function openDebug() {
+            window.open('/debug.html', '_blank');
+        }
+        
+        // 页面加载时自动检查
+        window.onload = checkHealth;
+    </script>
+</body>
+</html> 
