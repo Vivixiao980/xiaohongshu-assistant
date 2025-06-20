@@ -2,17 +2,19 @@ $(document).ready(function () {
     console.log('Main.js loaded successfully');
     
     // =================================================================
-    // 1. 认证和用户状态管理
+    // 1. 认证和用户状态管理 (已禁用 - 免登录模式)
     // =================================================================
     function fetchUserInfo() {
-        const currentToken = localStorage.getItem('token');
-        if (!currentToken) {
-            $('#user-info').addClass('hidden');
-            $('#auth-buttons').removeClass('hidden');
-            // 锁定功能按钮
-            $('#analyze-button, #generate-button').prop('disabled', true).addClass('opacity-50');
-            return;
-        }
+        // 免登录模式：直接显示为已登录状态
+        $('#user-info').removeClass('hidden');
+        $('#auth-buttons').addClass('hidden');
+        $('#user-username').text('免登录用户');
+        $('#user-type').text('体验模式');
+        $('#user-credits').text('无限制');
+        
+        // 启用所有功能按钮
+        $('#analyze-button, #generate-button').prop('disabled', false).removeClass('opacity-50');
+        return;
 
         fetch('/auth/me', {
             headers: { 'Authorization': `Bearer ${currentToken}` }
@@ -124,8 +126,8 @@ $(document).ready(function () {
             const response = await fetch('/api/analyze', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Content-Type': 'application/json'
+                    // 免登录模式：移除Authorization header
                 },
                 body: JSON.stringify({
                     content: originalNote,
@@ -179,8 +181,8 @@ $(document).ready(function () {
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Content-Type': 'application/json'
+                    // 免登录模式：移除Authorization header
                 },
                 body: JSON.stringify({
                     originalContent: originalNote,

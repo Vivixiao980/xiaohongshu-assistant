@@ -5,50 +5,33 @@ const { User, Usage } = require('../config/database');
 const aiService = require('../services/aiService');
 const router = express.Router();
 
-// 认证中间件
+// 认证中间件 (免登录模式)
 const authMiddleware = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '');
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: '未提供认证令牌'
-      });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(decoded.userId);
-
-    if (!user || !user.isActive) {
-      return res.status(401).json({
-        success: false,
-        message: '用户不存在或已被禁用'
-      });
-    }
-
-    req.user = user;
+    // 免登录模式：创建虚拟用户对象
+    req.user = {
+      id: 'demo-user',
+      username: '免登录用户',
+      userType: 'trial',
+      credits: 999999, // 无限积分
+      maxCredits: 999999,
+      isActive: true,
+      canUseService: () => true,
+      useCredit: async () => true, // 总是返回true，不实际扣积分
+      save: async () => true
+    };
     next();
   } catch (error) {
-    return res.status(401).json({
+    return res.status(500).json({
       success: false,
-      message: '认证失败'
+      message: '系统错误'
     });
   }
 };
 
-// 检查积分中间件
+// 检查积分中间件 (免登录模式)
 const checkCreditsMiddleware = (req, res, next) => {
-  if (!req.user.canUseService()) {
-    return res.status(403).json({
-      success: false,
-      message: '积分不足',
-      data: {
-        credits: req.user.credits,
-        maxCredits: req.user.maxCredits,
-        userType: req.user.userType
-      }
-    });
-  }
+  // 免登录模式：跳过积分检查
   next();
 };
 
@@ -101,19 +84,21 @@ router.post('/analyze', [
       useDeepAnalysis
     });
 
-    // 记录使用情况
-    await Usage.create({
-      userId: user.id,
-      actionType: 'analyze',
-      model,
-      inputContent: content,
-      outputContent: result.success ? result.content : null,
-      creditsUsed: 1,
-      processingTime: result.processingTime,
-      status: result.success ? 'success' : 'error',
-      errorMessage: result.success ? null : result.error,
-      ipAddress: req.ip
-    });
+    // 记录使用情况 (免登录模式：跳过数据库记录)
+    if (user.id !== 'demo-user') {
+      await Usage.create({
+        userId: user.id,
+        actionType: 'analyze',
+        model,
+        inputContent: content,
+        outputContent: result.success ? result.content : null,
+        creditsUsed: 1,
+        processingTime: result.processingTime,
+        status: result.success ? 'success' : 'error',
+        errorMessage: result.success ? null : result.error,
+        ipAddress: req.ip
+      });
+    }
 
     if (result.success) {
       res.json({
@@ -219,20 +204,22 @@ router.post('/generate', [
       useDeepAnalysis
     });
 
-    // 记录使用情况
-    await Usage.create({
-      userId: user.id,
-      actionType: 'generate',
-      model,
-      inputContent: originalContent,
-      outputContent: result.success ? result.content : null,
-      newTopic,
-      creditsUsed: 1,
-      processingTime: result.processingTime,
-      status: result.success ? 'success' : 'error',
-      errorMessage: result.success ? null : result.error,
-      ipAddress: req.ip
-    });
+    // 记录使用情况 (免登录模式：跳过数据库记录)
+    if (user.id !== 'demo-user') {
+      await Usage.create({
+        userId: user.id,
+        actionType: 'generate',
+        model,
+        inputContent: originalContent,
+        outputContent: result.success ? result.content : null,
+        newTopic,
+        creditsUsed: 1,
+        processingTime: result.processingTime,
+        status: result.success ? 'success' : 'error',
+        errorMessage: result.success ? null : result.error,
+        ipAddress: req.ip
+      });
+    }
 
     if (result.success) {
       res.json({
@@ -280,9 +267,23 @@ router.post('/generate', [
   }
 });
 
-// 获取使用历史
+// 获取使用历史 (免登录模式)
 router.get('/history', authMiddleware, async (req, res) => {
   try {
+    // 免登录模式：返回空历史记录
+    if (req.user.id === 'demo-user') {
+      return res.json({
+        success: true,
+        data: {
+          total: 0,
+          page: 1,
+          limit: 20,
+          totalPages: 0,
+          history: []
+        }
+      });
+    }
+
     const { page = 1, limit = 20 } = req.query;
     const offset = (page - 1) * limit;
 
