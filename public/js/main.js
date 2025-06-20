@@ -1,6 +1,10 @@
 $(document).ready(function () {
     console.log('Main.js loaded successfully');
     
+    // 测试按钮是否能找到
+    console.log('分析按钮元素:', $('#analyze-button').length);
+    console.log('生成按钮元素:', $('#generate-button').length);
+    
     // =================================================================
     // 1. 认证和用户状态管理 (已禁用 - 免登录模式)
     // =================================================================
@@ -14,6 +18,7 @@ $(document).ready(function () {
         
         // 启用所有功能按钮
         $('#analyze-button, #generate-button').prop('disabled', false).removeClass('opacity-50');
+        console.log('按钮已启用');
         return;
 
         fetch('/auth/me', {
@@ -101,23 +106,40 @@ $(document).ready(function () {
     // =================================================================
     let analysisResultCache = '';
 
-    $('#analyze-button').on('click', analyzeNote);
-    $('#generate-button').on('click', generateNotes);
+    // 绑定事件并添加调试信息
+    $('#analyze-button').on('click', function() {
+        console.log('分析按钮被点击!');
+        analyzeNote();
+    });
+    $('#generate-button').on('click', function() {
+        console.log('生成按钮被点击!');
+        generateNotes();
+    });
+    
+    console.log('事件已绑定');
 
     async function analyzeNote() {
+        console.log('analyzeNote函数被调用');
         const originalNote = $('#originalNote').val().trim();
         const theme = $('#theme').val().trim();
+        
+        console.log('原始笔记内容:', originalNote);
+        console.log('仿写主题:', theme);
 
         if (!originalNote) {
+            console.log('缺少原始笔记内容');
             showAlert('请输入原始笔记内容', 'warning');
             $('#originalNote').focus();
             return;
         }
         if (!theme) {
+            console.log('缺少仿写主题');
             showAlert('请输入仿写主题', 'warning');
             $('#theme').focus();
             return;
         }
+        
+        console.log('开始发送API请求...');
 
         showLoading();
         $('#analyze-button, #generate-button').prop('disabled', true);
