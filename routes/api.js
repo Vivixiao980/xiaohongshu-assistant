@@ -3,6 +3,7 @@ const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const { User, Usage } = require('../config/database');
 const aiService = require('../services/aiService');
+const usageTracker = require('../services/usageTracker');
 const router = express.Router();
 
 // 认证中间件 (免登录模式)
@@ -84,7 +85,19 @@ router.post('/analyze', [
       useDeepAnalysis
     });
 
-    // 记录使用情况 (免登录模式：跳过数据库记录)
+    // 记录使用情况到文件日志（包括免登录模式）
+    await usageTracker.logAPICall({
+      model,
+      action: 'analyze',
+      processingTime: result.processingTime,
+      status: result.success ? 'success' : 'error',
+      inputLength: content.length,
+      outputLength: result.content ? result.content.length : 0,
+      userAgent: req.get('User-Agent'),
+      ip: req.ip
+    });
+
+    // 记录使用情况到数据库 (免登录模式：跳过数据库记录)
     if (user.id !== 'demo-user') {
       await Usage.create({
         userId: user.id,
@@ -206,7 +219,19 @@ router.post('/generate', [
       useDeepAnalysis
     });
 
-    // 记录使用情况 (免登录模式：跳过数据库记录)
+    // 记录使用情况到文件日志（包括免登录模式）
+    await usageTracker.logAPICall({
+      model,
+      action: 'generate',
+      processingTime: result.processingTime,
+      status: result.success ? 'success' : 'error',
+      inputLength: originalContent.length,
+      outputLength: result.content ? result.content.length : 0,
+      userAgent: req.get('User-Agent'),
+      ip: req.ip
+    });
+
+    // 记录使用情况到数据库 (免登录模式：跳过数据库记录)
     if (user.id !== 'demo-user') {
       await Usage.create({
         userId: user.id,
@@ -366,64 +391,19 @@ router.post('/reset-credits', authMiddleware, async (req, res) => {
 // 获取用量统计概览
 router.get('/usage/stats', authMiddleware, async (req, res) => {
   try {
-    // 免登录模式：返回模拟数据
-    if (req.user.id === 'demo-user') {
-      return res.json({
-        success: true,
-        data: {
-          totalCalls: 0,
-          primaryModel: 'Claude-3.5-Haiku',
-          avgResponseTime: '0s',
-          successRate: '100%',
-          modelDistribution: {},
-          functionDistribution: {}
-        }
-      });
-    }
-
-    // 获取用户的所有使用记录
-    const usages = await Usage.findAll({
-      where: { userId: req.user.id },
-      attributes: ['model', 'actionType', 'processingTime', 'status', 'createdAt']
-    });
-
-    const totalCalls = usages.length;
-    const successfulCalls = usages.filter(u => u.status === 'success').length;
-    const successRate = totalCalls > 0 ? ((successfulCalls / totalCalls) * 100).toFixed(1) + '%' : '100%';
+    // 使用文件日志系统获取统计数据
+    const stats = await usageTracker.getUsageStats();
     
-    // 计算平均响应时间
-    const avgTime = usages.length > 0 
-      ? usages.reduce((sum, u) => sum + (u.processingTime || 0), 0) / usages.length / 1000
-      : 0;
-    const avgResponseTime = avgTime.toFixed(1) + 's';
-
-    // 模型分布统计
-    const modelDistribution = {};
-    usages.forEach(u => {
-      const modelName = u.model === 'claude' ? 'Claude' : 'DeepSeek';
-      modelDistribution[modelName] = (modelDistribution[modelName] || 0) + 1;
-    });
-
-    // 功能分布统计
-    const functionDistribution = {};
-    usages.forEach(u => {
-      const actionName = u.actionType === 'analyze' ? '拆解分析' : '生成仿写';
-      functionDistribution[actionName] = (functionDistribution[actionName] || 0) + 1;
-    });
-
-    // 主要使用的模型
-    const primaryModel = Object.keys(modelDistribution).reduce((a, b) => 
-      (modelDistribution[a] || 0) > (modelDistribution[b] || 0) ? a : b, 'Claude-3.5-Haiku');
-
     res.json({
       success: true,
       data: {
-        totalCalls,
-        primaryModel,
-        avgResponseTime,
-        successRate,
-        modelDistribution,
-        functionDistribution
+        totalCalls: stats.totalCalls,
+        primaryModel: Object.keys(stats.modelDistribution).reduce((a, b) => 
+          (stats.modelDistribution[a] || 0) > (stats.modelDistribution[b] || 0) ? a : b, 'Claude-3.5-Haiku'),
+        avgResponseTime: stats.avgResponseTime + 's',
+        successRate: stats.successRate + '%',
+        modelDistribution: stats.modelDistribution,
+        functionDistribution: stats.actionDistribution
       }
     });
   } catch (error) {
@@ -438,32 +418,12 @@ router.get('/usage/stats', authMiddleware, async (req, res) => {
 // 获取最近使用记录
 router.get('/usage/recent', authMiddleware, async (req, res) => {
   try {
-    // 免登录模式：返回空记录
-    if (req.user.id === 'demo-user') {
-      return res.json({
-        success: true,
-        data: []
-      });
-    }
-
-    const recentUsages = await Usage.findAll({
-      where: { userId: req.user.id },
-      order: [['createdAt', 'DESC']],
-      limit: 10,
-      attributes: ['actionType', 'model', 'processingTime', 'status', 'createdAt']
-    });
-
-    const formattedUsages = recentUsages.map(usage => ({
-      time: usage.createdAt.toLocaleString('zh-CN'),
-      action: usage.actionType === 'analyze' ? '拆解分析' : '生成仿写',
-      model: usage.model === 'claude' ? 'Claude' : 'DeepSeek',
-      responseTime: usage.processingTime ? (usage.processingTime / 1000).toFixed(1) + 's' : 'N/A',
-      status: usage.status === 'success' ? '成功' : '失败'
-    }));
-
+    // 使用文件日志系统获取最近记录
+    const stats = await usageTracker.getUsageStats();
+    
     res.json({
       success: true,
-      data: formattedUsages
+      data: stats.recentCalls
     });
   } catch (error) {
     console.error('获取最近使用记录失败:', error);

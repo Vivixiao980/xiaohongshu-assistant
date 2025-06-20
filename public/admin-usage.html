@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员用量统计 - 小红书爆文助手</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- 标题 -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">🔍 管理员用量统计</h1>
+            <p class="text-white/80">实时监控API调用情况和消耗分析</p>
+            <div class="mt-4">
+                <button onclick="refreshData()" class="bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-lg transition-all duration-300">
+                    🔄 刷新数据
+                </button>
+                <a href="/" class="ml-4 bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-all duration-300">
+                    🏠 返回首页
+                </a>
+            </div>
+        </div>
+
+        <!-- 实时状态 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl mb-2">📊</div>
+                <div class="text-2xl font-bold text-white" id="total-calls">-</div>
+                <div class="text-white/80">总调用次数</div>
+            </div>
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl mb-2">🤖</div>
+                <div class="text-2xl font-bold text-white" id="primary-model">-</div>
+                <div class="text-white/80">主要模型</div>
+            </div>
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl mb-2">⚡</div>
+                <div class="text-2xl font-bold text-white" id="avg-time">-</div>
+                <div class="text-white/80">平均响应时间</div>
+            </div>
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl mb-2">✅</div>
+                <div class="text-2xl font-bold text-white" id="success-rate">-</div>
+                <div class="text-white/80">成功率</div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- 模型使用分布 -->
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-white mb-4">🤖 模型使用分布</h3>
+                <div class="relative h-64">
+                    <canvas id="modelChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 功能使用分布 -->
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-white mb-4">🔧 功能使用分布</h3>
+                <div class="relative h-64">
+                    <canvas id="functionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近调用记录 -->
+        <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-xl font-bold text-white mb-4">📝 最近调用记录</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-white">
+                    <thead>
+                        <tr class="border-b border-white/20">
+                            <th class="text-left py-3 px-4">时间</th>
+                            <th class="text-left py-3 px-4">功能</th>
+                            <th class="text-left py-3 px-4">模型</th>
+                            <th class="text-left py-3 px-4">响应时间</th>
+                            <th class="text-left py-3 px-4">状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-records">
+                        <tr>
+                            <td colspan="5" class="text-center py-8 text-white/60">
+                                <div class="pulse-animation">📊 加载中...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- API配置信息 -->
+        <div class="glass-card rounded-2xl p-6 mt-8">
+            <h3 class="text-xl font-bold text-white mb-4">⚙️ API配置信息</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white/10 rounded-lg p-4">
+                    <h4 class="font-semibold text-white mb-2">Claude API</h4>
+                    <p class="text-white/80 text-sm">Base URL: https://dpapi.cn/v1</p>
+                    <p class="text-white/80 text-sm">Model: claude-3-5-haiku-20241022</p>
+                    <p class="text-white/80 text-sm">Key: sk-RTGl4XX...（已配置）</p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4">
+                    <h4 class="font-semibold text-white mb-2">DeepSeek API</h4>
+                    <p class="text-white/80 text-sm">Platform: SiliconFlow</p>
+                    <p class="text-white/80 text-sm">Model: deepseek-ai/DeepSeek-V2.5</p>
+                    <p class="text-white/80 text-sm">Key: sk-gkzxwmv...（已配置）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 费用估算 -->
+        <div class="glass-card rounded-2xl p-6 mt-8">
+            <h3 class="text-xl font-bold text-white mb-4">💰 费用估算</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold text-white" id="claude-calls">-</div>
+                    <div class="text-white/80">Claude 调用次数</div>
+                    <div class="text-sm text-white/60 mt-1" id="claude-cost">估算费用: -</div>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold text-white" id="deepseek-calls">-</div>
+                    <div class="text-white/80">DeepSeek 调用次数</div>
+                    <div class="text-sm text-white/60 mt-1" id="deepseek-cost">估算费用: -</div>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold text-white" id="total-cost">-</div>
+                    <div class="text-white/80">总估算费用</div>
+                    <div class="text-sm text-white/60 mt-1">基于平均token消耗</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let modelChart = null;
+        let functionChart = null;
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUsageData();
+            // 每30秒自动刷新
+            setInterval(loadUsageData, 30000);
+        });
+
+        // 加载用量数据
+        async function loadUsageData() {
+            try {
+                // 获取统计数据
+                const statsResponse = await fetch('/api/usage/stats');
+                const statsData = await statsResponse.json();
+                
+                if (statsData.success) {
+                    updateStatCards(statsData.data);
+                    updateCharts(statsData.data);
+                    updateCostEstimation(statsData.data);
+                }
+
+                // 获取最近记录
+                const recentResponse = await fetch('/api/usage/recent');
+                const recentData = await recentResponse.json();
+                
+                if (recentData.success) {
+                    updateRecentRecords(recentData.data);
+                }
+            } catch (error) {
+                console.error('加载用量数据失败:', error);
+                showError('加载数据失败，请检查网络连接');
+            }
+        }
+
+        // 更新统计卡片
+        function updateStatCards(data) {
+            document.getElementById('total-calls').textContent = data.totalCalls || 0;
+            document.getElementById('primary-model').textContent = data.primaryModel || 'N/A';
+            document.getElementById('avg-time').textContent = data.avgResponseTime || '0s';
+            document.getElementById('success-rate').textContent = data.successRate || '100%';
+        }
+
+        // 更新图表
+        function updateCharts(data) {
+            // 模型分布图表
+            if (modelChart) {
+                modelChart.destroy();
+            }
+            
+            const modelCtx = document.getElementById('modelChart').getContext('2d');
+            const modelLabels = Object.keys(data.modelDistribution || {});
+            const modelValues = Object.values(data.modelDistribution || {});
+            
+            modelChart = new Chart(modelCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: modelLabels,
+                    datasets: [{
+                        data: modelValues,
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(239, 68, 68, 0.8)'
+                        ],
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 功能分布图表
+            if (functionChart) {
+                functionChart.destroy();
+            }
+            
+            const functionCtx = document.getElementById('functionChart').getContext('2d');
+            const functionLabels = Object.keys(data.functionDistribution || {});
+            const functionValues = Object.values(data.functionDistribution || {});
+            
+            functionChart = new Chart(functionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: functionLabels,
+                    datasets: [{
+                        data: functionValues,
+                        backgroundColor: [
+                            'rgba(168, 85, 247, 0.8)',
+                            'rgba(236, 72, 153, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(251, 146, 60, 0.8)'
+                        ],
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 更新最近记录
+        function updateRecentRecords(records) {
+            const tbody = document.getElementById('recent-records');
+            
+            if (!records || records.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-8 text-white/60">
+                            暂无调用记录
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = records.map(record => `
+                <tr class="border-b border-white/10 hover:bg-white/5">
+                    <td class="py-3 px-4">${record.time}</td>
+                    <td class="py-3 px-4">${record.action}</td>
+                    <td class="py-3 px-4">${record.model}</td>
+                    <td class="py-3 px-4">${record.responseTime}</td>
+                    <td class="py-3 px-4">
+                        <span class="px-2 py-1 rounded text-xs ${record.status === '成功' ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}">
+                            ${record.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 更新费用估算
+        function updateCostEstimation(data) {
+            const claudeCalls = data.modelDistribution?.Claude || 0;
+            const deepseekCalls = data.modelDistribution?.DeepSeek || 0;
+            
+            // 粗略估算（基于平均token消耗）
+            const claudeCost = claudeCalls * 0.002; // 假设每次调用$0.002
+            const deepseekCost = deepseekCalls * 0.0005; // 假设每次调用$0.0005
+            const totalCost = claudeCost + deepseekCost;
+            
+            document.getElementById('claude-calls').textContent = claudeCalls;
+            document.getElementById('deepseek-calls').textContent = deepseekCalls;
+            document.getElementById('claude-cost').textContent = `估算费用: $${claudeCost.toFixed(4)}`;
+            document.getElementById('deepseek-cost').textContent = `估算费用: $${deepseekCost.toFixed(4)}`;
+            document.getElementById('total-cost').textContent = `$${totalCost.toFixed(4)}`;
+        }
+
+        // 刷新数据
+        function refreshData() {
+            const button = event.target;
+            button.innerHTML = '🔄 刷新中...';
+            button.disabled = true;
+            
+            loadUsageData().finally(() => {
+                button.innerHTML = '🔄 刷新数据';
+                button.disabled = false;
+            });
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            errorDiv.textContent = message;
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html> 
