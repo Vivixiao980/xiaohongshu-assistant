@@ -25,6 +25,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    phone: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
     userType: {
       type: DataTypes.ENUM('trial', 'student'),
       defaultValue: 'trial',
@@ -47,6 +51,14 @@ module.exports = (sequelize) => {
     isActive: {
       type: DataTypes.BOOLEAN,
       defaultValue: true
+    },
+    emailVerified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    emailVerifiedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
     },
     lastLoginAt: {
       type: DataTypes.DATE

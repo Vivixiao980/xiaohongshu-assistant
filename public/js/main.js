@@ -10,7 +10,7 @@ $(document).ready(function () {
             $('#user-info').addClass('hidden');
             $('#auth-buttons').removeClass('hidden');
             // 锁定功能按钮
-            $('#analyze-button, #generate-button').prop('disabled', true).addClass('disabled:cursor-not-allowed');
+            $('#analyze-button, #generate-button').prop('disabled', true).addClass('opacity-50');
             return;
         }
 
@@ -21,17 +21,27 @@ $(document).ready(function () {
         .then(data => {
             if (data.success) {
                 $('#user-username').text(data.user.username);
-                $('#user-credits').text(`积分: ${data.user.credits}`);
+                const creditsText = data.user.userType === 'trial' 
+                    ? `体验用户 - 剩余 ${data.user.credits} 次`
+                    : `正式学员 - ${data.user.credits} 积分`;
+                $('#user-credits').text(creditsText);
                 $('#user-info').removeClass('hidden');
                 $('#auth-buttons').addClass('hidden');
-                 // 解锁功能按钮
-                $('#analyze-button, #generate-button').prop('disabled', false).removeClass('disabled:cursor-not-allowed');
+                // 解锁功能按钮
+                $('#analyze-button, #generate-button').prop('disabled', false).removeClass('opacity-50');
             } else {
                 localStorage.removeItem('token');
                 $('#user-info').addClass('hidden');
                 $('#auth-buttons').removeClass('hidden');
-                $('#analyze-button, #generate-button').prop('disabled', true).addClass('disabled:cursor-not-allowed');
+                $('#analyze-button, #generate-button').prop('disabled', true).addClass('opacity-50');
             }
+        })
+        .catch(error => {
+            console.error('获取用户信息失败:', error);
+            localStorage.removeItem('token');
+            $('#user-info').addClass('hidden');
+            $('#auth-buttons').removeClass('hidden');
+            $('#analyze-button, #generate-button').prop('disabled', true).addClass('opacity-50');
         });
     }
 
@@ -39,42 +49,23 @@ $(document).ready(function () {
     fetchUserInfo();
 
     // 登录/注册按钮点击
-    $('#login-btn').on('click', () => $('#login-modal').removeClass('hidden'));
-    $('.close-modal').on('click', () => $('.modal').addClass('hidden'));
-
-    // 登录表单提交
-    $('#login-form').on('submit', async function (e) {
-        e.preventDefault();
-        const identifier = $('#login-identifier').val();
-        const password = $('#login-password').val();
-        
-        try {
-            const response = await fetch('/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ identifier, password })
-            });
-            const data = await response.json();
-            if (data.success) {
-                showAlert('登录成功！', 'success');
-                localStorage.setItem('token', data.token);
-                fetchUserInfo();
-                $('#login-modal').addClass('hidden');
-            } else {
-                showAlert(data.message, 'error');
-            }
-        } catch (error) {
-            showAlert('登录请求失败，请检查网络连接。', 'error');
-        }
+    $('#login-btn').on('click', function() {
+        window.location.href = '/auth.html';
     });
+
+
 
     // 退出登录
-    $('#logout-button').on('click', () => {
-        localStorage.removeItem('token');
-        fetchUserInfo();
-        showAlert('您已成功退出登录。', 'info');
+    $('#logout-button').on('click', function() {
+        if (confirm('确定要退出登录吗？')) {
+            localStorage.removeItem('token');
+            fetchUserInfo();
+            showAlert('您已成功退出登录', 'info');
+            // 清空页面状态
+            $('#analysisSection, #notesSection').addClass('hidden');
+            $('#originalNote, #theme, #keywords').val('');
+        }
     });
-
 
     // =================================================================
     // 2. 新的核心功能逻辑
@@ -90,10 +81,12 @@ $(document).ready(function () {
 
         if (!originalNote) {
             showAlert('请输入原始笔记内容', 'warning');
+            $('#originalNote').focus();
             return;
         }
         if (!theme) {
             showAlert('请输入仿写主题', 'warning');
+            $('#theme').focus();
             return;
         }
 
@@ -109,7 +102,7 @@ $(document).ready(function () {
                 },
                 body: JSON.stringify({
                     original_post: originalNote,
-                    model: 'claude-3-opus-20240229', // Or get from UI
+                    model: 'claude-3-opus-20240229',
                     deep_analysis: true 
                 })
             });
@@ -120,10 +113,15 @@ $(document).ready(function () {
                 analysisResultCache = data.analysis;
                 displayAnalysisResult(data.analysis);
                 fetchUserInfo(); // 更新积分显示
+                showAlert('拆解分析完成！', 'success');
             } else {
-                showAlert(data.message || '分析失败，请稍后再试。', 'error');
+                showAlert(data.message || '分析失败，请稍后再试', 'error');
+                if (data.message && data.message.includes('积分不足')) {
+                    fetchUserInfo();
+                }
             }
         } catch (error) {
+            console.error('分析错误:', error);
             showAlert('分析请求失败: ' + error.message, 'error');
         } finally {
             hideLoading();
@@ -137,11 +135,12 @@ $(document).ready(function () {
         const keywords = $('#keywords').val().trim();
 
         if (!analysisResultCache) {
-             showAlert('请先进行拆解分析', 'warning');
-             return;
+            showAlert('请先进行拆解分析', 'warning');
+            return;
         }
         if (!keywords) {
             showAlert('请输入关键词', 'warning');
+            $('#keywords').focus();
             return;
         }
 
@@ -169,14 +168,19 @@ $(document).ready(function () {
             if (data.success) {
                 displayGeneratedNotes(data.variations);
                 fetchUserInfo(); // 更新积分显示
+                showAlert('笔记生成完成！', 'success');
             } else {
-                showAlert(data.message || '生成失败，请稍后再试。', 'error');
+                showAlert(data.message || '生成失败，请稍后再试', 'error');
+                if (data.message && data.message.includes('积分不足')) {
+                    fetchUserInfo();
+                }
             }
         } catch (error) {
+            console.error('生成错误:', error);
             showAlert('生成请求失败: ' + error.message, 'error');
         } finally {
             hideNotesLoading();
-             $('#analyze-button, #generate-button').prop('disabled', false);
+            $('#analyze-button, #generate-button').prop('disabled', false);
         }
     }
 
@@ -185,7 +189,14 @@ $(document).ready(function () {
         const formattedContent = marked.parse(content);
         $('#analysisContent').html(formattedContent);
         $('#analysisSection').removeClass('hidden');
-        $('#analysisSection')[0].scrollIntoView({ behavior: 'smooth' });
+        
+        // 平滑滚动到结果区域
+        setTimeout(() => {
+            $('#analysisSection')[0].scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }, 100);
     }
 
     function displayGeneratedNotes(content) {
@@ -194,69 +205,101 @@ $(document).ready(function () {
         
         if (notes.length === 0) {
             notesContainer.html(`
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                    <h3 class="text-lg font-semibold text-primary mb-4">生成的内容 (解析失败)</h3>
-                    <div class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">${content}</div>
-                    <button onclick="copyToClipboard(this.nextElementSibling.innerText)" 
-                            class="mt-4 bg-primary hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors">
+                <div class="bg-white rounded-2xl p-10 card-shadow">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">生成的内容</h3>
+                    <div class="text-gray-700 whitespace-pre-wrap leading-relaxed text-lg">${content}</div>
+                    <button onclick="copyToClipboard(\`${content.replace(/`/g, '\\`')}\`)" 
+                            class="mt-8 btn-primary text-white px-8 py-4 rounded-lg font-medium text-lg">
                         复制全部内容
                     </button>
-                    <pre class="hidden">${content}</pre>
                 </div>
             `);
         } else {
             notesContainer.html(notes.map((note, index) => `
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                    <div class="flex justify-between items-start mb-4">
+                <div class="bg-white rounded-2xl p-10 card-shadow">
+                    <div class="flex justify-between items-start mb-8">
                         <div>
-                            <h3 class="text-lg font-semibold text-primary">笔记 ${index + 1}</h3>
-                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            <h3 class="text-2xl font-bold text-primary">笔记 ${index + 1}</h3>
+                            <div class="text-base text-gray-500 mt-3">
                                 ${getKeywordStats(note.title + ' ' + note.content)}
                             </div>
                         </div>
-                        <button onclick="copyToClipboard(this.dataset.note)"
-                                data-note="${note.title}\n\n${note.content}" 
-                                class="copy-btn text-gray-500 hover:text-primary transition-colors p-2">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path><path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path></svg>
+                        <button onclick="copyToClipboard(\`${(note.title + '\n\n' + note.content).replace(/`/g, '\\`')}\`)"
+                                class="copy-btn text-gray-400 hover:text-primary transition-colors p-4 rounded-lg hover:bg-gray-100">
+                            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                            </svg>
                         </button>
                     </div>
-                    <div class="prose prose-sm max-w-none dark:prose-invert">
-                        <h4 class="text-base font-medium text-gray-900 dark:text-white mb-3">${highlightKeywords(note.title)}</h4>
-                        <div class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">${highlightKeywords(note.content)}</div>
+                    <div class="space-y-6">
+                        <h4 class="text-xl font-semibold text-gray-900">${highlightKeywords(note.title)}</h4>
+                        <div class="text-gray-700 whitespace-pre-wrap leading-relaxed text-lg">${highlightKeywords(note.content)}</div>
                     </div>
                 </div>
             `).join(''));
         }
         
         $('#notesSection').removeClass('hidden');
-        $('#notesSection')[0].scrollIntoView({ behavior: 'smooth' });
+        
+        // 平滑滚动到结果区域
+        setTimeout(() => {
+            $('#notesSection')[0].scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }, 100);
     }
-    
-    // ... (Helper functions below)
 });
 
-// Helper functions (can be outside document.ready)
+// =================================================================
+// 3. 全局辅助函数
+// =================================================================
 function showAlert(message, type = 'info') {
+    const alertId = 'alert-' + Date.now();
+    const icons = {
+        info: '💡',
+        success: '✅',
+        warning: '⚠️',
+        error: '❌'
+    };
+    
     const alert = $(`
-        <div class="p-4 mb-4 text-sm rounded-lg" role="alert">
-            <span class="font-medium">${message}</span>
+        <div id="${alertId}" class="alert-notification p-4 rounded-xl shadow-lg border-l-4 mb-3 transform translate-x-full opacity-0 transition-all duration-300">
+            <div class="flex items-center">
+                <span class="text-lg mr-3">${icons[type]}</span>
+                <span class="font-medium">${message}</span>
+            </div>
         </div>
     `);
+    
     const typeClasses = {
-        info: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-        success: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-        warning: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-        error: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+        info: 'bg-blue-50 border-blue-400 text-blue-800',
+        success: 'bg-green-50 border-green-400 text-green-800',
+        warning: 'bg-yellow-50 border-yellow-400 text-yellow-800',
+        error: 'bg-red-50 border-red-400 text-red-800'
     };
+    
     alert.addClass(typeClasses[type]);
     $('#alert-container').append(alert);
-    setTimeout(() => alert.fadeOut(500, () => alert.remove()), 4000);
+    
+    // 动画显示
+    setTimeout(() => {
+        alert.removeClass('translate-x-full opacity-0');
+    }, 100);
+    
+    // 自动隐藏
+    setTimeout(() => {
+        alert.addClass('translate-x-full opacity-0');
+        setTimeout(() => alert.remove(), 300);
+    }, 4000);
 }
 
 function parseGeneratedNotes(content) {
     const notes = [];
     let noteRegex = /===笔记\s*\d+===([\s\S]*?)(?====笔记\s*\d+===|$)/g;
     let match;
+    
     while ((match = noteRegex.exec(content)) !== null) {
         const noteContent = match[1].trim();
         const lines = noteContent.split('\n');
@@ -271,41 +314,83 @@ function parseGeneratedNotes(content) {
                 break;
             }
         }
-        if (title && noteBody) notes.push({ title, content: noteBody });
+        
+        if (title && noteBody) {
+            notes.push({ title, content: noteBody });
+        }
     }
+    
     return notes;
 }
 
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showAlert('已复制到剪贴板!', 'success');
-        if (event.target) {
-            const button = $(event.target).closest('.copy-btn');
-            if(button.length) {
-                const originalColor = 'text-gray-500';
-                button.removeClass(originalColor).addClass('text-green-500');
-                setTimeout(() => {
-                    button.removeClass('text-green-500').addClass(originalColor);
-                }, 1500);
-            }
-        }
-    });
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+            showAlert('已复制到剪贴板！', 'success');
+        }).catch(err => {
+            console.error('复制失败:', err);
+            fallbackCopyTextToClipboard(text);
+        });
+    } else {
+        fallbackCopyTextToClipboard(text);
+    }
 }
 
-function showLoading() { $('#analysisLoading').removeClass('hidden'); }
-function hideLoading() { $('#analysisLoading').addClass('hidden'); }
-function showNotesLoading() { $('#notesLoading').removeClass('hidden'); }
-function hideNotesLoading() { $('#notesLoading').addClass('hidden'); }
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        showAlert('已复制到剪贴板！', 'success');
+    } catch (err) {
+        showAlert('复制失败，请手动复制', 'error');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function showLoading() { 
+    $('#analysisLoading').removeClass('hidden');
+    $('html, body').animate({
+        scrollTop: $('#analysisLoading').offset().top - 100
+    }, 500);
+}
+
+function hideLoading() { 
+    $('#analysisLoading').addClass('hidden'); 
+}
+
+function showNotesLoading() { 
+    $('#notesLoading').removeClass('hidden');
+    $('html, body').animate({
+        scrollTop: $('#notesLoading').offset().top - 100
+    }, 500);
+}
+
+function hideNotesLoading() { 
+    $('#notesLoading').addClass('hidden'); 
+}
 
 function highlightKeywords(text) {
     const keywords = $('#keywords').val().trim();
     if (!keywords || !text) return text;
+    
     const keywordList = keywords.split(',').map(k => k.trim()).filter(k => k.length > 0);
     let highlightedText = text;
+    
     keywordList.forEach(keyword => {
         const regex = new RegExp(`(${escapeRegExp(keyword)})`, 'gi');
-        highlightedText = highlightedText.replace(regex, `<mark class="bg-yellow-200 dark:bg-yellow-600 px-1 rounded">$1</mark>`);
+        highlightedText = highlightedText.replace(regex, 
+            `<mark class="bg-yellow-200 text-yellow-900 px-1 py-0.5 rounded font-medium">$1</mark>`);
     });
+    
     return highlightedText;
 }
 
@@ -316,12 +401,16 @@ function escapeRegExp(string) {
 function getKeywordStats(text) {
     const keywords = $('#keywords').val().trim();
     if (!keywords || !text) return `字数：${text.length}`;
+    
     const keywordList = keywords.split(',').map(k => k.trim()).filter(k => k.length > 0);
     const foundKeywords = keywordList.filter(keyword => {
         const regex = new RegExp(escapeRegExp(keyword), 'i');
         return regex.test(text);
     });
+    
     const coverage = Math.round((foundKeywords.length / keywordList.length) * 100);
-    const coverageColor = coverage === 100 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
-    return `字数：${text.length} | <span class="${coverageColor}">关键词覆盖：${coverage}%</span>`;
+    const coverageColor = coverage >= 80 ? 'text-green-600' : 
+                         coverage >= 60 ? 'text-yellow-600' : 'text-red-600';
+    
+    return `字数：${text.length} | <span class="${coverageColor} font-medium">关键词覆盖：${coverage}%</span>`;
 } 

@@ -1,219 +1,246 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小红书爆文助手 - 专业版</title>
+    <title>小红书笔记批量生成器</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#ec4899',
+                        'red-xiaohongshu': '#ff2442'
+                    },
+                    fontFamily: {
+                        'chinese': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        .markdown-body h1 { font-size: 1.8em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
-        .markdown-body h2 { font-size: 1.5em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
-        .markdown-body h3 { font-size: 1.3em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
-        .markdown-body p { margin: 0.5em 0; }
-        .markdown-body ul, .markdown-body ol { padding-left: 2em; margin: 0.5em 0; }
-        .markdown-body li { margin: 0.25em 0; }
-        .markdown-body pre { background-color: #f0f0f0; padding: 1em; border-radius: 4px; overflow-x: auto; margin: 1em 0; }
-        .dark .markdown-body pre { background-color: #2d3748; }
-        .loading-dot { animation: loadingDot 1.4s infinite both; opacity: 0; }
-        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes loadingDot {
-            0%, 80%, 100% { opacity: 0; }
-            40% { opacity: 1; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        /* 深色模式支持 */
-        @media (prefers-color-scheme: dark) {
-            body { background-color: #1a202c; color: #e2e8f0; }
-            textarea, select, input { background-color: #2d3748; color: #e2e8f0; border-color: #4a5568; }
-            .card { background-color: #2d3748; border-color: #4a5568; }
+        .card-shadow {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        .tab-active {
-            border-bottom-width: 2px;
-            border-color: #FF2442;
-            color: #FF2442;
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            transition: all 0.3s ease;
         }
-        .thinking-section {
-            background-color: #f9f5ff;
-            border-left: 4px solid #8b5cf6;
-            padding: 1rem;
-            margin: 1rem 0;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
         }
-        .dark .thinking-section {
-            background-color: #322659;
-            border-left: 4px solid #a78bfa;
+        .input-focus {
+            transition: all 0.3s ease;
         }
-        .hidden { display: none; }
-        .modal-overlay {
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.1);
         }
-        .credits-warning {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 4px solid #f59e0b;
+        .step-indicator {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         }
-        .credits-danger {
-            background: linear-gradient(135deg, #fee2e2, #fecaca);
-            border-left: 4px solid #ef4444;
+        .loading-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-        .loading-dots::after {
-            content: '';
-            animation: dots 1.5s infinite;
+        .modal-backdrop {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.5);
         }
-        @keyframes dots {
-            0%, 20% { content: ''; }
-            40% { content: '.'; }
-            60% { content: '..'; }
-            80%, 100% { content: '...'; }
+        .floating-card {
+            animation: float 6s ease-in-out infinite;
         }
-        /* 确保模态框在最上层 */
-        .modal { z-index: 50; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .hero-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
     </style>
 </head>
-<body class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors">
-    <div class="min-h-screen">
-        <!-- Header -->
-        <header class="bg-gradient-to-r from-primary to-purple-600 text-white py-4 relative">
-            <div class="container mx-auto px-4 flex justify-between items-center">
-                <div class="text-left">
-                    <h1 class="text-2xl md:text-3xl font-bold">小红书爆文助手</h1>
-                    <p class="text-xs md:text-sm mt-1 opacity-90">专业版</p>
+<body class="bg-gray-50 font-chinese">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-18">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-3xl font-bold hero-title">小红书爆文助手</h1>
+                    </div>
+                    <div class="hidden md:block ml-4">
+                        <span class="text-base text-gray-500 bg-gray-100 px-4 py-2 rounded-full">专业版</span>
+                    </div>
                 </div>
                 
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center hidden md:block">
-                     <p class="text-lg font-semibold">基于爆款笔记拆解，智能生成高质量仿写内容</p>
-                </div>
-
                 <div class="flex items-center space-x-4">
-                    <div id="user-info" class="hidden items-center space-x-4">
+                    <!-- 用户信息 -->
+                    <div id="user-info" class="hidden flex items-center space-x-4">
                         <div class="text-right">
-                            <p class="font-semibold text-white" id="user-username"></p>
-                            <p class="text-sm text-gray-200" id="user-credits"></p>
+                            <p class="font-semibold text-gray-900 text-lg" id="user-username"></p>
+                            <p class="text-base text-gray-500" id="user-credits"></p>
                         </div>
-                        <button id="logout-button" class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">退出</button>
-                    </div>
-                    <div id="auth-buttons">
-                        <button id="login-btn" class="bg-white text-primary font-semibold py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors">登录/注册</button>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <main class="container mx-auto px-4 py-8 max-w-6xl">
-            <!-- Step 1: Input Section -->
-            <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 mb-8 shadow-md">
-                <h2 class="text-2xl font-bold mb-6 flex items-center">
-                    <span class="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">1</span>
-                    输入原始笔记内容
-                </h2>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="originalNote" class="block text-sm font-medium mb-2">爆款笔记内容</label>
-                        <textarea id="originalNote" 
-                                class="w-full h-40 p-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 text-base resize-none"
-                                placeholder="请粘贴一篇已经被平台流量算法验证过的小红书笔记内容..."></textarea>
+                        <button id="logout-button" class="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-5 rounded-lg transition-all duration-200 hover:transform hover:scale-105 text-base">
+                            退出
+                        </button>
                     </div>
                     
-                    <div class="space-y-4">
-                        <div>
-                            <label for="theme" class="block text-sm font-medium mb-2">仿写主题</label>
-                            <input type="text" id="theme" 
-                                class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 text-base"
-                                placeholder="例如：护肤、美妆、穿搭、美食等">
-                        </div>
-                        
-                        <div>
-                            <label for="keywords" class="block text-sm font-medium mb-2">关键词（用逗号分隔）</label>
-                            <input type="text" id="keywords" 
-                                class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 text-base"
-                                placeholder="例如：补水,保湿,敏感肌,平价好用">
-                        </div>
-                        
-                        <button id="analyze-button"
-                                class="w-full bg-primary hover:bg-purple-600 text-white font-medium py-3 px-6 rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
-                            开始拆解分析
+                    <!-- 登录按钮 -->
+                    <div id="auth-buttons">
+                        <button id="login-btn" class="btn-primary text-white font-semibold py-3 px-7 rounded-lg text-lg">
+                            登录/注册
                         </button>
                     </div>
                 </div>
             </div>
+        </div>
+    </nav>
 
-            <!-- Step 2: Analysis Results -->
-            <div id="analysisSection" class="hidden bg-gray-50 dark:bg-gray-900 rounded-xl p-6 mb-8 shadow-md">
-                <h2 class="text-2xl font-bold mb-6 flex items-center">
-                    <span class="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">2</span>
-                    笔记拆解结果
-                </h2>
-                
-                <div id="analysisContent" class="prose prose-sm max-w-none dark:prose-invert">
-                    <!-- Analysis will be inserted here -->
+    <!-- 主要内容区 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 英雄区域 -->
+        <div class="text-center mb-12">
+            <h2 class="text-5xl font-bold text-gray-900 mb-6">
+                小红书笔记批量生成器
+            </h2>
+            <p class="text-2xl text-gray-600 max-w-3xl mx-auto">
+                基于爆款笔记拆解，智能生成高质量仿写内容
+            </p>
+        </div>
+
+        <!-- 步骤1：输入区域 -->
+        <div class="bg-white rounded-2xl card-shadow p-10 mb-8 floating-card">
+            <div class="flex items-center mb-8">
+                <div class="step-indicator w-12 h-12 rounded-full flex items-center justify-center text-white font-bold mr-5 text-xl">
+                    1
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900">输入原始笔记内容</h3>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- 左侧：笔记内容输入 -->
+                <div>
+                    <label for="originalNote" class="block text-lg font-semibold text-gray-700 mb-4">
+                        爆款笔记内容
+                    </label>
+                    <textarea 
+                        id="originalNote" 
+                        rows="10"
+                        class="w-full p-5 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 input-focus resize-none text-lg"
+                        placeholder="请粘贴一篇已经被平台流量算法验证过的小红书笔记内容..."
+                    ></textarea>
                 </div>
                 
-                <div class="mt-6 text-center">
-                    <button id="generate-button"
-                            class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
-                        生成5篇仿写笔记
+                <!-- 右侧：参数设置 -->
+                <div class="space-y-6">
+                    <div>
+                        <label for="theme" class="block text-lg font-semibold text-gray-700 mb-4">
+                            仿写主题
+                        </label>
+                        <input 
+                            type="text" 
+                            id="theme"
+                            class="w-full p-5 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 input-focus text-lg"
+                            placeholder="例如：护肤、美妆、穿搭、美食等"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="keywords" class="block text-lg font-semibold text-gray-700 mb-4">
+                            关键词（用逗号分隔）
+                        </label>
+                        <input 
+                            type="text" 
+                            id="keywords"
+                            class="w-full p-5 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 input-focus text-lg"
+                            placeholder="例如：补水,保湿,敏感肌,平价好用"
+                        >
+                    </div>
+                    
+                    <button 
+                        id="analyze-button"
+                        class="w-full btn-primary text-white font-bold py-5 px-6 rounded-xl text-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    >
+                        开始拆解分析
                     </button>
                 </div>
             </div>
+        </div>
 
-            <!-- Step 3: Generated Notes -->
-            <div id="notesSection" class="hidden">
-                <h2 class="text-2xl font-bold mb-6 flex items-center">
-                    <span class="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">3</span>
-                    生成的笔记
-                </h2>
-                
-                <div id="generatedNotes" class="grid gap-6">
-                    <!-- Notes will be inserted here -->
+        <!-- 步骤2：分析结果 -->
+        <div id="analysisSection" class="hidden bg-white rounded-2xl card-shadow p-10 mb-8">
+            <div class="flex items-center mb-8">
+                <div class="step-indicator w-12 h-12 rounded-full flex items-center justify-center text-white font-bold mr-5 text-xl">
+                    2
                 </div>
+                <h3 class="text-3xl font-bold text-gray-900">笔记拆解结果</h3>
             </div>
-
-            <!-- Loading States -->
-            <div id="analysisLoading" class="hidden text-center py-12">
-                <div class="inline-flex items-center">
-                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mr-3"></div>
-                    <span class="text-lg">正在深度拆解笔记<span class="loading-dots"></span></span>
-                </div>
+            
+            <div id="analysisContent" class="prose prose-xl max-w-none">
+                <!-- 分析结果将在这里显示 -->
             </div>
-
-            <div id="notesLoading" class="hidden text-center py-12">
-                <div class="inline-flex items-center">
-                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-green-500 mr-3"></div>
-                    <span class="text-lg">正在生成仿写笔记<span class="loading-dots"></span></span>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Modals -->
-    <div id="login-modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-md">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">登录</h2>
-                <button class="close-modal text-gray-500 hover:text-gray-700">&times;</button>
-            </div>
-            <form id="login-form">
-                <!-- ... (登录表单内容) ... -->
-            </form>
-            <div class="mt-6 text-center">
-                <p>
-                    还没有账户？
-                    <a href="/register.html" class="font-medium text-primary hover:underline">立即注册</a>
-                </p>
+            
+            <div class="text-center mt-10">
+                <button 
+                    id="generate-button"
+                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-5 px-10 rounded-xl text-xl transition-all duration-200 hover:transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    生成5篇仿写笔记
+                </button>
             </div>
         </div>
-    </div>
 
-    <div id="register-modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4">
-        <!-- 这个注册模态框现在已不再使用，但暂时保留以防万一。新的逻辑会直接跳转页面。 -->
-    </div>
-    
-    <!-- Alert/Notification Placeholder -->
-    <div id="alert-container" class="fixed top-5 right-5 z-50"></div>
+        <!-- 步骤3：生成结果 -->
+        <div id="notesSection" class="hidden">
+            <div class="flex items-center mb-8">
+                <div class="step-indicator w-12 h-12 rounded-full flex items-center justify-center text-white font-bold mr-5 text-xl">
+                    3
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900">生成的笔记</h3>
+            </div>
+            
+            <div id="generatedNotes" class="grid gap-6">
+                <!-- 生成的笔记将在这里显示 -->
+            </div>
+        </div>
 
+        <!-- 加载状态 -->
+        <div id="analysisLoading" class="hidden text-center py-16">
+            <div class="inline-flex flex-col items-center">
+                <div class="w-20 h-20 border-4 border-primary border-t-transparent rounded-full animate-spin mb-6"></div>
+                <p class="text-2xl font-semibold text-gray-700">正在深度拆解笔记...</p>
+                <p class="text-lg text-gray-500 mt-3">这可能需要几秒钟时间</p>
+            </div>
+        </div>
+
+        <div id="notesLoading" class="hidden text-center py-16">
+            <div class="inline-flex flex-col items-center">
+                <div class="w-20 h-20 border-4 border-green-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+                <p class="text-2xl font-semibold text-gray-700">正在生成仿写笔记...</p>
+                <p class="text-lg text-gray-500 mt-3">AI正在为您创作优质内容</p>
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- 通知容器 -->
+    <div id="alert-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- 脚本 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
-    <script src="/js/main.js" defer></script>
+    <script src="/js/main.js"></script>
 </body>
 </html> 

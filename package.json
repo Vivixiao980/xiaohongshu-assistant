@@ -14,22 +14,25 @@
     "init-db": "node scripts/init-db.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "helmet": "^7.0.0",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.1",
-    "mysql2": "^3.6.0",
-    "sequelize": "^6.32.1",
     "axios": "^1.4.0",
-    "rate-limiter-flexible": "^2.4.1",
-    "express-validator": "^7.0.1",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.1",
     "multer": "^1.4.5-lts.1",
-    "winston": "^3.10.0",
-    "bcrypt": "^5.1.1"
+    "mysql2": "^3.6.0",
+    "nodemailer": "^7.0.3",
+    "rate-limiter-flexible": "^2.4.1",
+    "sequelize": "^6.32.1",
+    "sqlite3": "^5.1.7",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.17",
     "nodemon": "^3.0.1"
   },
   "keywords": [
@@ -41,4 +44,4 @@
   ],
   "author": "Your Name",
   "license": "MIT"
-} 
+}
