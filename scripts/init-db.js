@@ -2,6 +2,7 @@
 // const User = require('../models/User');
 // const Usage = require('../models/Usage');
 const { sequelize, User, Usage } = require('../config/database'); // 从config/database获取初始化后的模型
+const { migrateDatabase } = require('./migrate-database');
 const bcrypt = require('bcryptjs');
 
 async function initializeDatabase() {
@@ -16,6 +17,9 @@ async function initializeDatabase() {
     await sequelize.sync({ force: false });
     console.log('✅ 数据库表同步完成');
     
+    // 执行数据库迁移（添加新字段）
+    await migrateDatabase();
+    
     // 创建默认管理员账户（可选）
     const adminExists = await User.findOne({ where: { email: 'admin@xiaohongshu.com' } });
     if (!adminExists) {
@@ -25,7 +29,9 @@ async function initializeDatabase() {
         email: 'admin@xiaohongshu.com',
         password: hashedPassword,
         userType: 'student',
-        credits: 1000
+        credits: 1000,
+        emailVerified: true,
+        emailVerifiedAt: new Date()
       });
       console.log('✅ 默认管理员账户创建完成');
       console.log('📧 邮箱: admin@xiaohongshu.com');
@@ -43,7 +49,9 @@ async function initializeDatabase() {
         email: 'demo@xiaohongshu.com',
         password: hashedPassword,
         userType: 'trial',
-        credits: 3
+        credits: 3,
+        emailVerified: true,
+        emailVerifiedAt: new Date()
       });
       console.log('✅ 演示用户账户创建完成');
       console.log('📧 邮箱: demo@xiaohongshu.com');
