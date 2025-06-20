@@ -480,43 +480,107 @@ $(document).ready(function () {
         const notesContainer = $('#generatedNotes');
         
         if (notes.length === 0) {
+            // 如果无法解析出多篇笔记，显示原始内容
             notesContainer.html(`
-                <div class="bg-white rounded-2xl p-10 card-shadow">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">生成的内容</h3>
-                    <div class="text-gray-700 whitespace-pre-wrap leading-relaxed text-lg">${content}</div>
-                    <button onclick="copyToClipboard(\`${content.replace(/`/g, '\\`')}\`)" 
-                            class="mt-8 btn-primary text-white px-8 py-4 rounded-lg font-medium text-lg">
-                        复制全部内容
-                    </button>
-                </div>
-            `);
-        } else {
-            notesContainer.html(notes.map((note, index) => `
-                <div class="bg-white rounded-2xl p-10 card-shadow">
-                    <div class="flex justify-between items-start mb-8">
-                        <div>
-                            <h3 class="text-2xl font-bold text-primary">笔记 ${index + 1}</h3>
-                            <div class="text-base text-gray-500 mt-3">
-                                ${getKeywordStats(note.title + ' ' + note.content)}
+                <div class="bg-gradient-to-br from-white to-gray-50 rounded-3xl p-10 card-shadow border border-gray-100">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-white text-xl">📝</span>
                             </div>
+                            <h3 class="text-3xl font-bold text-gray-900">生成的笔记</h3>
                         </div>
-                        <button onclick="copyToClipboard(\`${(note.title + '\n\n' + note.content).replace(/`/g, '\\`')}\`)"
-                                class="copy-btn text-gray-400 hover:text-primary transition-colors p-4 rounded-lg hover:bg-gray-100">
-                            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
+                        <button onclick="copyToClipboard(\`${content.replace(/`/g, '\\`')}\`)" 
+                                class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:transform hover:scale-105 flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
                                 <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
                             </svg>
+                            <span>复制全部</span>
                         </button>
                     </div>
-                    <div class="space-y-6">
-                        <h4 class="text-xl font-semibold text-gray-900">${highlightKeywords(note.title)}</h4>
-                        <div class="text-gray-700 whitespace-pre-wrap leading-relaxed text-lg">${highlightKeywords(note.content)}</div>
+                    <div class="bg-white rounded-2xl p-8 border border-gray-100">
+                        <div class="text-gray-700 whitespace-pre-wrap leading-relaxed text-lg">${content}</div>
                     </div>
                 </div>
-            `).join(''));
+            `);
+        } else {
+            // 显示解析出的多篇笔记
+            notesContainer.html(`
+                <div class="space-y-8">
+                    ${notes.map((note, index) => {
+                        const gradients = [
+                            'from-blue-50 to-indigo-50 border-blue-200',
+                            'from-purple-50 to-pink-50 border-purple-200', 
+                            'from-green-50 to-emerald-50 border-green-200',
+                            'from-orange-50 to-red-50 border-orange-200',
+                            'from-teal-50 to-cyan-50 border-teal-200'
+                        ];
+                        const iconColors = [
+                            'bg-blue-500',
+                            'bg-purple-500',
+                            'bg-green-500', 
+                            'bg-orange-500',
+                            'bg-teal-500'
+                        ];
+                        const textColors = [
+                            'text-blue-900',
+                            'text-purple-900',
+                            'text-green-900',
+                            'text-orange-900', 
+                            'text-teal-900'
+                        ];
+                        
+                        const gradient = gradients[index % gradients.length];
+                        const iconColor = iconColors[index % iconColors.length];
+                        const textColor = textColors[index % textColors.length];
+                        
+                        return `
+                            <div class="bg-gradient-to-br ${gradient} rounded-3xl p-8 border card-shadow transition-all duration-300 hover:transform hover:scale-[1.02]">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 ${iconColor} rounded-full flex items-center justify-center mr-4">
+                                            <span class="text-white text-xl">${index + 1}</span>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-2xl font-bold ${textColor}">笔记 ${index + 1}</h3>
+                                            <div class="text-sm text-gray-600 mt-1">
+                                                ${getKeywordStats(note.title + ' ' + note.content)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button onclick="copyToClipboard(\`${(note.title + '\n\n' + note.content).replace(/`/g, '\\`')}\`)"
+                                            class="bg-white/80 hover:bg-white text-gray-600 hover:text-gray-800 p-3 rounded-xl transition-all duration-200 hover:transform hover:scale-105 shadow-sm hover:shadow-md">
+                                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                            <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                
+                                <div class="bg-white/70 rounded-2xl p-6 backdrop-blur-sm">
+                                    <h4 class="text-xl font-bold text-gray-900 mb-4 leading-tight">${highlightKeywords(note.title)}</h4>
+                                    <div class="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">${highlightKeywords(note.content)}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+                
+                <!-- 批量操作按钮 -->
+                <div class="mt-8 text-center">
+                    <button onclick="copyAllNotes()" 
+                            class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-200 hover:transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        📋 复制全部5篇笔记
+                    </button>
+                </div>
+            `);
         }
         
         $('#notesSection').removeClass('hidden');
+        
+        // 添加动画效果
+        animateNotesDisplay();
         
         // 平滑滚动到结果区域
         setTimeout(() => {
@@ -525,6 +589,26 @@ $(document).ready(function () {
                 block: 'start' 
             });
         }, 100);
+    }
+
+    // 添加笔记显示动画
+    function animateNotesDisplay() {
+        const noteCards = $('#generatedNotes .bg-gradient-to-br');
+        
+        noteCards.each((index, card) => {
+            $(card).css({
+                opacity: '0',
+                transform: 'translateY(30px)'
+            });
+            
+            setTimeout(() => {
+                $(card).css({
+                    transition: 'all 0.6s ease',
+                    opacity: '1',
+                    transform: 'translateY(0)'
+                });
+            }, index * 150);
+        });
     }
 });
 
@@ -588,11 +672,31 @@ function parseGeneratedNotes(content) {
                 title = line.replace('标题：', '').replace(/【|】/g, '').trim();
                 noteBody = lines.slice(i + 1).join('\n').replace(/【|】/g, '').trim();
                 break;
+            } else if (line && !title && i === 0) {
+                // 如果第一行不是以"标题："开头，但有内容，可能直接就是标题
+                title = line.replace(/【|】/g, '').trim();
+                noteBody = lines.slice(i + 1).join('\n').replace(/【|】/g, '').trim();
+                break;
+            }
+        }
+        
+        // 如果还是没有找到标题，尝试从内容中提取第一行作为标题
+        if (!title && noteContent) {
+            const contentLines = noteContent.split('\n').filter(line => line.trim());
+            if (contentLines.length > 0) {
+                title = contentLines[0].replace(/【|】/g, '').replace('标题：', '').trim();
+                noteBody = contentLines.slice(1).join('\n').replace(/【|】/g, '').trim();
             }
         }
         
         if (title && noteBody) {
             notes.push({ title, content: noteBody });
+        } else if (noteContent) {
+            // 如果无法分离标题和内容，就把所有内容作为一篇笔记
+            notes.push({ 
+                title: `笔记${notes.length + 1}`, 
+                content: noteContent.replace(/【|】/g, '').trim() 
+            });
         }
     }
     
@@ -672,6 +776,24 @@ function highlightKeywords(text) {
 
 function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function copyAllNotes() {
+    const notes = [];
+    $('#generatedNotes .bg-gradient-to-br').each(function(index) {
+        const title = $(this).find('h4').text().trim();
+        const content = $(this).find('.whitespace-pre-wrap').text().trim();
+        if (title && content) {
+            notes.push(`=== 笔记${index + 1} ===\n标题：${title}\n\n${content}`);
+        }
+    });
+    
+    if (notes.length > 0) {
+        const allContent = notes.join('\n\n' + '='.repeat(50) + '\n\n');
+        copyToClipboard(allContent);
+    } else {
+        showAlert('没有找到可复制的笔记内容', 'warning');
+    }
 }
 
 function getKeywordStats(text) {

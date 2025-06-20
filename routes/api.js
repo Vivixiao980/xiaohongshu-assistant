@@ -182,6 +182,7 @@ router.post('/generate', [
     const { 
       originalContent, 
       newTopic, 
+      keywords = '',
       model, 
       showThinking = false, 
       useDeepAnalysis = false 
@@ -200,6 +201,7 @@ router.post('/generate', [
     // 调用AI服务
     const result = await aiService.processRequest(originalContent, 'generate', model, {
       newTopic,
+      keywords,
       showThinking,
       useDeepAnalysis
     });
