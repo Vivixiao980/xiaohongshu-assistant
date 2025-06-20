@@ -35,7 +35,28 @@ app.get('/healthz', (req, res) => {
 });
 
 // 基本中间件
-app.use(helmet()); // 移除复杂的CSP策略以简化调试
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'", 
+        "'unsafe-inline'", 
+        "https://cdn.tailwindcss.com",
+        "https://code.jquery.com",
+        "https://cdnjs.cloudflare.com"
+      ],
+      styleSrc: [
+        "'self'", 
+        "'unsafe-inline'", 
+        "https://cdn.tailwindcss.com"
+      ],
+      fontSrc: ["'self'", "https:", "data:"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"]
+    }
+  }
+}));
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
