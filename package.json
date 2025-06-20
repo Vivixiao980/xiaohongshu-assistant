@@ -10,9 +10,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "echo 'No build step required'",
+    "build": "npm rebuild bcrypt --build-from-source",
     "init-db": "node scripts/init-db.js",
-    "create-admin": "node scripts/create-admin.js"
+    "create-admin": "node scripts/create-admin.js",
+    "postinstall": "npm rebuild bcrypt --build-from-source"
   },
   "dependencies": {
     "axios": "^1.4.0",
