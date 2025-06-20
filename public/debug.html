@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统调试页面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center">系统调试页面</h1>
+        
+        <!-- 基础测试 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">🔧 基础功能测试</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button id="test-jquery" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    测试jQuery
+                </button>
+                <button id="test-fetch" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    测试Fetch API
+                </button>
+                <button id="test-health" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
+                    测试健康检查
+                </button>
+                <button id="test-login-redirect" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
+                    测试登录跳转
+                </button>
+            </div>
+        </div>
+
+        <!-- API测试 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">🔌 API连接测试</h2>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">测试Token (可选):</label>
+                <input type="text" id="test-token" class="w-full p-2 border border-gray-300 rounded" placeholder="输入JWT token进行认证测试">
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button id="test-auth-me" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">
+                    测试用户信息API
+                </button>
+                <button id="test-analyze" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                    测试分析API
+                </button>
+                <button id="test-generate" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+                    测试生成API
+                </button>
+            </div>
+        </div>
+
+        <!-- 登录测试 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">🔐 登录功能测试</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">用户名:</label>
+                    <input type="text" id="debug-username" value="admin" class="w-full p-2 border border-gray-300 rounded">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">密码:</label>
+                    <input type="password" id="debug-password" value="admin123456" class="w-full p-2 border border-gray-300 rounded">
+                </div>
+            </div>
+            
+            <button id="test-login" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                测试登录
+            </button>
+        </div>
+
+        <!-- 日志显示 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-bold mb-4">📋 测试日志</h2>
+            <div id="debug-log" class="bg-gray-100 p-4 rounded max-h-96 overflow-y-auto font-mono text-sm">
+                <div class="text-gray-500">等待测试结果...</div>
+            </div>
+            <button id="clear-log" class="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                清空日志
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 日志函数
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('debug-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: 'text-blue-600',
+                success: 'text-green-600',
+                error: 'text-red-600',
+                warning: 'text-yellow-600'
+            };
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = `mb-1 ${colors[type]}`;
+            logEntry.innerHTML = `[${timestamp}] ${message}`;
+            
+            if (logDiv.children.length === 1 && logDiv.children[0].classList.contains('text-gray-500')) {
+                logDiv.innerHTML = '';
+            }
+            
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        $(document).ready(function() {
+            log('调试页面加载完成', 'success');
+
+            // 基础测试
+            $('#test-jquery').click(function() {
+                log('jQuery工作正常!', 'success');
+            });
+
+            $('#test-fetch').click(async function() {
+                try {
+                    const response = await fetch('/health');
+                    const data = await response.json();
+                    log(`Fetch API工作正常: ${JSON.stringify(data)}`, 'success');
+                } catch (error) {
+                    log(`Fetch API错误: ${error.message}`, 'error');
+                }
+            });
+
+            $('#test-health').click(async function() {
+                try {
+                    const response = await fetch('/health');
+                    const data = await response.json();
+                    log(`健康检查成功: ${JSON.stringify(data)}`, 'success');
+                } catch (error) {
+                    log(`健康检查失败: ${error.message}`, 'error');
+                }
+            });
+
+            $('#test-login-redirect').click(function() {
+                log('尝试跳转到登录页面...', 'info');
+                window.location.href = '/auth.html';
+            });
+
+            // API测试
+            $('#test-auth-me').click(async function() {
+                const token = $('#test-token').val() || localStorage.getItem('token');
+                if (!token) {
+                    log('没有token，无法测试用户信息API', 'warning');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/auth/me', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await response.json();
+                    log(`用户信息API响应: ${JSON.stringify(data, null, 2)}`, response.ok ? 'success' : 'error');
+                } catch (error) {
+                    log(`用户信息API错误: ${error.message}`, 'error');
+                }
+            });
+
+            $('#test-analyze').click(async function() {
+                const token = $('#test-token').val() || localStorage.getItem('token');
+                if (!token) {
+                    log('没有token，无法测试分析API', 'warning');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/analyze', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            content: '这是一个测试小红书笔记内容，用于测试API是否正常工作。',
+                            model: 'claude',
+                            showThinking: true,
+                            useDeepAnalysis: true
+                        })
+                    });
+                    const data = await response.json();
+                    log(`分析API响应: ${JSON.stringify(data, null, 2)}`, response.ok ? 'success' : 'error');
+                } catch (error) {
+                    log(`分析API错误: ${error.message}`, 'error');
+                }
+            });
+
+            $('#test-generate').click(async function() {
+                const token = $('#test-token').val() || localStorage.getItem('token');
+                if (!token) {
+                    log('没有token，无法测试生成API', 'warning');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            originalContent: '这是一个测试小红书笔记内容',
+                            newTopic: '测试主题',
+                            keywords: '测试,关键词',
+                            model: 'claude',
+                            showThinking: true,
+                            useDeepAnalysis: true
+                        })
+                    });
+                    const data = await response.json();
+                    log(`生成API响应: ${JSON.stringify(data, null, 2)}`, response.ok ? 'success' : 'error');
+                } catch (error) {
+                    log(`生成API错误: ${error.message}`, 'error');
+                }
+            });
+
+            // 登录测试
+            $('#test-login').click(async function() {
+                const username = $('#debug-username').val();
+                const password = $('#debug-password').val();
+
+                if (!username || !password) {
+                    log('请输入用户名和密码', 'warning');
+                    return;
+                }
+
+                try {
+                    log(`尝试登录: ${username}`, 'info');
+                    const response = await fetch('/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            identifier: username, 
+                            password: password 
+                        })
+                    });
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        localStorage.setItem('token', data.token);
+                        $('#test-token').val(data.token);
+                        log(`登录成功! Token: ${data.token.substring(0, 20)}...`, 'success');
+                    } else {
+                        log(`登录失败: ${data.message}`, 'error');
+                    }
+                } catch (error) {
+                    log(`登录请求错误: ${error.message}`, 'error');
+                }
+            });
+
+            // 清空日志
+            $('#clear-log').click(function() {
+                $('#debug-log').html('<div class="text-gray-500">等待测试结果...</div>');
+            });
+
+            // 检查是否有存储的token
+            const existingToken = localStorage.getItem('token');
+            if (existingToken) {
+                $('#test-token').val(existingToken);
+                log(`发现已存储的token: ${existingToken.substring(0, 20)}...`, 'info');
+            }
+        });
+    </script>
+</body>
+</html> 
