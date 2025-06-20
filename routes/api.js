@@ -363,4 +363,115 @@ router.post('/reset-credits', authMiddleware, async (req, res) => {
   }
 });
 
+// 获取用量统计概览
+router.get('/usage/stats', authMiddleware, async (req, res) => {
+  try {
+    // 免登录模式：返回模拟数据
+    if (req.user.id === 'demo-user') {
+      return res.json({
+        success: true,
+        data: {
+          totalCalls: 0,
+          primaryModel: 'Claude-3.5-Haiku',
+          avgResponseTime: '0s',
+          successRate: '100%',
+          modelDistribution: {},
+          functionDistribution: {}
+        }
+      });
+    }
+
+    // 获取用户的所有使用记录
+    const usages = await Usage.findAll({
+      where: { userId: req.user.id },
+      attributes: ['model', 'actionType', 'processingTime', 'status', 'createdAt']
+    });
+
+    const totalCalls = usages.length;
+    const successfulCalls = usages.filter(u => u.status === 'success').length;
+    const successRate = totalCalls > 0 ? ((successfulCalls / totalCalls) * 100).toFixed(1) + '%' : '100%';
+    
+    // 计算平均响应时间
+    const avgTime = usages.length > 0 
+      ? usages.reduce((sum, u) => sum + (u.processingTime || 0), 0) / usages.length / 1000
+      : 0;
+    const avgResponseTime = avgTime.toFixed(1) + 's';
+
+    // 模型分布统计
+    const modelDistribution = {};
+    usages.forEach(u => {
+      const modelName = u.model === 'claude' ? 'Claude' : 'DeepSeek';
+      modelDistribution[modelName] = (modelDistribution[modelName] || 0) + 1;
+    });
+
+    // 功能分布统计
+    const functionDistribution = {};
+    usages.forEach(u => {
+      const actionName = u.actionType === 'analyze' ? '拆解分析' : '生成仿写';
+      functionDistribution[actionName] = (functionDistribution[actionName] || 0) + 1;
+    });
+
+    // 主要使用的模型
+    const primaryModel = Object.keys(modelDistribution).reduce((a, b) => 
+      (modelDistribution[a] || 0) > (modelDistribution[b] || 0) ? a : b, 'Claude-3.5-Haiku');
+
+    res.json({
+      success: true,
+      data: {
+        totalCalls,
+        primaryModel,
+        avgResponseTime,
+        successRate,
+        modelDistribution,
+        functionDistribution
+      }
+    });
+  } catch (error) {
+    console.error('获取用量统计失败:', error);
+    res.status(500).json({
+      success: false,
+      message: '获取用量统计失败'
+    });
+  }
+});
+
+// 获取最近使用记录
+router.get('/usage/recent', authMiddleware, async (req, res) => {
+  try {
+    // 免登录模式：返回空记录
+    if (req.user.id === 'demo-user') {
+      return res.json({
+        success: true,
+        data: []
+      });
+    }
+
+    const recentUsages = await Usage.findAll({
+      where: { userId: req.user.id },
+      order: [['createdAt', 'DESC']],
+      limit: 10,
+      attributes: ['actionType', 'model', 'processingTime', 'status', 'createdAt']
+    });
+
+    const formattedUsages = recentUsages.map(usage => ({
+      time: usage.createdAt.toLocaleString('zh-CN'),
+      action: usage.actionType === 'analyze' ? '拆解分析' : '生成仿写',
+      model: usage.model === 'claude' ? 'Claude' : 'DeepSeek',
+      responseTime: usage.processingTime ? (usage.processingTime / 1000).toFixed(1) + 's' : 'N/A',
+      status: usage.status === 'success' ? '成功' : '失败'
+    }));
+
+    res.json({
+      success: true,
+      data: formattedUsages
+    });
+  } catch (error) {
+    console.error('获取最近使用记录失败:', error);
+    res.status(500).json({
+      success: false,
+      message: '获取最近使用记录失败'
+    });
+  }
+});
+
 module.exports = router; 
