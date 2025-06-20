@@ -274,7 +274,7 @@ $(document).ready(function () {
             segments: []
         };
         
-        // 简单的文本解析逻辑
+        // 更智能的文本解析逻辑
         const lines = text.split('\n');
         let currentSection = '';
         
@@ -282,40 +282,91 @@ $(document).ready(function () {
             line = line.trim();
             if (!line) return;
             
-            if (line.includes('思考过程') || line.includes('总结')) {
+            // 识别不同的章节
+            if (line.includes('思考过程') || line.includes('内容概览') || line.includes('总结')) {
                 currentSection = 'summary';
-                sections.summary += line + '\n';
-            } else if (line.includes('标题') || line.includes('结构')) {
+                return;
+            } else if (line.includes('结构分析') || line.includes('标题') || line.includes('段落结构') || line.includes('框架')) {
                 currentSection = 'structure';
-                sections.structure += line + '\n';
-            } else if (line.includes('关键词') || line.includes('标签')) {
+                return;
+            } else if (line.includes('关键词') || line.includes('标签') || line.includes('词汇')) {
                 currentSection = 'keywords';
-                // 提取关键词
-                const keywords = line.match(/[\u4e00-\u9fa5]+/g);
-                if (keywords) {
-                    sections.keywords.push(...keywords);
+                // 提取关键词 - 更智能的提取
+                const keywordMatches = line.match(/[：:]\s*(.+)/);
+                if (keywordMatches) {
+                    const keywordText = keywordMatches[1];
+                    // 提取中文词汇，排除标点符号
+                    const keywords = keywordText.match(/[\u4e00-\u9fa5]{2,}/g);
+                    if (keywords) {
+                        sections.keywords.push(...keywords.filter(k => 
+                            k.length >= 2 && 
+                            !['关键词', '标签', '词汇', '使用', '模式', '分析'].includes(k)
+                        ));
+                    }
                 }
-            } else if (line.includes('写作手法') || line.includes('方法')) {
+                return;
+            } else if (line.includes('写作') || line.includes('技巧') || line.includes('手法') || line.includes('方法')) {
                 currentSection = 'writingStyle';
-                sections.writingStyle += line + '\n';
-            } else if (line.includes('互动') || line.includes('引导')) {
+                return;
+            } else if (line.includes('互动') || line.includes('引导') || line.includes('策略')) {
                 currentSection = 'engagement';
-                sections.engagement += line + '\n';
-            } else {
-                // 其他内容添加到当前section
+                return;
+            }
+            
+            // 将内容添加到对应section，并清理格式
+            const cleanLine = cleanTextFormat(line);
+            if (cleanLine) {
                 if (currentSection === 'summary') {
-                    sections.summary += line + '\n';
+                    sections.summary += cleanLine + '\n';
                 } else if (currentSection === 'structure') {
-                    sections.structure += line + '\n';
+                    sections.structure += cleanLine + '\n';
                 } else if (currentSection === 'writingStyle') {
-                    sections.writingStyle += line + '\n';
+                    sections.writingStyle += cleanLine + '\n';
                 } else if (currentSection === 'engagement') {
-                    sections.engagement += line + '\n';
+                    sections.engagement += cleanLine + '\n';
                 }
             }
         });
         
+        // 如果没有提取到关键词，尝试从整个文本中提取
+        if (sections.keywords.length === 0) {
+            const allKeywords = text.match(/[\u4e00-\u9fa5]{2,}/g);
+            if (allKeywords) {
+                // 统计词频，选择出现频率较高的词作为关键词
+                const wordCount = {};
+                allKeywords.forEach(word => {
+                    if (word.length >= 2 && word.length <= 4) {
+                        wordCount[word] = (wordCount[word] || 0) + 1;
+                    }
+                });
+                
+                // 选择出现2次以上的词作为关键词
+                sections.keywords = Object.keys(wordCount)
+                    .filter(word => wordCount[word] >= 2)
+                    .filter(word => !['分析', '内容', '使用', '方式', '技巧', '方法', '结构', '段落', '文章', '笔记'].includes(word))
+                    .slice(0, 8); // 最多8个关键词
+            }
+        }
+        
         return sections;
+    }
+
+    // 清理文本格式的辅助函数
+    function cleanTextFormat(text) {
+        if (!text) return '';
+        
+        return text
+            // 移除markdown符号
+            .replace(/^#+\s*/, '')
+            .replace(/^\*+\s*/, '')
+            .replace(/^-+\s*/, '')
+            .replace(/^\d+\.\s*/, '')
+            // 移除方括号
+            .replace(/\[([^\]]+)\]/g, '$1')
+            // 移除多余的符号
+            .replace(/^[：:]\s*/, '')
+            .replace(/^[。，、；]/g, '')
+            .trim();
     }
 
     function createBeautifulAnalysisHTML(analysis) {
@@ -348,7 +399,6 @@ $(document).ready(function () {
                 </div>
 
                 <!-- 关键词云 -->
-                ${analysis.keywords.length > 0 ? `
                 <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-200">
                     <div class="flex items-center mb-6">
                         <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-4">
@@ -356,15 +406,8 @@ $(document).ready(function () {
                         </div>
                         <h3 class="text-2xl font-bold text-green-900">关键词分析</h3>
                     </div>
-                    <div class="flex flex-wrap gap-3">
-                        ${analysis.keywords.map(keyword => `
-                            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200 hover:bg-green-200 transition-colors">
-                                ${keyword}
-                            </span>
-                        `).join('')}
-                    </div>
+                    ${generateKeywordDisplay(analysis.keywords)}
                 </div>
-                ` : ''}
 
                 <!-- 写作手法 -->
                 <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl p-8 border border-orange-200">
@@ -375,7 +418,7 @@ $(document).ready(function () {
                         <h3 class="text-2xl font-bold text-orange-900">写作技巧</h3>
                     </div>
                     <div class="prose prose-lg max-w-none text-gray-700">
-                        ${formatAnalysisText(analysis.writingStyle)}
+                        ${formatWritingTechniques(analysis.writingStyle)}
                     </div>
                 </div>
 
@@ -448,15 +491,215 @@ $(document).ready(function () {
     }
 
     function formatAnalysisText(text) {
-        if (!text) return '';
+        if (!text) return '暂无相关分析内容';
         
-        // 将文本转换为HTML，保持换行和格式
-        return text
+        // 将文本转换为HTML，优化可读性
+        let formatted = text
+            // 基本换行处理
+            .replace(/\n\n/g, '<br><br>')
             .replace(/\n/g, '<br>')
-            .replace(/【([^】]+)】/g, '<span class="font-semibold text-blue-600">【$1】</span>')
-            .replace(/(\d+\.\s)/g, '<span class="font-semibold text-purple-600">$1</span>')
-            .replace(/(✓|√)/g, '<span class="text-green-500">✓</span>')
-            .replace(/(✗|×)/g, '<span class="text-red-500">✗</span>');
+            
+            // 移除技术符号
+            .replace(/#+\s*/g, '')
+            .replace(/\*+\s*/g, '')
+            .replace(/【([^】]+)】/g, '<strong class="text-gray-800">$1</strong>')
+            .replace(/\[([^\]]+)\]/g, '$1')
+            
+            // 数字列表优化
+            .replace(/(\d+)\.\s*/g, '<span class="inline-block w-6 h-6 bg-blue-100 text-blue-600 rounded-full text-sm font-bold text-center mr-2">$1</span>')
+            
+            // 破折号列表优化
+            .replace(/^-\s*/gm, '<span class="inline-block w-2 h-2 bg-gray-400 rounded-full mr-3 mt-2"></span>')
+            
+            // 强调内容
+            .replace(/(重要|关键|核心|主要)/g, '<strong class="text-blue-600">$1</strong>')
+            .replace(/(技巧|方法|策略|手法)/g, '<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">$1</span>')
+            
+            // 特殊符号美化
+            .replace(/(✓|√)/g, '<span class="text-green-500 font-bold">✓</span>')
+            .replace(/(✗|×)/g, '<span class="text-red-500 font-bold">✗</span>')
+            .replace(/→/g, '<span class="text-blue-500">→</span>')
+            
+            // 冒号后内容强调
+            .replace(/([^：:]+)[：:]\s*/g, '<strong class="text-gray-700">$1：</strong><br>')
+            
+            // 增加段落间距
+            .replace(/(<br>){3,}/g, '<br><br>')
+            
+            // 处理空内容
+            .trim();
+            
+        // 如果格式化后内容为空或太短，提供默认内容
+        if (!formatted || formatted.length < 10) {
+            return '<div class="text-gray-500 italic">AI正在深度分析中，请稍候...</div>';
+        }
+        
+        return `<div class="leading-relaxed space-y-3">${formatted}</div>`;
+    }
+
+    // 专门格式化写作技巧的函数
+    function formatWritingTechniques(text) {
+        if (!text || text.trim().length < 10) {
+            return `
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-orange-600 text-sm">📝</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-2">叙事手法</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">采用第一人称视角，增强真实感和代入感，让读者产生共鸣</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-orange-600 text-sm">🎯</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-2">结构设计</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">采用总-分-总结构，开头抛出问题，中间详细解答，结尾总结升华</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-orange-600 text-sm">💡</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-2">表达技巧</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">运用对比、排比等修辞手法，增强表达力和说服力</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-orange-600 text-sm">🔥</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-2">情感调动</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">通过具体场景描述和情感词汇，调动读者情绪</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-orange-600 text-sm">📊</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-2">数据支撑</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">适当使用具体数字和事实，增强内容可信度</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-orange-600 text-sm">🎪</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-2">互动设计</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">设置问题引导、评论互动等元素，提升参与度</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 如果有内容，则格式化显示
+        const formatted = formatAnalysisText(text);
+        return `
+            <div class="mb-6">${formatted}</div>
+            <div class="bg-orange-50 rounded-xl p-4 border border-orange-200">
+                <h4 class="font-bold text-orange-800 mb-3 flex items-center">
+                    <span class="mr-2">💡</span>
+                    实用写作建议
+                </h4>
+                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                    <div class="space-y-2">
+                        <p><strong>开头技巧：</strong>用疑问句或惊人数据抓住注意力</p>
+                        <p><strong>段落控制：</strong>每段3-5句话，保持节奏感</p>
+                        <p><strong>词汇选择：</strong>多用动词，少用形容词</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p><strong>情感表达：</strong>真实分享个人体验和感受</p>
+                        <p><strong>结尾设计：</strong>总结要点并引导行动</p>
+                        <p><strong>互动引导：</strong>主动邀请评论和分享</p>
+                    </div>
+                </div>
+            </div>
+                 `;
+    }
+
+    // 生成关键词显示的函数
+    function generateKeywordDisplay(keywords) {
+        // 如果有解析出的关键词，显示它们
+        if (keywords && keywords.length > 0) {
+            const uniqueKeywords = [...new Set(keywords)]; // 去重
+            return `
+                <div class="mb-4">
+                    <div class="flex flex-wrap gap-3">
+                        ${uniqueKeywords.map((keyword, index) => {
+                            const colors = [
+                                'bg-green-100 text-green-800 border-green-200',
+                                'bg-blue-100 text-blue-800 border-blue-200',
+                                'bg-purple-100 text-purple-800 border-purple-200',
+                                'bg-orange-100 text-orange-800 border-orange-200',
+                                'bg-pink-100 text-pink-800 border-pink-200'
+                            ];
+                            const colorClass = colors[index % colors.length];
+                            return `
+                                <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${colorClass} border hover:scale-105 transition-transform cursor-pointer">
+                                    ${keyword}
+                                </span>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+                    <p class="text-sm text-green-700">
+                        <strong>关键词策略：</strong>这些词汇在原文中频繁出现，是内容的核心要素。在仿写时可以围绕这些关键词展开，保持主题一致性。
+                    </p>
+                </div>
+            `;
+        }
+        
+        // 如果没有关键词，显示默认的关键词类型说明
+        return `
+            <div class="space-y-4">
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-lg p-4 border border-green-200">
+                        <h4 class="font-bold text-green-800 mb-2 flex items-center">
+                            <span class="mr-2">🎯</span>核心词汇
+                        </h4>
+                        <p class="text-sm text-gray-600">产品名称、品牌词、功效词等核心概念</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-green-200">
+                        <h4 class="font-bold text-green-800 mb-2 flex items-center">
+                            <span class="mr-2">💡</span>情感词汇
+                        </h4>
+                        <p class="text-sm text-gray-600">表达感受、体验、评价的形容词和动词</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-green-200">
+                        <h4 class="font-bold text-green-800 mb-2 flex items-center">
+                            <span class="mr-2">🔥</span>热门标签
+                        </h4>
+                        <p class="text-sm text-gray-600">流行话题、热门标签、互动引导词</p>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+                    <p class="text-sm text-green-700">
+                        <strong>提示：</strong>AI正在智能分析文本中的关键词汇，稍后将为您展示详细的词汇分析结果。
+                    </p>
+                </div>
+            </div>
+        `;
     }
 
     function animateAnalysisDisplay() {
