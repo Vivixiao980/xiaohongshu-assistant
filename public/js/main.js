@@ -48,12 +48,28 @@ $(document).ready(function () {
     // 初始加载时检查用户信息
     fetchUserInfo();
 
-    // 登录/注册按钮点击
-    $('#login-btn').on('click', function() {
+    // 登录/注册按钮点击 - 使用多种方式确保事件绑定成功
+    $(document).on('click', '#login-btn', function(e) {
+        e.preventDefault();
+        console.log('Login button clicked');
+        window.location.href = '/auth.html';
+    });
+    
+    // 备用事件绑定方式
+    $('#login-btn').off('click').on('click', function(e) {
+        e.preventDefault();
+        console.log('Login button clicked (backup method)');
         window.location.href = '/auth.html';
     });
 
-
+    // DOM加载完成后再次绑定
+    setTimeout(function() {
+        $('#login-btn').off('click').on('click', function(e) {
+            e.preventDefault();
+            console.log('Login button clicked (delayed binding)');
+            window.location.href = '/auth.html';
+        });
+    }, 1000);
 
     // 退出登录
     $('#logout-button').on('click', function() {
