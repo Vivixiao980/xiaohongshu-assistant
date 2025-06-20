@@ -128,17 +128,18 @@ $(document).ready(function () {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
-                    original_post: originalNote,
-                    model: 'claude-3-opus-20240229',
-                    deep_analysis: true 
+                    content: originalNote,
+                    model: 'claude',
+                    showThinking: true,
+                    useDeepAnalysis: true
                 })
             });
 
             const data = await response.json();
             
             if (data.success) {
-                analysisResultCache = data.analysis;
-                displayAnalysisResult(data.analysis);
+                analysisResultCache = data.data.content;
+                displayAnalysisResult(data.data.content);
                 fetchUserInfo(); // 更新积分显示
                 showAlert('拆解分析完成！', 'success');
             } else {
@@ -182,18 +183,19 @@ $(document).ready(function () {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
-                    original_post: originalNote,
-                    topic: theme,
+                    originalContent: originalNote,
+                    newTopic: theme,
                     keywords: keywords,
-                    model: 'claude-3-opus-20240229',
-                    deep_analysis: true
+                    model: 'claude',
+                    showThinking: true,
+                    useDeepAnalysis: true
                 })
             });
 
             const data = await response.json();
 
             if (data.success) {
-                displayGeneratedNotes(data.variations);
+                displayGeneratedNotes(data.data.content);
                 fetchUserInfo(); // 更新积分显示
                 showAlert('笔记生成完成！', 'success');
             } else {
