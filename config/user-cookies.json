@@ -1,0 +1,34 @@
+{
+  "description": "用户小红书登录Cookie配置",
+  "lastUpdated": "2025-08-01T16:35:00.000Z",
+  "cookies": [
+    {
+      "name": "web_session",
+      "value": "04006972e7e8cb0c3eb64c7ebf3a4b69ebf119",
+      "domain": ".xiaohongshu.com",
+      "path": "/",
+      "httpOnly": true,
+      "secure": true
+    },
+    {
+      "name": "xsecappid", 
+      "value": "xhs-pc-web",
+      "domain": ".xiaohongshu.com",
+      "path": "/"
+    },
+    {
+      "name": "a1",
+      "value": "192e343af36kf42ykku3systb15na7u9olga0vcfr30000359006",
+      "domain": ".xiaohongshu.com", 
+      "path": "/",
+      "httpOnly": true,
+      "secure": true
+    },
+    {
+      "name": "webId",
+      "value": "c48247a57ed7c40d7c89911678ff5cc0",
+      "domain": ".xiaohongshu.com",
+      "path": "/"
+    }
+  ]
+}

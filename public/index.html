@@ -109,15 +109,22 @@
                         </button>
                     </div>
                     
-                    <!-- 免登录模式横幅 -->
-                    <div class="bg-gradient-to-r from-green-100 to-blue-100 border border-green-300 rounded-lg p-4 mb-4">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <span class="text-2xl">🎉</span>
+                    <!-- 爬虫模式状态横幅 -->
+                    <div id="crawler-mode-banner" class="rounded-lg p-4 mb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <span id="mode-icon" class="text-2xl">🎭</span>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 id="mode-title" class="text-lg font-medium">演示体验模式</h3>
+                                    <p id="mode-description" class="text-sm">当前为功能演示版本，内容获取功能使用模拟数据，AI分析功能正常使用</p>
+                                </div>
                             </div>
-                            <div class="ml-3">
-                                <h3 class="text-lg font-medium text-green-800">免登录体验模式</h3>
-                                <p class="text-sm text-green-700">无需注册即可体验所有功能，无限制使用！</p>
+                            <div class="text-right">
+                                <button id="toggle-mode-btn" class="px-4 py-2 text-sm rounded-lg font-medium transition-all hover:transform hover:scale-105">
+                                    切换模式
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -131,68 +138,433 @@
         <!-- 英雄区域 -->
         <div class="text-center mb-12">
             <h2 class="text-5xl font-bold text-gray-900 mb-6">
-                小红书笔记批量生成器
+                小红书创作助手
             </h2>
             <p class="text-2xl text-gray-600 max-w-3xl mx-auto">
-                基于爆款笔记拆解，智能生成高质量仿写内容
+                智能爬虫存档 + AI文案改写，助力您的小红书创作
             </p>
         </div>
 
-        <!-- 步骤1：输入区域 -->
-        <div class="bg-white rounded-2xl card-shadow p-10 mb-8 floating-card">
-            <div class="flex items-center mb-8">
-                <div class="step-indicator w-12 h-12 rounded-full flex items-center justify-center text-white font-bold mr-5 text-xl">
-                    1
+        <!-- 功能选择区域 -->
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <!-- 功能1：爬虫存档 -->
+            <div class="bg-white rounded-2xl card-shadow p-8 floating-card cursor-pointer transition-all duration-300 hover:scale-105" id="archive-module">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-4xl">📚</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">爬虫内容存档</h3>
+                    <p class="text-gray-600 mb-6">
+                        爬取小红书帖子内容并自动存储到您的知识库，建立个人内容资料库
+                    </p>
+                    <div class="space-y-3 text-left">
+                        <div class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>支持批量爬取用户主页内容</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>自动分类整理到知识库</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>保存文案、图片、数据等完整信息</span>
+                        </div>
+                    </div>
+                    <button id="archive-module-btn" class="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl text-lg transition-all duration-200">
+                        开始存档
+                    </button>
                 </div>
-                <h3 class="text-3xl font-bold text-gray-900">输入原始笔记内容</h3>
+            </div>
+
+            <!-- 功能2：AI改写 -->
+            <div class="bg-white rounded-2xl card-shadow p-8 floating-card cursor-pointer transition-all duration-300 hover:scale-105" id="rewrite-module">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-4xl">✨</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">AI文案改写</h3>
+                    <p class="text-gray-600 mb-6">
+                        基于您的思路和参考文案，智能生成图文内容或视频脚本
+                    </p>
+                    <div class="space-y-3 text-left">
+                        <div class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>支持图文文案和视频脚本生成</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>基于您的个人风格定制</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>智能优化标题和内容结构</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-xl text-lg transition-all duration-200">
+                        开始创作
+                    </button>
+                </div>
+            </div>
+
+            <!-- 功能3：视频转文字 -->
+            <div class="bg-white rounded-2xl card-shadow p-8 floating-card cursor-pointer transition-all duration-300 hover:scale-105" id="video-transcribe-module">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-4xl">🎬</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">视频转文字</h3>
+                    <p class="text-gray-600 mb-6">
+                        输入视频链接，自动提取语音并转换为文字稿，支持多种平台
+                    </p>
+                    <div class="space-y-3 text-left">
+                        <div class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>支持小红书、抖音、B站等平台</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>高精度中文语音识别</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>提供带时间戳的完整文稿</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl text-lg transition-all duration-200">
+                        开始转换
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 爬虫存档界面 -->
+        <div id="archive-interface" class="hidden bg-white rounded-2xl card-shadow p-10 mb-8">
+            <div class="flex items-center mb-8">
+                <button id="back-to-main" class="mr-4 text-2xl text-gray-600 hover:text-gray-800 transition-colors">←</button>
+                <div class="step-indicator w-12 h-12 rounded-full flex items-center justify-center text-white font-bold mr-5 text-xl">
+                    📚
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900">爬虫内容存档</h3>
             </div>
             
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- 左侧：笔记内容输入 -->
-                <div>
-                    <label for="originalNote" class="block text-lg font-semibold text-gray-700 mb-4">
-                        爆款笔记内容
+            <div class="space-y-8">
+                <!-- 输入方式选择 -->
+                <div class="flex justify-center space-x-4 mb-6">
+                    <button id="archive-link-mode" class="px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold transition-all hover:bg-blue-600 focus:ring-2 focus:ring-blue-500">
+                        📎 链接模式
+                    </button>
+                    <button id="archive-text-mode" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold transition-all hover:bg-gray-300 focus:ring-2 focus:ring-gray-400">
+                        📝 文本模式
+                    </button>
+                </div>
+
+                <!-- 链接输入区域 -->
+                <div id="link-input-section" class="space-y-6">
+                    <div>
+                        <label for="xhsLink" class="block text-lg font-semibold text-gray-700 mb-4">
+                            小红书链接 <span class="text-sm text-gray-500">（支持主页链接或单个帖子链接）</span>
+                        </label>
+                        <input 
+                            type="url" 
+                            id="xhsLink"
+                            class="w-full p-5 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 input-focus text-lg"
+                            placeholder="粘贴小红书链接，例如：https://www.xiaohongshu.com/user/profile/... 或 https://www.xiaohongshu.com/explore/..."
+                        >
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <button 
+                            id="fetch-content-button"
+                            class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all duration-200 hover:transform hover:scale-105"
+                        >
+                            🔍 智能获取内容
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 文本输入区域 -->
+                <div id="text-input-section" class="hidden space-y-6">
+                    <div>
+                        <label for="originalNote" class="block text-lg font-semibold text-gray-700 mb-4">
+                            小红书笔记内容
+                        </label>
+                        <textarea 
+                            id="originalNote" 
+                            rows="10"
+                            class="w-full p-5 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 input-focus resize-none text-lg"
+                            placeholder="请粘贴小红书笔记内容..."
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- 获取到的内容展示区域 -->
+                <div id="fetched-content-section" class="hidden bg-gray-50 rounded-xl p-6 space-y-4">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">📋 获取到的内容预览</h4>
+                    <div id="fetched-posts" class="space-y-4">
+                        <!-- 动态生成的帖子内容 -->
+                    </div>
+                </div>
+
+                <!-- 知识库管理 -->
+                <div id="knowledge-base-section" class="hidden bg-blue-50 rounded-xl p-6 space-y-4">
+                    <h4 class="text-lg font-semibold text-blue-800 mb-4">📚 保存到知识库</h4>
+                    <div class="flex items-center space-x-4">
+                        <select id="folder-select" class="flex-1 p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">选择文件夹</option>
+                            <option value="default">默认文件夹</option>
+                        </select>
+                        <input 
+                            type="text" 
+                            id="new-folder" 
+                            placeholder="或创建新文件夹"
+                            class="flex-1 p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                        >
+                        <button id="save-to-kb" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold">
+                            💾 保存
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 操作选择区域 -->
+                <div id="action-selection" class="hidden bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">🎯 选择操作</h4>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button id="analyze-content" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all duration-200 hover:transform hover:scale-105">
+                            🔍 拆解分析
+                        </button>
+                        <button id="generate-similar" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all duration-200 hover:transform hover:scale-105">
+                            ✨ 仿写生成
+                        </button>
+                    </div>
+                    
+                    <!-- 仿写参数设置 -->
+                    <div id="rewrite-params" class="hidden mt-6 space-y-4">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="theme" class="block text-sm font-semibold text-gray-700 mb-2">仿写主题</label>
+                                <input 
+                                    type="text" 
+                                    id="theme"
+                                    class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500"
+                                    placeholder="例如：护肤、美妆、穿搭、美食等"
+                                >
+                            </div>
+                            <div>
+                                <label for="keywords" class="block text-sm font-semibold text-gray-700 mb-2">关键词（逗号分隔）</label>
+                                <input 
+                                    type="text" 
+                                    id="keywords"
+                                    class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500"
+                                    placeholder="例如：补水,保湿,敏感肌,平价好用"
+                                >
+                            </div>
+                        </div>
+                        <button id="start-rewrite" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-lg text-lg">
+                            开始仿写
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI改写界面 -->
+        <div id="rewrite-interface" class="hidden bg-white rounded-2xl card-shadow p-10 mb-8">
+            <div class="flex items-center mb-8">
+                <button id="back-to-main-2" class="mr-4 text-2xl text-gray-600 hover:text-gray-800 transition-colors">←</button>
+                <div class="step-indicator w-12 h-12 rounded-full flex items-center justify-center text-white font-bold mr-5 text-xl">
+                    ✨
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900">AI文案改写</h3>
+            </div>
+            
+            <div class="space-y-8">
+                <!-- 内容类型选择 -->
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">选择内容类型</h4>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button id="content-type-image" class="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all active-content-type">
+                            <div class="text-center">
+                                <span class="text-3xl mb-2 block">📸</span>
+                                <span class="font-semibold">图文内容</span>
+                                <p class="text-sm text-gray-600 mt-1">生成小红书图文文案</p>
+                            </div>
+                        </button>
+                        <button id="content-type-video" class="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all">
+                            <div class="text-center">
+                                <span class="text-3xl mb-2 block">🎬</span>
+                                <span class="font-semibold">视频脚本</span>
+                                <p class="text-sm text-gray-600 mt-1">生成视频拍摄脚本</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 参考文案输入 -->
+                <div class="space-y-4">
+                    <label for="reference-content" class="block text-lg font-semibold text-gray-700">
+                        参考文案 <span class="text-sm text-gray-500">（可选）</span>
                     </label>
                     <textarea 
-                        id="originalNote" 
-                        rows="10"
-                        class="w-full p-5 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 input-focus resize-none text-lg"
-                        placeholder="请粘贴一篇已经被平台流量算法验证过的小红书笔记内容..."
+                        id="reference-content" 
+                        rows="6"
+                        class="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-0 input-focus resize-none"
+                        placeholder="粘贴您想要参考的文案内容..."
                     ></textarea>
                 </div>
-                
-                <!-- 右侧：参数设置 -->
-                <div class="space-y-6">
+
+                <!-- 选题思路输入 -->
+                <div class="space-y-4">
+                    <label for="topic-ideas" class="block text-lg font-semibold text-gray-700">
+                        您的选题思路 <span class="text-red-500">*</span>
+                    </label>
+                    <textarea 
+                        id="topic-ideas" 
+                        rows="4"
+                        class="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-0 input-focus resize-none"
+                        placeholder="请描述您的选题思路、想要表达的观点、目标受众等..."
+                    ></textarea>
+                </div>
+
+                <!-- 关键词和标签 -->
+                <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label for="theme" class="block text-lg font-semibold text-gray-700 mb-4">
-                            仿写主题
+                        <label for="target-keywords" class="block text-lg font-semibold text-gray-700 mb-2">
+                            目标关键词 <span class="text-sm text-gray-500">（逗号分隔）</span>
                         </label>
                         <input 
                             type="text" 
-                            id="theme"
-                            class="w-full p-5 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 input-focus text-lg"
-                            placeholder="例如：护肤、美妆、穿搭、美食等"
+                            id="target-keywords"
+                            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-0"
+                            placeholder="例如：职场成长,CEO助理,商业思维"
                         >
                     </div>
-                    
                     <div>
-                        <label for="keywords" class="block text-lg font-semibold text-gray-700 mb-4">
-                            关键词（用逗号分隔）
+                        <label for="target-audience" class="block text-lg font-semibold text-gray-700 mb-2">
+                            目标受众
                         </label>
                         <input 
                             type="text" 
-                            id="keywords"
-                            class="w-full p-5 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 input-focus text-lg"
-                            placeholder="例如：补水,保湿,敏感肌,平价好用"
+                            id="target-audience"
+                            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-0"
+                            placeholder="例如：职场新人,创业者,应届生"
                         >
                     </div>
-                    
+                </div>
+
+                <!-- 生成选项 -->
+                <div class="bg-purple-50 rounded-xl p-6">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">生成选项</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="tone-style" class="block text-sm font-semibold text-gray-700 mb-2">语调风格</label>
+                            <select id="tone-style" class="w-full p-2 border border-gray-200 rounded-lg focus:border-purple-500 focus:ring-0">
+                                <option value="professional">专业干练</option>
+                                <option value="friendly">亲和友好</option>
+                                <option value="energetic" selected>活力有趣</option>
+                                <option value="inspirational">励志激昂</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="content-length" class="block text-sm font-semibold text-gray-700 mb-2">内容长度</label>
+                            <select id="content-length" class="w-full p-2 border border-gray-200 rounded-lg focus:border-purple-500 focus:ring-0">
+                                <option value="short">简短精炼</option>
+                                <option value="medium" selected>中等详细</option>
+                                <option value="long">详细丰富</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="generate-count" class="block text-sm font-semibold text-gray-700 mb-2">生成数量</label>
+                            <select id="generate-count" class="w-full p-2 border border-gray-200 rounded-lg focus:border-purple-500 focus:ring-0">
+                                <option value="1">1篇</option>
+                                <option value="3" selected>3篇</option>
+                                <option value="5">5篇</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 生成按钮 -->
+                <div class="text-center">
                     <button 
-                        id="analyze-button"
-                        class="w-full btn-primary text-white font-bold py-5 px-6 rounded-xl text-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                        id="start-ai-rewrite"
+                        class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 px-8 rounded-xl text-xl transition-all duration-200 hover:transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        开始拆解分析
+                        🚀 开始AI创作
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 视频转文字界面 -->
+        <div id="video-transcribe-interface" class="hidden bg-white rounded-2xl card-shadow p-10 mb-8">
+            <div class="flex items-center mb-8">
+                <button id="back-to-main-3" class="mr-4 text-2xl text-gray-600 hover:text-gray-800 transition-colors">←</button>
+                <div class="step-indicator w-12 h-12 rounded-full flex items-center justify-center text-white font-bold mr-5 text-xl">
+                    🎬
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900">视频转文字</h3>
+            </div>
+            
+            <div class="space-y-8">
+                <!-- 视频链接输入 -->
+                <div class="space-y-4">
+                    <label for="video-url" class="block text-lg font-semibold text-gray-700">
+                        视频链接 <span class="text-red-500">*</span>
+                    </label>
+                    <input 
+                        type="url" 
+                        id="video-url"
+                        class="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:ring-0 input-focus"
+                        placeholder="粘贴视频链接，支持小红书、抖音、B站、YouTube等..."
+                    >
+                    <p class="text-sm text-gray-500">
+                        💡 支持的平台：小红书、抖音、快手、B站、YouTube、微博等主流视频平台
+                    </p>
+                </div>
+
+                <!-- 处理选项 -->
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">处理选项</h4>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="transcribe-quality" class="block text-sm font-semibold text-gray-700 mb-2">识别精度</label>
+                            <select id="transcribe-quality" class="w-full p-2 border border-gray-200 rounded-lg focus:border-green-500 focus:ring-0">
+                                <option value="base" selected>标准精度（推荐）</option>
+                                <option value="small">高精度（较慢）</option>
+                                <option value="medium">超高精度（很慢）</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="output-format" class="block text-sm font-semibold text-gray-700 mb-2">输出格式</label>
+                            <select id="output-format" class="w-full p-2 border border-gray-200 rounded-lg focus:border-green-500 focus:ring-0">
+                                <option value="both" selected>完整文稿 + 时间戳</option>
+                                <option value="text">仅完整文稿</option>
+                                <option value="timestamped">仅时间戳文稿</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 处理按钮 -->
+                <div class="text-center">
+                    <button 
+                        id="start-video-transcribe"
+                        class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-xl text-xl transition-all duration-200 hover:transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        🚀 开始转换
+                    </button>
+                </div>
+
+                <!-- 进度提示 -->
+                <div id="transcribe-progress" class="hidden bg-blue-50 rounded-xl p-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        <div>
+                            <h4 class="font-semibold text-blue-800">正在处理视频...</h4>
+                            <p class="text-blue-600 text-sm">这可能需要几分钟时间，请耐心等待</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
