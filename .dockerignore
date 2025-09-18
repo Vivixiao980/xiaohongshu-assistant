@@ -1,0 +1,63 @@
+# Node modules
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python cache
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Crawler and browser data
+crawler/MediaCrawler/venv
+crawler/MediaCrawler/__pycache__
+browser-profile
+temp/browser-profile
+*.sqlite
+database.sqlite
+
+# Logs
+logs/*.log
+server.log
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.test
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# README and docs
+*.md
+docs/
+
+# Video transcriber virtual env
+video_transcribe_env/
+
+# Crawler related large files
+crawler/MediaCrawler/venv/
+crawler/MediaCrawler/browser_data/
+crawler/MediaCrawler/data/

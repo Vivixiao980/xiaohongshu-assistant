@@ -530,6 +530,40 @@ ${useDeepAnalysis ? '请在保持原文结构的同时，确保每篇新文案�
       };
     }
   }
+
+  // 通用内容生成函数
+  async generateContent(prompt, options = {}) {
+    const {
+      model = 'claude',
+      useDeepAnalysis = false,
+      showThinking = false
+    } = options;
+
+    try {
+      let response;
+      
+      switch (model.toLowerCase()) {
+        case 'deepseek':
+          response = await this.callDeepSeek(prompt, useDeepAnalysis);
+          break;
+        case 'openai':
+          response = await this.callOpenAI(prompt, useDeepAnalysis);
+          break;
+        case 'siliconflow':
+          response = await this.callSiliconFlow(prompt, useDeepAnalysis);
+          break;
+        case 'claude':
+        default:
+          response = await this.callClaude(prompt, showThinking, useDeepAnalysis);
+          break;
+      }
+      
+      return response;
+    } catch (error) {
+      console.error('AI内容生成失败:', error);
+      throw new Error(`AI内容生成失败: ${error.message}`);
+    }
+  }
 }
 
 module.exports = new AIService(); 

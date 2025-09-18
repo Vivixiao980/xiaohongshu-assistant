@@ -4,9 +4,12 @@ builder = "nixpacks"
 [deploy]
 startCommand = "npm start"
 healthcheckPath = "/health"
-healthcheckTimeout = 600
+healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 3
+restartPolicyMaxRetries = 5
 
 [deploy.variables]
-NODE_ENV = "production" 
+NODE_ENV = "production"
+NPM_CONFIG_PRODUCTION = "true"
+NPM_CONFIG_FUND = "false"
+NPM_CONFIG_AUDIT = "false" 

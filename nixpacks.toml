@@ -2,7 +2,12 @@
 nixPkgs = ["nodejs_18"]
 
 [phases.install]
-cmds = ["npm install --production"]
+cmds = [
+  "npm cache clean --force",
+  "rm -rf node_modules package-lock.json",
+  "npm install --production --no-optional",
+  "npm install sqlite3 --build-from-source"
+]
 
 [phases.build]
 cmds = ["echo 'Build completed'"]
