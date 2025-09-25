@@ -6,7 +6,7 @@ opencc-python-reimplemented==0.1.7
 # 基础Python依赖
 requests>=2.31.0
 
-# 优化安装，使用预编译的wheel包
---find-links https://download.pytorch.org/whl/cpu/torch_stable.html
-torch>=2.0.0+cpu
-torchaudio>=2.0.0+cpu
+# PyTorch CPU版本 - 使用正确的版本格式
+--index-url https://download.pytorch.org/whl/cpu
+torch>=2.0.0
+torchaudio>=2.0.0
