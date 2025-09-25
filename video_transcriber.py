@@ -29,7 +29,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class VideoTranscriber:
-    def __init__(self, model_size="base"):
+    def __init__(self, model_size="tiny"):  # 默认使用最小模型提高速度
         """
         初始化视频转文字工具
         
@@ -62,13 +62,16 @@ class VideoTranscriber:
         """
         # #logger.info(f"开始下载视频: {url}")  # 静默模式
         
-        # 配置yt-dlp选项
+        # 配置yt-dlp选项 - 优化为最快速度
         ydl_opts = {
-            'format': 'worst[ext=mp4]/worst',  # 选择最小质量以节省时间和空间
+            'format': 'worst[height<=480]/worstaudio/worst',  # 优先选择最低质量音频
             'outtmpl': os.path.join(output_path, 'video.%(ext)s'),
-            'extractaudio': False,
+            'extractaudio': True,   # 只提取音频，更快
+            'audioformat': 'wav',   # 使用wav格式
             'quiet': True,
             'no_warnings': True,
+            'no_check_certificate': True,  # 跳过SSL验证加速
+            'socket_timeout': 30,   # 设置超时
         }
         
         try:
@@ -113,12 +116,17 @@ class VideoTranscriber:
             # 加载模型
             self.load_model()
             
-            # 转换
+            # 转换 - 优化参数提高速度
             result = self.model.transcribe(
                 video_path,
                 language="zh",  # 中文
                 task="transcribe",
-                verbose=False
+                verbose=False,
+                fp16=False,  # 禁用fp16以提高兼容性
+                temperature=0,  # 使用确定性解码，更快
+                compression_ratio_threshold=2.4,  # 降低阈值
+                logprob_threshold=-1.0,  # 降低阈值
+                no_speech_threshold=0.6,  # 提高阈值，跳过静音部分
             )
             
             # 将繁体转换为简体

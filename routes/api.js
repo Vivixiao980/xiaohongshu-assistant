@@ -258,11 +258,15 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
       let isCompleted = false;
 
       python.stdout.on('data', (data) => {
-        output += data.toString();
+        const chunk = data.toString();
+        output += chunk;
+        console.log('Python输出:', chunk); // 调试信息
       });
 
       python.stderr.on('data', (data) => {
-        errorOutput += data.toString();
+        const chunk = data.toString();
+        errorOutput += chunk;
+        console.log('Python错误:', chunk); // 调试信息
       });
 
       python.on('close', async (code) => {
@@ -359,7 +363,7 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
         }
       });
 
-      // 设置超时（5分钟）
+      // 设置超时（3分钟）- 优化后应该更快
       const timeoutHandle = setTimeout(() => {
         if (isCompleted) return; // 防止重复处理
         isCompleted = true;
@@ -367,9 +371,9 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
         python.kill();
         res.status(408).json({
           success: false,
-          message: '处理超时，请尝试较短的视频'
+          message: '处理超时，请尝试较短的视频或检查网络连接'
         });
-      }, 5 * 60 * 1000);
+      }, 3 * 60 * 1000);
 
       // 清理超时句柄
       python.on('close', () => {
