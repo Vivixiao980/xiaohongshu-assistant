@@ -236,24 +236,9 @@ class CloudVideoTranscriber:
                 except Exception as e:
                     print(f"OpenAI识别失败: {e}", file=sys.stderr)
             
-            # 方案3: 回退到本地Whisper处理
+            # 如果所有云端方案都失败，返回错误
             if not result:
-                print("所有云端识别方案都失败，回退到本地Whisper处理", file=sys.stderr)
-                try:
-                    # 导入本地Whisper处理器
-                    import sys
-                    sys.path.append(os.path.dirname(__file__))
-                    from video_transcriber import VideoTranscriber
-                    
-                    local_transcriber = VideoTranscriber(model_size="tiny")
-                    result = local_transcriber.transcribe_audio(audio_path)
-                    print("本地Whisper处理完成", file=sys.stderr)
-                except Exception as e:
-                    print(f"本地Whisper处理也失败: {e}", file=sys.stderr)
-                    raise Exception("所有识别方案都失败了")
-            
-            if not result:
-                raise Exception("无法获取识别结果")
+                raise Exception("所有云端识别方案都失败了，请检查API配置或网络连接")
             
             # 格式化结果
             formatted_result = self.format_transcript(result, title)

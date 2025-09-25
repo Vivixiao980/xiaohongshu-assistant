@@ -372,6 +372,89 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
           console.error('标准输出:', output);
           console.error('错误输出:', errorOutput);
           
+          // 如果使用云端API失败，自动回退到本地处理
+          if (useCloudAPI && code !== 0) {
+            console.log('云端API处理失败，自动回退到本地Whisper处理');
+            
+            // 使用本地处理重新尝试
+            const localScriptPath = path.join(__dirname, '..', 'video_transcriber.py');
+            const localPython = spawn(pythonPath, [localScriptPath, videoUrl], {
+              cwd: path.join(__dirname, '..')
+            });
+            
+            let localOutput = '';
+            let localErrorOutput = '';
+            let localIsCompleted = false;
+            
+            localPython.stdout.on('data', (data) => {
+              const chunk = data.toString();
+              localOutput += chunk;
+              console.log('本地Python输出:', chunk);
+            });
+            
+            localPython.stderr.on('data', (data) => {
+              const chunk = data.toString();
+              localErrorOutput += chunk;
+              console.log('本地Python错误:', chunk);
+            });
+            
+            localPython.on('close', async (localCode) => {
+              if (localIsCompleted) return;
+              localIsCompleted = true;
+              
+              if (localCode === 0) {
+                try {
+                  const cleanOutput = localOutput.trim();
+                  const result = JSON.parse(cleanOutput);
+                  
+                  if (result.success) {
+                    await usageTracker.logAPICall({
+                      userId: req.user.id,
+                      model: 'video_transcribe_fallback',
+                      usage: { videoUrl, duration: result.data?.duration || 0 }
+                    });
+                    
+                    console.log('本地处理成功完成，字数:', result.data?.word_count || 0);
+                    res.json({
+                      success: true,
+                      data: result.data,
+                      message: '视频转文字完成（使用本地处理）'
+                    });
+                  } else {
+                    res.status(500).json({
+                      success: false,
+                      message: result.error || '视频处理失败'
+                    });
+                  }
+                } catch (parseError) {
+                  res.status(500).json({
+                    success: false,
+                    message: '处理结果解析失败'
+                  });
+                }
+              } else {
+                res.status(500).json({
+                  success: false,
+                  message: '视频处理完全失败，请检查视频链接或稍后重试'
+                });
+              }
+            });
+            
+            // 设置本地处理超时
+            setTimeout(() => {
+              if (!localIsCompleted) {
+                localIsCompleted = true;
+                localPython.kill();
+                res.status(408).json({
+                  success: false,
+                  message: '本地处理也超时了'
+                });
+              }
+            }, 8 * 60 * 1000);
+            
+            return; // 不继续执行原来的错误处理
+          }
+          
           // 根据退出码提供更具体的错误信息
           let errorMessage = '视频处理失败';
           if (code === 2) {
