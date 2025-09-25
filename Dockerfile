@@ -39,6 +39,7 @@ COPY public/ ./public/
 # 复制Python相关文件
 COPY requirements.txt ./
 COPY video_transcriber.py ./
+COPY video_transcriber_cloud.py ./
 
 # 创建Python虚拟环境并安装依赖
 RUN python3 -m venv video_transcribe_env && \
