@@ -1,0 +1,7 @@
+# 视频转文字功能依赖
+yt-dlp>=2024.1.0
+openai-whisper>=20231117
+opencc-python-reimplemented==0.1.7
+
+# 基础Python依赖
+requests>=2.31.0
