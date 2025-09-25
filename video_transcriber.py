@@ -199,7 +199,7 @@ class VideoTranscriber:
             try:
                 cmd = ['ffprobe', '-v', 'quiet', '-show_entries', 'format=duration', 
                        '-of', 'csv=p=0', video_path]
-                result = subprocess.run(cmd, capture_output=True, text=True)
+                result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                 total_duration = float(result.stdout.strip()) if result.stdout.strip() else 0
             except:
                 # 如果ffprobe失败，回退到原始方法
@@ -232,7 +232,7 @@ class VideoTranscriber:
                 chunk_path = os.path.join(os.path.dirname(video_path), f'chunk_{i}.wav')
                 cmd = ['ffmpeg', '-y', '-i', video_path, '-ss', str(chunk_start), 
                        '-t', str(chunk_duration), '-acodec', 'pcm_s16le', '-ar', '16000', chunk_path]
-                subprocess.run(cmd, capture_output=True, stderr=subprocess.DEVNULL)
+                subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 
                 try:
                     # 转换当前分段

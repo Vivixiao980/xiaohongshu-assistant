@@ -251,6 +251,8 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
       : path.join(__dirname, '..', 'video_transcriber.py');
     const pythonPath = path.join(__dirname, '..', 'video_transcribe_env', 'bin', 'python');
     
+    console.log(`环境变量 USE_CLOUD_API: ${process.env.USE_CLOUD_API}`);
+    console.log(`百度API密钥状态: ${process.env.BAIDU_API_KEY ? '已配置' : '未配置'}`);
     console.log(`使用${useCloudAPI ? '云端API' : '本地Whisper'}处理视频`);
 
     return new Promise((resolve, reject) => {
@@ -388,7 +390,8 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
         }
       });
 
-      // 设置超时（8分钟）- 给更多时间处理大文件
+      // 根据处理方式设置不同的超时时间
+      const timeoutDuration = useCloudAPI ? 2 * 60 * 1000 : 8 * 60 * 1000; // 云端API: 2分钟，本地: 8分钟
       const timeoutHandle = setTimeout(() => {
         if (isCompleted) return; // 防止重复处理
         isCompleted = true;
@@ -396,9 +399,9 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
         python.kill();
         res.status(408).json({
           success: false,
-          message: '处理超时，请尝试较短的视频或检查网络连接'
+          message: `处理超时，请尝试较短的视频或检查网络连接 (${useCloudAPI ? '云端API' : '本地处理'})`
         });
-      }, 8 * 60 * 1000);
+      }, timeoutDuration);
 
       // 清理超时句柄
       python.on('close', () => {
