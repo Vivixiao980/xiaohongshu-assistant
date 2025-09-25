@@ -30,23 +30,22 @@ if (databaseUrl && typeof databaseUrl === 'string' && databaseUrl.startsWith('my
   });
 } else {
   console.warn('⚠️ DATABASE_URL无效或未设置');
+  // 使用SQLite作为备选数据库（适用于开发和生产环境）
+  console.log('🔧 使用SQLite数据库作为备选方案');
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: process.env.NODE_ENV === 'production' ? '/app/database.sqlite' : './database.sqlite',
+    logging: process.env.NODE_ENV === 'development' ? console.log : false,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
+  });
+  
   if (process.env.NODE_ENV === 'production') {
-    console.error('❌ 生产环境错误: DATABASE_URL无效。请检查Railway环境变量配置。');
-    throw new Error('生产环境DATABASE_URL无效');
-  } else {
-    // 本地开发环境，使用SQLite作为备选
-    console.log('🔧 本地开发环境，使用SQLite数据库');
-    sequelize = new Sequelize({
-      dialect: 'sqlite',
-      storage: './database.sqlite',
-      logging: console.log,
-      pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-      }
-    });
+    console.log('📝 生产环境提示: 如需使用MySQL，请在Railway中配置DATABASE_URL环境变量');
   }
 }
 
