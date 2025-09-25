@@ -1,12 +1,15 @@
 # 使用Node.js LTS版本
 FROM node:18-slim
 
-# 安装必要的系统依赖
+# 安装必要的系统依赖和Python环境
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
+    python3-venv \
     build-essential \
     sqlite3 \
+    curl \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 # 设置工作目录
@@ -32,6 +35,16 @@ COPY services/ ./services/
 COPY scripts/ ./scripts/
 COPY config/ ./config/
 COPY public/ ./public/
+
+# 复制Python相关文件
+COPY requirements.txt ./
+COPY video_transcriber.py ./
+
+# 创建Python虚拟环境并安装依赖
+RUN python3 -m venv video_transcribe_env && \
+    . video_transcribe_env/bin/activate && \
+    pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # 创建必要的目录
 RUN mkdir -p logs temp knowledge-base

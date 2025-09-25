@@ -1,8 +1,8 @@
 [build]
-builder = "nixpacks"
+builder = "dockerfile"
 
 [deploy]
-startCommand = "npm start"
+startCommand = "node server.js"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
@@ -12,4 +12,8 @@ restartPolicyMaxRetries = 5
 NODE_ENV = "production"
 NPM_CONFIG_PRODUCTION = "true"
 NPM_CONFIG_FUND = "false"
-NPM_CONFIG_AUDIT = "false" 
+NPM_CONFIG_AUDIT = "false"
+
+# 增加构建超时时间
+[build.variables]
+RAILWAY_BUILD_TIMEOUT = "1800"
