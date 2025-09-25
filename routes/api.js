@@ -244,9 +244,14 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
 
     console.log('收到视频转文字请求:', videoUrl);
 
-    // 调用Python脚本处理视频
-    const scriptPath = path.join(__dirname, '..', 'video_transcriber.py');
+    // 根据环境变量选择处理方式
+    const useCloudAPI = process.env.USE_CLOUD_API === 'true';
+    const scriptPath = useCloudAPI 
+      ? path.join(__dirname, '..', 'video_transcriber_cloud.py')
+      : path.join(__dirname, '..', 'video_transcriber.py');
     const pythonPath = path.join(__dirname, '..', 'video_transcribe_env', 'bin', 'python');
+    
+    console.log(`使用${useCloudAPI ? '云端API' : '本地Whisper'}处理视频`);
 
     return new Promise((resolve, reject) => {
       const python = spawn(pythonPath, [scriptPath, videoUrl], {

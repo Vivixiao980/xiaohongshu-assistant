@@ -5,6 +5,7 @@ requests>=2.31.0
 yt-dlp>=2024.1.0
 openai-whisper>=20231117
 opencc-python-reimplemented==0.1.7
+requests>=2.25.0
 
 # PyTorch CPU版本 - 使用额外索引而不是替换默认索引
 --extra-index-url https://download.pytorch.org/whl/cpu
