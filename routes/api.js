@@ -383,7 +383,7 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
         }
       });
 
-      // 设置超时（5分钟）- 给更多时间处理
+      // 设置超时（8分钟）- 给更多时间处理大文件
       const timeoutHandle = setTimeout(() => {
         if (isCompleted) return; // 防止重复处理
         isCompleted = true;
@@ -393,7 +393,7 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
           success: false,
           message: '处理超时，请尝试较短的视频或检查网络连接'
         });
-      }, 5 * 60 * 1000);
+      }, 8 * 60 * 1000);
 
       // 清理超时句柄
       python.on('close', () => {

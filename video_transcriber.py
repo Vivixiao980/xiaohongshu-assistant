@@ -116,7 +116,7 @@ class VideoTranscriber:
             # 加载模型
             self.load_model()
             
-            # 转换 - 优化参数提高速度
+            # 转换 - 极致优化参数提高速度
             result = self.model.transcribe(
                 video_path,
                 language="zh",  # 中文
@@ -127,6 +127,10 @@ class VideoTranscriber:
                 compression_ratio_threshold=2.4,  # 降低阈值
                 logprob_threshold=-1.0,  # 降低阈值
                 no_speech_threshold=0.6,  # 提高阈值，跳过静音部分
+                beam_size=1,  # 单束搜索，最快速度
+                best_of=1,  # 只生成一个候选
+                word_timestamps=False,  # 禁用单词时间戳
+                condition_on_previous_text=False  # 不依赖前文，更快
             )
             
             # 将繁体转换为简体
