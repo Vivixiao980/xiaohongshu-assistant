@@ -45,9 +45,9 @@ class VideoTranscriber:
     def load_model(self):
         """加载Whisper模型"""
         if self.model is None:
-            #logger.info(f"正在加载Whisper模型: {self.model_size}")
+            print(f"正在加载Whisper模型: {self.model_size}", file=sys.stderr)
             self.model = whisper.load_model(self.model_size)
-            #logger.info("模型加载完成")
+            print("Whisper模型加载完成", file=sys.stderr)
     
     def download_video(self, url, output_path):
         """
@@ -245,11 +245,15 @@ def main():
     
     url = sys.argv[1]
     
-    # 创建转换器
-    transcriber = VideoTranscriber(model_size="base")
+    print(f"开始处理视频: {url}", file=sys.stderr)
+    
+    # 创建转换器 - 使用tiny模型提高速度
+    transcriber = VideoTranscriber(model_size="tiny")
+    print("VideoTranscriber初始化完成", file=sys.stderr)
     
     # 处理视频
     result = transcriber.process_video_url(url)
+    print("视频处理完成", file=sys.stderr)
     
     # 输出JSON结果
     print(json.dumps(result, ensure_ascii=False))
