@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频转文字工具 - yt-dlp + Whisper</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <style>
+        /* 自定义样式 */
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-shadow {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .floating-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .floating-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .input-focus:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            animation: progress-shimmer 2s infinite;
+        }
+        
+        @keyframes progress-shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+        
+        .result-card {
+            border-left: 4px solid #10b981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+        }
+        
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- 头部导航 -->
+    <header class="gradient-bg text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-white bg-opacity-20 rounded-full p-3">
+                        <i class="fas fa-video text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold">视频转文字工具</h1>
+                        <p class="text-blue-100 mt-1">使用 yt-dlp + Whisper 技术</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-6 text-sm">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-download text-blue-200"></i>
+                        <span>yt-dlp 下载</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-microphone text-blue-200"></i>
+                        <span>Whisper AI</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-language text-blue-200"></i>
+                        <span>中文识别</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 功能说明卡片 -->
+        <div class="mb-8">
+            <div class="bg-white rounded-2xl card-shadow p-6 fade-in">
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="text-center">
+                        <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-globe text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">支持多平台</h3>
+                        <p class="text-gray-600 text-sm mt-2">小红书、抖音、B站、YouTube等</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-brain text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">AI智能识别</h3>
+                        <p class="text-gray-600 text-sm mt-2">OpenAI Whisper 高精度语音识别</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-clock text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">时间戳字幕</h3>
+                        <p class="text-gray-600 text-sm mt-2">精确到秒的时间轴标记</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 转换工具区域 -->
+        <div class="bg-white rounded-2xl card-shadow p-8 mb-8">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">
+                    <i class="fas fa-upload text-blue-600 mr-2"></i>
+                    开始视频转文字
+                </h2>
+                <p class="text-gray-600">输入视频链接，自动下载并提取语音转为文字</p>
+            </div>
+
+            <!-- 视频链接输入区 -->
+            <div class="space-y-6">
+                <div>
+                    <label for="video-url" class="block text-lg font-semibold text-gray-700 mb-3">
+                        <i class="fas fa-link text-blue-600 mr-2"></i>
+                        视频链接 <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="url" 
+                            id="video-url"
+                            class="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-0 input-focus text-lg"
+                            placeholder="请输入视频链接，如：https://www.xiaohongshu.com/explore/xxx"
+                        >
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4">
+                            <i class="fas fa-paste text-gray-400 cursor-pointer hover:text-blue-600" id="paste-btn" title="粘贴"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        <span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-sm">
+                            <i class="fab fa-xiaohongshu mr-1"></i>小红书
+                        </span>
+                        <span class="bg-purple-50 text-purple-600 px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-music mr-1"></i>抖音
+                        </span>
+                        <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm">
+                            <i class="fab fa-bilibili mr-1"></i>B站
+                        </span>
+                        <span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-sm">
+                            <i class="fab fa-youtube mr-1"></i>YouTube
+                        </span>
+                        <span class="bg-gray-50 text-gray-600 px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-ellipsis-h mr-1"></i>更多平台
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 转换选项 -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="transcribe-quality" class="block font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-cog text-blue-600 mr-2"></i>识别质量
+                        </label>
+                        <select id="transcribe-quality" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 input-focus">
+                            <option value="base">标准质量 (推荐)</option>
+                            <option value="small">快速模式</option>
+                            <option value="medium">高质量</option>
+                            <option value="large">最高质量 (较慢)</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="output-format" class="block font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-file-alt text-blue-600 mr-2"></i>输出格式
+                        </label>
+                        <select id="output-format" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 input-focus">
+                            <option value="detailed">详细格式 (带时间戳)</option>
+                            <option value="simple">简洁格式</option>
+                            <option value="srt">SRT字幕文件</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 开始转换按钮 -->
+                <div class="pt-4">
+                    <button id="start-transcribe" class="w-full md:w-auto btn-success text-white font-bold py-4 px-8 rounded-xl text-lg inline-flex items-center justify-center space-x-2">
+                        <i class="fas fa-play"></i>
+                        <span>开始转换</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 进度显示区域 -->
+        <div id="progress-section" class="hidden bg-white rounded-2xl card-shadow p-8 mb-8">
+            <div class="text-center">
+                <div class="mb-6">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cog fa-spin text-blue-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">正在处理视频</h3>
+                    <p class="text-gray-600">请耐心等待，正在使用 AI 技术转换<span class="loading-dots"></span></p>
+                </div>
+                
+                <div class="max-w-md mx-auto">
+                    <div class="bg-gray-200 rounded-full h-2 mb-4">
+                        <div class="progress-bar h-2 rounded-full" style="width: 0%" id="progress-bar"></div>
+                    </div>
+                    <div class="text-sm text-gray-600" id="progress-text">准备开始...</div>
+                </div>
+                
+                <div class="mt-6 text-sm text-gray-500 space-y-1">
+                    <div><i class="fas fa-download mr-2"></i>步骤1: 使用 yt-dlp 下载视频</div>
+                    <div><i class="fas fa-microphone mr-2"></i>步骤2: 使用 Whisper AI 识别语音</div>
+                    <div><i class="fas fa-file-text mr-2"></i>步骤3: 生成带时间戳的文字稿</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果显示区域 -->
+        <div id="result-section" class="hidden bg-white rounded-2xl card-shadow p-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    转换完成
+                </h2>
+                <div class="flex items-center space-x-4 text-sm text-gray-600">
+                    <span id="video-title"></span>
+                    <span id="video-duration"></span>
+                </div>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button id="copy-result" class="btn-primary text-white px-4 py-2 rounded-lg inline-flex items-center space-x-2">
+                    <i class="fas fa-copy"></i>
+                    <span>复制文本</span>
+                </button>
+                <button id="download-txt" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg inline-flex items-center space-x-2">
+                    <i class="fas fa-download"></i>
+                    <span>下载TXT</span>
+                </button>
+                <button id="download-srt" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg inline-flex items-center space-x-2">
+                    <i class="fas fa-download"></i>
+                    <span>下载SRT</span>
+                </button>
+                <button id="new-conversion" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg inline-flex items-center space-x-2">
+                    <i class="fas fa-plus"></i>
+                    <span>新转换</span>
+                </button>
+            </div>
+            
+            <!-- 转换结果内容 -->
+            <div class="result-card p-6 rounded-xl">
+                <div class="mb-4">
+                    <h3 class="font-semibold text-gray-800 mb-2">
+                        <i class="fas fa-file-text text-green-600 mr-2"></i>
+                        转换结果
+                    </h3>
+                </div>
+                <div id="transcription-result" class="bg-white rounded-lg p-4 max-h-96 overflow-y-auto font-mono text-sm leading-relaxed whitespace-pre-wrap border"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4">
+                <h3 class="text-lg font-semibold mb-2">技术栈</h3>
+                <div class="flex justify-center space-x-8 text-sm">
+                    <span><i class="fas fa-download mr-1"></i>yt-dlp</span>
+                    <span><i class="fas fa-brain mr-1"></i>OpenAI Whisper</span>
+                    <span><i class="fas fa-code mr-1"></i>Node.js</span>
+                    <span><i class="fab fa-python mr-1"></i>Python</span>
+                </div>
+            </div>
+            <p class="text-gray-400 text-sm">
+                © 2024 视频转文字工具 - 基于开源技术构建
+            </p>
+        </div>
+    </footer>
+
+    <!-- Toast 通知 -->
+    <div id="toast" class="fixed top-4 right-4 z-50 hidden">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-xs">
+            <div class="flex items-center">
+                <div id="toast-icon" class="mr-3"></div>
+                <div id="toast-message" class="text-sm font-medium text-gray-900"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="video-transcribe.js"></script>
+</body>
+</html>
