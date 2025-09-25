@@ -49,57 +49,9 @@ app.get('/healthz', (req, res) => {
   res.status(200).send('OK');
 });
 
-// 基本中间件
+// 基本中间件 - 临时禁用CSP以解决兼容性问题
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: [
-        "'self'", 
-        "'unsafe-inline'", 
-        "'unsafe-eval'",  // 允许eval()等动态代码执行，AI功能需要
-        "https://cdn.tailwindcss.com",
-        "https://code.jquery.com",
-        "https://cdnjs.cloudflare.com"
-      ],
-      styleSrc: [
-        "'self'", 
-        "'unsafe-inline'", 
-        "https://cdn.tailwindcss.com",
-        "https://cdnjs.cloudflare.com"
-      ],
-      scriptSrcAttr: ["'unsafe-inline'"],
-      scriptSrcElem: [
-        "'self'",
-        "'unsafe-inline'",
-        "'unsafe-eval'",
-        "https://cdn.tailwindcss.com",
-        "https://code.jquery.com", 
-        "https://cdnjs.cloudflare.com",
-        "blob:",
-        "data:"
-      ],
-      fontSrc: ["'self'", "https:", "data:"],
-      imgSrc: ["'self'", "data:", "https:", "blob:"],
-      mediaSrc: ["'self'", "data:", "https:", "blob:"],
-      workerSrc: ["'self'", "blob:", "data:"],
-      connectSrc: [
-        "'self'",
-        "https://api.siliconflow.cn",  // SiliconFlow API
-        "https://dpapi.cn",            // DP API
-        "https://api.openai.com",      // OpenAI API
-        "https://www.xiaohongshu.com", // 小红书API
-        "https:",                      // 允许所有HTTPS连接
-        "http:",                       // 本地开发时允许HTTP
-        "ws:",                         // WebSocket
-        "wss:"                         // 安全WebSocket
-      ],
-      baseUri: ["'self'"],
-      formAction: ["'self'"],
-      frameAncestors: ["'self'"],
-      objectSrc: ["'none'"]
-    }
-  }
+  contentSecurityPolicy: false  // 临时禁用CSP，确保所有JavaScript功能正常工作
 }));
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
