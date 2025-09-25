@@ -1,12 +1,12 @@
-# 视频转文字功能依赖 - 优化版本以减少构建时间
+# 基础Python依赖
+requests>=2.31.0
+
+# 视频转文字功能依赖
 yt-dlp>=2024.1.0
 openai-whisper>=20231117
 opencc-python-reimplemented==0.1.7
 
-# 基础Python依赖
-requests>=2.31.0
-
-# PyTorch CPU版本 - 使用正确的版本格式
---index-url https://download.pytorch.org/whl/cpu
+# PyTorch CPU版本 - 使用额外索引而不是替换默认索引
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch>=2.0.0
 torchaudio>=2.0.0
