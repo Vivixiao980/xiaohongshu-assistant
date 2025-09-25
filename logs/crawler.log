@@ -1,0 +1,467 @@
+{"level":"info","message":"开始获取用户帖子: test123","timestamp":"2025-07-30T07:24:06.604Z"}
+{"level":"info","message":"成功获取用户帖子，共 10 篇","timestamp":"2025-07-30T07:24:06.605Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T07:28:09.721Z"}
+{"level":"info","message":"成功获取用户帖子，共 10 篇","timestamp":"2025-07-30T07:28:09.721Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T07:30:33.656Z"}
+{"level":"info","message":"成功获取用户帖子，共 10 篇","timestamp":"2025-07-30T07:30:33.657Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T07:46:18.359Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T07:46:18.360Z"}
+{"level":"info","message":"开始获取帖子内容: test123","timestamp":"2025-07-30T07:46:18.361Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/test123","timestamp":"2025-07-30T07:46:18.361Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: test123","timestamp":"2025-07-30T07:46:22.975Z"}
+{"level":"info","message":"开始获取用户帖子: test123","timestamp":"2025-07-30T07:46:22.976Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/test123 3","timestamp":"2025-07-30T07:46:22.976Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T07:46:23.070Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-07-30T08:12:35.070Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:46:26.988Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:46:26.989Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T13:46:26.989Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T13:46:26.989Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 10 篇","timestamp":"2025-07-30T13:46:27.177Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-07-30T13:48:34.280Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:48:58.671Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:48:58.673Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:49:12.081Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:49:12.082Z"}
+{"level":"info","message":"开始获取帖子内容: test123","timestamp":"2025-07-30T13:49:12.082Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/test123","timestamp":"2025-07-30T13:49:12.083Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: test123","timestamp":"2025-07-30T13:49:17.630Z"}
+{"level":"info","message":"开始获取用户帖子: test123","timestamp":"2025-07-30T13:49:17.631Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/test123 3","timestamp":"2025-07-30T13:49:17.631Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T13:49:17.710Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:50:10.345Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:50:10.346Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T13:50:10.346Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T13:50:10.346Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 10 篇","timestamp":"2025-07-30T13:50:10.477Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:50:39.043Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:50:39.043Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T13:50:39.043Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T13:50:39.043Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 10 篇","timestamp":"2025-07-30T13:50:39.164Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:52:51.416Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:52:51.417Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T13:52:51.417Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T13:52:51.418Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 10 篇","timestamp":"2025-07-30T13:52:51.559Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:53:00.785Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:53:00.785Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T13:53:00.785Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T13:53:00.785Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 10 篇","timestamp":"2025-07-30T13:53:00.904Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:54:09.173Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:54:09.174Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T13:54:09.174Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T13:54:09.174Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 10 篇","timestamp":"2025-07-30T13:54:09.294Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:56:42.751Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:56:42.753Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-07-30T13:57:33.714Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T13:57:33.715Z"}
+{"level":"info","message":"当前为模拟模式，跳过真实爬虫: 60899013000000000100439d","timestamp":"2025-07-30T13:57:33.715Z"}
+{"level":"info","message":"使用模拟数据获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T13:57:33.715Z"}
+{"level":"info","message":"成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T13:57:33.716Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:57:45.369Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:57:45.371Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T13:57:57.147Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T13:57:57.149Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T13:57:57.149Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 3","timestamp":"2025-07-30T13:57:57.149Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T14:01:19.285Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T14:01:19.287Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T14:01:25.618Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T14:01:25.619Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T14:01:25.619Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 3","timestamp":"2025-07-30T14:01:25.619Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T14:01:25.734Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T14:01:28.715Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T14:01:28.716Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T14:01:28.717Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 3","timestamp":"2025-07-30T14:01:28.717Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T14:01:28.798Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T14:28:19.233Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T14:28:19.233Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T14:28:19.233Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T14:28:19.234Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 5 篇","timestamp":"2025-07-30T14:28:19.354Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T14:35:43.685Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T14:35:43.687Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T14:36:01.383Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T14:36:01.383Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T14:36:01.383Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T14:36:01.383Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T14:36:14.479Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T14:47:40.024Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T14:47:40.029Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T14:54:25.036Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T14:54:25.040Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T14:58:55.255Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T14:58:55.255Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T14:58:55.255Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 10","timestamp":"2025-07-30T14:58:55.255Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T14:58:59.674Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:02:02.301Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:02:02.306Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:08:23.551Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:08:23.554Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:13:20.865Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:13:20.866Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T15:13:20.866Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 10","timestamp":"2025-07-30T15:13:20.867Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T15:13:25.389Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:16:26.503Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:16:26.509Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:22:03.795Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:22:03.796Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T15:22:03.796Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 10","timestamp":"2025-07-30T15:22:03.797Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T15:22:08.139Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:23:59.235Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:23:59.241Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:25:57.750Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:25:57.750Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T15:25:57.750Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 10","timestamp":"2025-07-30T15:25:57.751Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T15:26:01.882Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:26:20.466Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:26:20.466Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T15:26:20.466Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 10","timestamp":"2025-07-30T15:26:20.466Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T15:26:24.602Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:26:51.321Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:26:51.321Z"}
+{"level":"info","message":"开始获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:26:51.322Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/discovery/item/68884d50000000002400a332?source=webshare&xhsshare=pc_web&xsec_token=ABul-hnvXhVreN3pvle7k1bvwMkE0hxQ-8xkLzJtEzDPM=&xsec_source=pc_share","timestamp":"2025-07-30T15:26:51.322Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:26:55.560Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:28:22.685Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:28:22.685Z"}
+{"level":"info","message":"开始获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:28:22.685Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/discovery/item/68884d50000000002400a332","timestamp":"2025-07-30T15:28:22.685Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:28:27.017Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:28:44.862Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:28:44.863Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:33:47.533Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:33:47.533Z"}
+{"level":"info","message":"开始获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:33:47.534Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/discovery/item/68884d50000000002400a332?source=webshare&xhsshare=pc_web&xsec_token=ABul-hnvXhVreN3pvle7k1bvwMkE0hxQ-8xkLzJtEzDPM=&xsec_source=pc_share","timestamp":"2025-07-30T15:33:47.534Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:33:52.624Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:34:01.298Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:34:01.298Z"}
+{"level":"info","message":"开始获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:34:01.299Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/discovery/item/68884d50000000002400a332?source=webshare&xhsshare=pc_web&xsec_token=ABul-hnvXhVreN3pvle7k1bvwMkE0hxQ-8xkLzJtEzDPM=&xsec_source=pc_share","timestamp":"2025-07-30T15:34:01.299Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:34:05.172Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:41:03.146Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:41:03.147Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T15:41:03.148Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/discovery/item/6885e19e000000002203d5a3?source=webshare&xhsshare=pc_web&xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k=&xsec_source=pc_share","timestamp":"2025-07-30T15:41:03.148Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T15:41:07.584Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:41:21.763Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:41:21.764Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T15:41:21.764Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/discovery/item/6885e19e000000002203d5a3?source=webshare&xhsshare=pc_web&xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k=&xsec_source=pc_share","timestamp":"2025-07-30T15:41:21.764Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T15:41:26.049Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:49:37.853Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:49:37.853Z"}
+{"level":"info","message":"开始获取用户帖子: 5e7b8c5e0000000001004f8a","timestamp":"2025-07-30T15:49:37.855Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/5e7b8c5e0000000001004f8a 10","timestamp":"2025-07-30T15:49:37.855Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T15:49:42.160Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:51:01.622Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:51:01.624Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:52:24.676Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:52:24.677Z"}
+{"level":"info","message":"开始获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:52:24.677Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/discovery/item/68884d50000000002400a332?source=webshare&xhsshare=pc_web&xsec_token=ABul-hnvXhVreN3pvle7k1bvwMkE0hxQ-8xkLzJtEzDPM=&xsec_source=pc_share","timestamp":"2025-07-30T15:52:24.677Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 68884d50000000002400a332","timestamp":"2025-07-30T15:52:28.997Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:52:56.880Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:52:56.880Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T15:52:56.881Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T15:52:56.881Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T15:53:01.329Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T15:57:20.710Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T15:57:20.710Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T15:57:20.710Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T15:57:20.710Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T15:57:25.280Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:04:08.036Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:04:08.036Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T16:04:08.037Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T16:04:08.037Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T16:04:12.830Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:07:48.201Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:07:48.206Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:08:09.229Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:08:09.230Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:08:22.897Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:08:22.899Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:10:41.295Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:10:41.295Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T16:10:41.296Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T16:10:41.296Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T16:10:45.829Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:11:12.657Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:11:12.657Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:11:12.658Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-30T16:11:12.658Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:11:16.974Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:13:31.816Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:13:31.816Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:13:31.816Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-30T16:13:31.816Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:13:36.323Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:14:38.161Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:14:38.161Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T16:14:38.161Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T16:14:38.162Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-30T16:14:38.162Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T16:14:42.747Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:15:58.360Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:15:58.361Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:19:21.953Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:19:21.953Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:19:21.953Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-30T16:19:21.953Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-30T16:19:21.954Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:19:26.475Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:19:36.779Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:19:36.779Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:19:36.779Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-30T16:19:36.779Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-30T16:19:36.780Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:19:41.112Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:20:21.346Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:20:21.346Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:20:21.346Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-30T16:20:21.346Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-30T16:20:21.347Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:20:25.815Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:20:56.310Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:20:56.310Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T16:20:56.311Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 10","timestamp":"2025-07-30T16:20:56.311Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-30T16:20:56.311Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T16:21:00.484Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:23:26.405Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:23:26.405Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:23:26.406Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-30T16:23:26.409Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-30T16:23:26.430Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-30T16:23:30.894Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:25:49.098Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:25:49.100Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:26:04.048Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:26:04.050Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:27:03.100Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:27:03.100Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T16:27:03.100Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-30T16:27:03.101Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-30T16:27:03.101Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-30T16:27:07.713Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:30:19.510Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:30:19.510Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-30T16:30:19.510Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d 10","timestamp":"2025-07-30T16:30:19.510Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-30T16:30:19.510Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 5 篇","timestamp":"2025-07-30T16:30:24.121Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-30T16:31:05.356Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-30T16:31:05.356Z"}
+{"level":"info","message":"开始获取帖子内容: 613620280000000021039ce7","timestamp":"2025-07-30T16:31:05.356Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/613620280000000021039ce7","timestamp":"2025-07-30T16:31:05.356Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-30T16:31:05.357Z"}
+{"level":"error","message":"Python爬虫执行失败，退出码: 1","timestamp":"2025-07-30T16:31:17.728Z"}
+{"level":"error","message":"错误输出:","timestamp":"2025-07-30T16:31:17.728Z"}
+{"level":"warn","message":"Python爬虫失败，降级到模拟数据: Python爬虫执行失败: 🍪 从环境变量加载了 4 个cookies\n🔥 开始真实爬取笔记: https://www.xiaohongshu.com/explore/613620280000000021039ce7\n🔄 第 1 次尝试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/613620280000000021039ce7\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_fYeBbVUo?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F613620280000000021039ce7&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=fce66e51-b644-4780-9466-0a6a8b7ed9df\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 2 次尝试...\n⏰ 等待 2 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/613620280000000021039ce7\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_wjnMPtBu?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F613620280000000021039ce7&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=b610b43d-8097-4aa8-98ca-a25791bec8f4\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 3 次尝试...\n⏰ 等待 5 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/613620280000000021039ce7\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_znJCRrbO?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F613620280000000021039ce7&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=41a8ffb8-97d6-4b0c-a07a-5f33c01288ed\n❌ 爬取过程出错: 被重定向到验证页面\n⚠️ 所有尝试都失败，返回保护性数据\n<sys>:0: RuntimeWarning: coroutine 'SimpleXHSCrawler.generate_fallback_note' was never awaited\nRuntimeWarning: Enable tracemalloc to get the object allocation traceback\n","timestamp":"2025-07-30T16:31:17.728Z"}
+{"level":"info","message":"使用模拟数据获取帖子内容: 613620280000000021039ce7","timestamp":"2025-07-30T16:31:17.728Z"}
+{"level":"info","message":"成功获取帖子内容: 613620280000000021039ce7","timestamp":"2025-07-30T16:31:17.729Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:21:47.096Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:21:47.096Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:21:47.096Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-31T02:21:47.096Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:21:47.098Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:21:57.205Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:22:45.977Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:22:45.978Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:22:45.981Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-31T02:22:45.981Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:22:45.989Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:22:57.312Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:23:52.923Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:23:52.923Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:23:52.923Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3","timestamp":"2025-07-31T02:23:52.924Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:23:52.924Z"}
+{"level":"error","message":"Python爬虫执行失败，退出码: 1","timestamp":"2025-07-31T02:24:05.182Z"}
+{"level":"error","message":"错误输出:","timestamp":"2025-07-31T02:24:05.182Z"}
+{"level":"warn","message":"Python爬虫失败，降级到模拟数据: Python爬虫执行失败: 🍪 从环境变量加载了 4 个cookies\n🔥 开始真实爬取笔记: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n🔄 第 1 次尝试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_uekejNWD?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=49feeef5-ae7b-4838-8f23-2bc683192b1e\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 2 次尝试...\n⏰ 等待 2 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_eFPIIQcb?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=a0df6864-70f3-46db-a9c4-a659f8fedfa9\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 3 次尝试...\n⏰ 等待 5 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_oaqyLSuJ?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=192325f5-dc3e-4357-9d65-4dd55bb4346b\n❌ 爬取过程出错: 被重定向到验证页面\n⚠️ 所有尝试都失败，返回保护性数据\n<sys>:0: RuntimeWarning: coroutine 'SimpleXHSCrawler.generate_fallback_note' was never awaited\nRuntimeWarning: Enable tracemalloc to get the object allocation traceback\n","timestamp":"2025-07-31T02:24:05.183Z"}
+{"level":"info","message":"使用模拟数据获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:24:05.183Z"}
+{"level":"info","message":"成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:24:05.183Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:24:07.356Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:24:07.356Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:24:07.356Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3","timestamp":"2025-07-31T02:24:07.356Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:24:07.357Z"}
+{"level":"error","message":"Python爬虫执行失败，退出码: 1","timestamp":"2025-07-31T02:24:20.427Z"}
+{"level":"error","message":"错误输出:","timestamp":"2025-07-31T02:24:20.427Z"}
+{"level":"warn","message":"Python爬虫失败，降级到模拟数据: Python爬虫执行失败: 🍪 从环境变量加载了 4 个cookies\n🔥 开始真实爬取笔记: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n🔄 第 1 次尝试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_BmdMOHsU?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=031413a6-685f-4672-80df-d5fdfdf46156\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 2 次尝试...\n⏰ 等待 2 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_CyAqChHL?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=087e38d9-af23-45a3-8b6d-acc873ebc7d1\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 3 次尝试...\n⏰ 等待 5 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_JUJNrzQC?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=316fd1bd-a708-407a-a0df-383983c17fee\n❌ 爬取过程出错: 被重定向到验证页面\n⚠️ 所有尝试都失败，返回保护性数据\n<sys>:0: RuntimeWarning: coroutine 'SimpleXHSCrawler.generate_fallback_note' was never awaited\nRuntimeWarning: Enable tracemalloc to get the object allocation traceback\n","timestamp":"2025-07-31T02:24:20.427Z"}
+{"level":"info","message":"使用模拟数据获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:24:20.427Z"}
+{"level":"info","message":"成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:24:20.427Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:25:22.454Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:25:22.454Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:25:22.454Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-31T02:25:22.454Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:25:22.455Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:25:34.015Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:26:35.333Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:26:35.333Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:26:35.333Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3","timestamp":"2025-07-31T02:26:35.334Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:26:35.334Z"}
+{"level":"error","message":"Python爬虫执行失败，退出码: 1","timestamp":"2025-07-31T02:26:48.628Z"}
+{"level":"error","message":"错误输出:","timestamp":"2025-07-31T02:26:48.628Z"}
+{"level":"warn","message":"Python爬虫失败，降级到模拟数据: Python爬虫执行失败: 🍪 从环境变量加载了 4 个cookies\n🔥 开始真实爬取笔记: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n🔄 第 1 次尝试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_URsmceKx?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=a76a0561-cb54-4dc9-b5eb-97d1591e648a\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 2 次尝试...\n⏰ 等待 2 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_loVvHjyN?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=9520c552-839b-4451-89d7-c4ff8adbb6d6\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 3 次尝试...\n⏰ 等待 5 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_iKmDzjNv?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=983fb770-48d4-4692-96c4-3a539a8943d8\n❌ 爬取过程出错: 被重定向到验证页面\n⚠️ 所有尝试都失败，返回保护性数据\n<sys>:0: RuntimeWarning: coroutine 'SimpleXHSCrawler.generate_fallback_note' was never awaited\nRuntimeWarning: Enable tracemalloc to get the object allocation traceback\n","timestamp":"2025-07-31T02:26:48.628Z"}
+{"level":"info","message":"使用模拟数据获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:26:48.628Z"}
+{"level":"info","message":"成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:26:48.629Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:26:50.514Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:26:50.514Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:26:50.514Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3","timestamp":"2025-07-31T02:26:50.514Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:26:50.514Z"}
+{"level":"error","message":"Python爬虫执行失败，退出码: 1","timestamp":"2025-07-31T02:27:02.660Z"}
+{"level":"error","message":"错误输出:","timestamp":"2025-07-31T02:27:02.660Z"}
+{"level":"warn","message":"Python爬虫失败，降级到模拟数据: Python爬虫执行失败: 🍪 从环境变量加载了 4 个cookies\n🔥 开始真实爬取笔记: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n🔄 第 1 次尝试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_gwaJUtzE?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=58830e48-aa1a-4a8d-aa0a-62ea187601fe\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 2 次尝试...\n⏰ 等待 2 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_CTFFJDpm?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=98720525-2d5e-4edd-9e0a-d00df04b0fb9\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 3 次尝试...\n⏰ 等待 5 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_jWLJucRa?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=516c48fc-d529-46ff-94b5-bdea6b8ee44f\n❌ 爬取过程出错: 被重定向到验证页面\n⚠️ 所有尝试都失败，返回保护性数据\n<sys>:0: RuntimeWarning: coroutine 'SimpleXHSCrawler.generate_fallback_note' was never awaited\nRuntimeWarning: Enable tracemalloc to get the object allocation traceback\n","timestamp":"2025-07-31T02:27:02.668Z"}
+{"level":"info","message":"使用模拟数据获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:27:02.668Z"}
+{"level":"info","message":"成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:27:02.668Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:28:13.035Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:28:13.035Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:28:13.035Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-31T02:28:13.035Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:28:13.036Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:28:23.749Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:28:37.593Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:28:37.593Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:28:37.594Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-31T02:28:37.594Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:28:37.595Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:28:47.223Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:30:49.947Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:30:49.947Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:30:49.947Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3","timestamp":"2025-07-31T02:30:49.947Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:30:49.947Z"}
+{"level":"error","message":"Python爬虫执行失败，退出码: 1","timestamp":"2025-07-31T02:31:04.051Z"}
+{"level":"error","message":"错误输出:","timestamp":"2025-07-31T02:31:04.052Z"}
+{"level":"warn","message":"Python爬虫失败，降级到模拟数据: Python爬虫执行失败: 🍪 从环境变量加载了 4 个cookies\n🔥 开始真实爬取笔记: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n🔄 第 1 次尝试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_jOuYPhnx?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=d00a57bd-4a46-4148-85dd-750e964dba25\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 2 次尝试...\n⏰ 等待 2 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_ytxhvDPa?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=0a49d8a6-532d-4ccc-8709-a92b5b176d89\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 3 次尝试...\n⏰ 等待 5 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_hvnfsqnp?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6885e19e000000002203d5a3&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=a096ca8c-f688-4e84-ae8a-3e776c541be2\n❌ 爬取过程出错: 被重定向到验证页面\n⚠️ 所有尝试都失败，返回保护性数据\n<sys>:0: RuntimeWarning: coroutine 'SimpleXHSCrawler.generate_fallback_note' was never awaited\nRuntimeWarning: Enable tracemalloc to get the object allocation traceback\n","timestamp":"2025-07-31T02:31:04.052Z"}
+{"level":"info","message":"使用模拟数据获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:31:04.052Z"}
+{"level":"info","message":"成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:31:04.052Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T02:35:19.860Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T02:35:19.860Z"}
+{"level":"info","message":"开始获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:35:19.860Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-31T02:35:19.860Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-07-31T02:35:19.861Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子内容: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:35:29.956Z"}
+{"level":"info","message":"开始爬取小红书帖子: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:35:45.258Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-31T02:35:45.259Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子数据: 6885e19e000000002203d5a3","timestamp":"2025-07-31T02:35:56.040Z"}
+{"level":"info","message":"开始爬取小红书帖子: 6885e19e000000002203d5a3","timestamp":"2025-07-31T03:21:47.410Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-31T03:21:47.412Z"}
+{"level":"info","message":"开始爬取小红书帖子: 6885e19e000000002203d5a3","timestamp":"2025-07-31T03:21:56.306Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/6885e19e000000002203d5a3?xsec_token=ABPm4m7mATlD1EBpNxqthNcWmixgZLmlDDu5dA7AlCR4k%3D&xsec_source=pc_user","timestamp":"2025-07-31T03:21:56.307Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子数据: 6885e19e000000002203d5a3","timestamp":"2025-07-31T03:21:56.721Z"}
+{"level":"info","message":"使用真实爬虫成功获取帖子数据: 6885e19e000000002203d5a3","timestamp":"2025-07-31T03:22:05.651Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T05:33:44.246Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T05:33:44.248Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T05:58:07.592Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T05:58:07.594Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T06:49:38.618Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T06:49:38.618Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-31T06:49:38.618Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-31T06:49:38.619Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-31T06:49:43.659Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T06:56:53.580Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T06:56:53.580Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-31T06:56:53.581Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-31T06:56:53.581Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-31T06:56:58.285Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T06:56:59.276Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T06:56:59.276Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-31T06:56:59.276Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-31T06:56:59.276Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-31T06:57:03.397Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T07:09:28.148Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T07:09:28.149Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-07-31T07:13:12.885Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-07-31T07:16:23.224Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-07-31T07:35:01.662Z"}
+{"level":"info","message":"开始获取帖子内容: 63f3f2e4000000001201b786","timestamp":"2025-07-31T07:35:01.662Z"}
+{"level":"info","message":"当前为模拟模式，跳过真实爬虫: 63f3f2e4000000001201b786","timestamp":"2025-07-31T07:35:01.662Z"}
+{"level":"info","message":"使用模拟数据获取帖子内容: 63f3f2e4000000001201b786","timestamp":"2025-07-31T07:35:01.663Z"}
+{"level":"info","message":"成功获取帖子内容: 63f3f2e4000000001201b786","timestamp":"2025-07-31T07:35:01.663Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-07-31T12:23:17.935Z"}
+{"level":"info","message":"开始获取用户帖子: 5b003bce11be104ade3228e0","timestamp":"2025-07-31T12:23:17.936Z"}
+{"level":"info","message":"当前为模拟模式，跳过真实爬虫: 5b003bce11be104ade3228e0","timestamp":"2025-07-31T12:23:17.936Z"}
+{"level":"info","message":"使用模拟数据获取用户帖子: 5b003bce11be104ade3228e0","timestamp":"2025-07-31T12:23:17.936Z"}
+{"level":"info","message":"成功获取用户帖子，共 10 篇","timestamp":"2025-07-31T12:23:17.936Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T15:57:52.566Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T15:57:52.567Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T16:00:21.940Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T16:00:21.940Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-07-31T16:00:21.940Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-07-31T16:00:21.940Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-07-31T16:00:26.495Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-07-31T16:27:31.815Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-07-31T16:27:31.817Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-01T11:23:59.855Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-08-01T11:25:02.627Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-08-01T11:25:02.629Z"}
+{"level":"info","message":"开始获取帖子内容: test123","timestamp":"2025-08-01T11:25:02.629Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/test123","timestamp":"2025-08-01T11:25:02.629Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-01T15:32:26.861Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-01T15:34:11.029Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-01T15:37:03.112Z"}
+{"level":"info","message":"开始获取帖子内容: test123","timestamp":"2025-08-01T15:37:03.113Z"}
+{"level":"info","message":"当前为模拟模式，跳过真实爬虫: test123","timestamp":"2025-08-01T15:37:03.113Z"}
+{"level":"info","message":"使用模拟数据获取帖子内容: test123","timestamp":"2025-08-01T15:37:03.113Z"}
+{"level":"info","message":"成功获取帖子内容: test123","timestamp":"2025-08-01T15:37:03.113Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-08-01T15:38:33.604Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-08-01T15:38:33.604Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-08-01T15:38:33.605Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-08-01T15:38:33.606Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-08-01T15:38:38.023Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-08-01T15:41:33.895Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-08-01T15:41:33.895Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-08-01T15:41:33.895Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-08-01T15:41:33.896Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-08-01T15:41:38.296Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-08-01T15:43:24.218Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-08-01T15:43:24.218Z"}
+{"level":"info","message":"开始获取帖子内容: 674b2bb9000000001e00e4db","timestamp":"2025-08-01T15:43:24.218Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py note https://www.xiaohongshu.com/explore/674b2bb9000000001e00e4db","timestamp":"2025-08-01T15:43:24.218Z"}
+{"level":"info","message":"为用户 demo-user 传递了 4 个登录cookies","timestamp":"2025-08-01T15:43:24.218Z"}
+{"level":"error","message":"Python爬虫执行失败，退出码: 1","timestamp":"2025-08-01T15:43:37.124Z"}
+{"level":"error","message":"错误输出:","timestamp":"2025-08-01T15:43:37.124Z"}
+{"level":"warn","message":"Python爬虫失败，降级到模拟数据: Python爬虫执行失败: 🍪 从环境变量加载了 4 个cookies\n🔥 开始真实爬取笔记: https://www.xiaohongshu.com/explore/674b2bb9000000001e00e4db\n🔄 第 1 次尝试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/674b2bb9000000001e00e4db\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_mDqkgduC?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F674b2bb9000000001e00e4db&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=80f55c71-44ca-457e-8afb-269c736a5eca\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 2 次尝试...\n⏰ 等待 2 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/674b2bb9000000001e00e4db\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_wKMcodxz?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F674b2bb9000000001e00e4db&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=ee69a497-c351-47ef-ba3d-f70ebed3340f\n❌ 爬取过程出错: 被重定向到验证页面\n🔄 第 3 次尝试...\n⏰ 等待 5 秒后重试...\n🍪 已添加 4 个登录cookies\n🌐 正在访问: https://www.xiaohongshu.com/explore/674b2bb9000000001e00e4db\n⚠️ 被重定向到验证页面: https://www.xiaohongshu.com/404?source=/404/sec_YIewDGVc?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F674b2bb9000000001e00e4db&error_code=300031&error_msg=%E5%BD%93%E5%89%8D%E7%AC%94%E8%AE%B0%E6%9A%82%E6%97%B6%E6%97%A0%E6%B3%95%E6%B5%8F%E8%A7%88&uuid=0e4b899b-bd9f-4c84-a818-86a92780500b\n❌ 爬取过程出错: 被重定向到验证页面\n⚠️ 所有尝试都失败，返回保护性数据\n<sys>:0: RuntimeWarning: coroutine 'SimpleXHSCrawler.generate_fallback_note' was never awaited\nRuntimeWarning: Enable tracemalloc to get the object allocation traceback\n","timestamp":"2025-08-01T15:43:37.125Z"}
+{"level":"info","message":"使用模拟数据获取帖子内容: 674b2bb9000000001e00e4db","timestamp":"2025-08-01T15:43:37.125Z"}
+{"level":"info","message":"成功获取帖子内容: 674b2bb9000000001e00e4db","timestamp":"2025-08-01T15:43:37.125Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-01T16:33:36.923Z"}
+{"level":"info","message":"爬虫模式: real","timestamp":"2025-08-04T14:57:54.629Z"}
+{"level":"info","message":"Python路径: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python","timestamp":"2025-08-04T14:57:54.630Z"}
+{"level":"info","message":"开始获取用户帖子: 60899013000000000100439d","timestamp":"2025-08-04T14:57:54.631Z"}
+{"level":"info","message":"调用Python爬虫: /Users/vivi/code/Vivi写小红书/小红书网站/crawler/MediaCrawler/venv/bin/python /Users/vivi/code/Vivi写小红书/小红书网站/crawler_api.py user https://www.xiaohongshu.com/user/profile/60899013000000000100439d?xsec_token=YBzrmoWHKcgTnOeJmze4XXyMX6gYVX9W7vjDXOHEEcI_s=&xsec_source=app_share&xhsshare=CopyLink&appuid=60899013000000000100439d&apptime=1743474047&share_id=209653dfd7aa4b4bbc7f2537e3636c7c 10","timestamp":"2025-08-04T14:57:54.632Z"}
+{"level":"info","message":"使用真实爬虫成功获取用户帖子，共 3 篇","timestamp":"2025-08-04T14:57:59.238Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T15:05:23.227Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T15:41:56.281Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T15:50:58.222Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:06:51.322Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:08:19.036Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:12:45.108Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:13:52.335Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:15:08.312Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:16:03.866Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:33:27.163Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:34:18.779Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:38:07.878Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:49:05.713Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:53:00.523Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-04T16:54:59.484Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-08-05T07:34:53.241Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-09-18T06:37:22.880Z"}
+{"level":"info","message":"爬虫模式: mock","timestamp":"2025-09-25T03:50:34.014Z"}

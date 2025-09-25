@@ -1,0 +1,154 @@
+[
+  {
+    "timestamp": "2025-07-30T07:31:52.495Z",
+    "model": "claude",
+    "action": "analyze",
+    "processingTime": 23053,
+    "status": "success",
+    "inputLength": 3163,
+    "outputLength": 898,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+    "ip": "::1"
+  },
+  {
+    "timestamp": "2025-07-31T07:52:09.850Z",
+    "model": "deepseek",
+    "action": "analyze",
+    "processingTime": 60028,
+    "status": "error",
+    "inputLength": 82,
+    "outputLength": 0,
+    "userAgent": "curl/8.7.1",
+    "ip": "::1"
+  },
+  {
+    "timestamp": "2025-07-31T12:23:04.719Z",
+    "model": "claude",
+    "action": "analyze",
+    "processingTime": 16085,
+    "status": "success",
+    "inputLength": 48,
+    "outputLength": 786,
+    "userAgent": "curl/8.7.1",
+    "ip": "::1"
+  },
+  {
+    "timestamp": "2025-08-01T15:39:00.522Z",
+    "model": "claude",
+    "action": "analyze",
+    "processingTime": 18236,
+    "status": "success",
+    "inputLength": 17,
+    "outputLength": 842,
+    "userAgent": "curl/8.7.1",
+    "ip": "127.0.0.1"
+  },
+  {
+    "timestamp": "2025-08-04T16:09:05.680Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:10:24.300Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:13:27.015Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:14:25.000Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:15:41.654Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:16:21.157Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:17:04.502Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:29:03.463Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:31:37.086Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:33:51.110Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:34:31.725Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:35:50.240Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:37:11.125Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:38:35.584Z",
+    "model": "ai_rewrite",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T16:56:31.006Z",
+    "model": "video_transcribe",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-08-04T17:16:00.036Z",
+    "model": "video_transcribe",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-09-25T03:52:38.996Z",
+    "model": "video_transcribe",
+    "inputLength": 0,
+    "outputLength": 0
+  },
+  {
+    "timestamp": "2025-09-25T03:57:20.029Z",
+    "model": "video_transcribe",
+    "inputLength": 0,
+    "outputLength": 0
+  }
+]

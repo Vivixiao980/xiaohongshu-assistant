@@ -204,34 +204,53 @@ class VideoTranscriber:
         self.temp_dir = tempfile.mkdtemp()
         
         try:
+            print("开始下载视频...", file=sys.stderr)
             # 下载视频
             video_path, title, duration = self.download_video(url, self.temp_dir)
+            print(f"视频下载完成: {title} ({duration}秒)", file=sys.stderr)
             
+            print("开始语音识别...", file=sys.stderr)
             # 转换为文字
             result = self.transcribe_audio(video_path)
+            print("语音识别完成", file=sys.stderr)
             
+            print("格式化结果...", file=sys.stderr)
             # 格式化结果
             formatted_result = self.format_transcript(result, title)
             formatted_result['url'] = url
             formatted_result['duration'] = duration
             
+            print("处理完成，准备输出结果", file=sys.stderr)
             return {
                 'success': True,
                 'data': formatted_result
             }
             
-        except Exception as e:
-            logger.error(f"处理失败: {str(e)}")
+        except yt_dlp.utils.DownloadError as e:
+            error_msg = f"视频下载失败: {str(e)}"
+            print(error_msg, file=sys.stderr)
+            logger.error(error_msg)
             return {
                 'success': False,
-                'error': str(e)
+                'error': error_msg
+            }
+        except Exception as e:
+            error_msg = f"处理失败: {str(e)}"
+            print(error_msg, file=sys.stderr)
+            logger.error(error_msg)
+            return {
+                'success': False,
+                'error': error_msg
             }
             
         finally:
             # 清理临时文件
             if self.temp_dir and os.path.exists(self.temp_dir):
-                shutil.rmtree(self.temp_dir)
-                #logger.info("临时文件已清理")
+                try:
+                    shutil.rmtree(self.temp_dir)
+                    print("临时文件已清理", file=sys.stderr)
+                except Exception as cleanup_error:
+                    print(f"清理临时文件失败: {cleanup_error}", file=sys.stderr)
 
 def main():
     """命令行入口"""
@@ -245,18 +264,44 @@ def main():
     
     url = sys.argv[1]
     
-    print(f"开始处理视频: {url}", file=sys.stderr)
-    
-    # 创建转换器 - 使用tiny模型提高速度
-    transcriber = VideoTranscriber(model_size="tiny")
-    print("VideoTranscriber初始化完成", file=sys.stderr)
-    
-    # 处理视频
-    result = transcriber.process_video_url(url)
-    print("视频处理完成", file=sys.stderr)
-    
-    # 输出JSON结果
-    print(json.dumps(result, ensure_ascii=False))
+    try:
+        print(f"开始处理视频: {url}", file=sys.stderr)
+        
+        # 创建转换器 - 使用tiny模型提高速度
+        transcriber = VideoTranscriber(model_size="tiny")
+        print("VideoTranscriber初始化完成", file=sys.stderr)
+        
+        # 处理视频
+        result = transcriber.process_video_url(url)
+        print("视频处理完成", file=sys.stderr)
+        
+        # 输出JSON结果到stdout
+        print(json.dumps(result, ensure_ascii=False))
+        
+        # 如果处理成功，正常退出
+        if result.get('success', False):
+            sys.exit(0)
+        else:
+            # 处理失败，但不是异常，退出码为2
+            sys.exit(2)
+            
+    except KeyboardInterrupt:
+        print("用户中断处理", file=sys.stderr)
+        result = {
+            'success': False,
+            'error': '用户中断处理'
+        }
+        print(json.dumps(result, ensure_ascii=False))
+        sys.exit(3)
+        
+    except Exception as e:
+        print(f"未预期的错误: {str(e)}", file=sys.stderr)
+        result = {
+            'success': False,
+            'error': f'未预期的错误: {str(e)}'
+        }
+        print(json.dumps(result, ensure_ascii=False))
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

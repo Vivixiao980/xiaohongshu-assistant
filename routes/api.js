@@ -273,6 +273,8 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
         if (isCompleted) return; // 防止重复处理
         isCompleted = true;
 
+        console.log(`Python脚本执行完成，退出码: ${code}`);
+
         if (code === 0) {
           try {
             // 清理输出，查找有效的JSON
@@ -314,10 +316,13 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
             }
             
             if (!jsonOutput) {
+              console.error('未找到有效的JSON输出');
+              console.error('完整输出:', output);
+              console.error('错误输出:', errorOutput);
               throw new Error('未找到有效的JSON输出');
             }
             
-            console.log('Python脚本输出:', jsonOutput);
+            console.log('成功解析Python输出，JSON长度:', jsonOutput.length);
             const result = JSON.parse(jsonOutput);
             
             if (result.success) {
@@ -340,6 +345,7 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
                 message: '视频转文字完成'
               });
             } else {
+              console.error('Python脚本返回失败结果:', result.error);
               res.status(500).json({
                 success: false,
                 message: result.error || '视频处理失败'
@@ -348,22 +354,36 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
           } catch (parseError) {
             console.error('解析输出失败:', parseError);
             console.error('原始输出:', output);
+            console.error('错误输出:', errorOutput);
             res.status(500).json({
               success: false,
-              message: '处理结果解析失败'
+              message: '处理结果解析失败: ' + parseError.message
             });
           }
         } else {
           console.error('Python脚本执行失败，退出码:', code);
+          console.error('标准输出:', output);
           console.error('错误输出:', errorOutput);
+          
+          // 根据退出码提供更具体的错误信息
+          let errorMessage = '视频处理失败';
+          if (code === 2) {
+            errorMessage = '视频处理逻辑失败，请检查视频链接是否有效';
+          } else if (code === 3) {
+            errorMessage = '处理被用户中断';
+          } else {
+            errorMessage = '视频处理异常，请稍后重试';
+          }
+          
           res.status(500).json({
             success: false,
-            message: '视频处理失败，请检查视频链接是否有效'
+            message: errorMessage,
+            details: errorOutput ? errorOutput.substring(0, 500) : '无详细错误信息'
           });
         }
       });
 
-      // 设置超时（3分钟）- 优化后应该更快
+      // 设置超时（5分钟）- 给更多时间处理
       const timeoutHandle = setTimeout(() => {
         if (isCompleted) return; // 防止重复处理
         isCompleted = true;
@@ -373,7 +393,7 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
           success: false,
           message: '处理超时，请尝试较短的视频或检查网络连接'
         });
-      }, 3 * 60 * 1000);
+      }, 5 * 60 * 1000);
 
       // 清理超时句柄
       python.on('close', () => {
