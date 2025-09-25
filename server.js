@@ -4,6 +4,21 @@ const helmet = require('helmet');
 const path = require('path');
 const winston = require('winston');
 
+// Polyfill for File API in Node.js environments
+if (typeof global.File === 'undefined') {
+  global.File = class File {
+    constructor(fileBits, fileName, options = {}) {
+      this.name = fileName;
+      this.type = options.type || '';
+      this.lastModified = options.lastModified || Date.now();
+      this.size = 0;
+      if (Array.isArray(fileBits)) {
+        this.size = fileBits.reduce((acc, bit) => acc + (bit.length || bit.byteLength || 0), 0);
+      }
+    }
+  };
+}
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -42,6 +57,7 @@ app.use(helmet({
       scriptSrc: [
         "'self'", 
         "'unsafe-inline'", 
+        "'unsafe-eval'",  // 允许eval()等动态代码执行，AI功能需要
         "https://cdn.tailwindcss.com",
         "https://code.jquery.com",
         "https://cdnjs.cloudflare.com"
@@ -55,7 +71,15 @@ app.use(helmet({
       scriptSrcAttr: ["'unsafe-inline'"],
       fontSrc: ["'self'", "https:", "data:"],
       imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'"]
+      connectSrc: [
+        "'self'",
+        "https://api.siliconflow.cn",  // SiliconFlow API
+        "https://dpapi.cn",            // DP API
+        "https://api.openai.com",      // OpenAI API
+        "https://www.xiaohongshu.com", // 小红书API
+        "https:",                      // 允许所有HTTPS连接
+        "http:"                        // 本地开发时允许HTTP
+      ]
     }
   }
 }));

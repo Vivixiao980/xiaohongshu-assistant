@@ -1,5 +1,5 @@
-# 使用Node.js LTS版本
-FROM node:18-slim
+# 使用Node.js 20 LTS版本以获得更好的Web API支持
+FROM node:20-slim
 
 # 安装必要的系统依赖和Python环境
 RUN apt-get update && apt-get install -y \
