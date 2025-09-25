@@ -69,8 +69,20 @@ app.use(helmet({
         "https://cdnjs.cloudflare.com"
       ],
       scriptSrcAttr: ["'unsafe-inline'"],
+      scriptSrcElem: [
+        "'self'",
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        "https://cdn.tailwindcss.com",
+        "https://code.jquery.com", 
+        "https://cdnjs.cloudflare.com",
+        "blob:",
+        "data:"
+      ],
       fontSrc: ["'self'", "https:", "data:"],
-      imgSrc: ["'self'", "data:", "https:"],
+      imgSrc: ["'self'", "data:", "https:", "blob:"],
+      mediaSrc: ["'self'", "data:", "https:", "blob:"],
+      workerSrc: ["'self'", "blob:", "data:"],
       connectSrc: [
         "'self'",
         "https://api.siliconflow.cn",  // SiliconFlow API
@@ -78,8 +90,14 @@ app.use(helmet({
         "https://api.openai.com",      // OpenAI API
         "https://www.xiaohongshu.com", // 小红书API
         "https:",                      // 允许所有HTTPS连接
-        "http:"                        // 本地开发时允许HTTP
-      ]
+        "http:",                       // 本地开发时允许HTTP
+        "ws:",                         // WebSocket
+        "wss:"                         // 安全WebSocket
+      ],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'self'"],
+      objectSrc: ["'none'"]
     }
   }
 }));
