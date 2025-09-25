@@ -62,9 +62,9 @@ class VideoTranscriber:
         """
         # #logger.info(f"开始下载视频: {url}")  # 静默模式
         
-        # 配置yt-dlp选项 - 优化为最快速度
+        # 配置yt-dlp选项 - 极致优化为最快速度和最小文件
         ydl_opts = {
-            'format': 'worst[height<=480]/worstaudio/worst',  # 优先选择最低质量音频
+            'format': 'worstaudio/worst',  # 只要最低质量音频
             'outtmpl': os.path.join(output_path, 'video.%(ext)s'),
             'extractaudio': True,   # 只提取音频，更快
             'audioformat': 'wav',   # 使用wav格式
@@ -72,6 +72,11 @@ class VideoTranscriber:
             'no_warnings': True,
             'no_check_certificate': True,  # 跳过SSL验证加速
             'socket_timeout': 30,   # 设置超时
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'wav',
+                'preferredquality': '64',  # 64kbps，大幅减少数据量
+            }],
         }
         
         try:
@@ -116,12 +121,28 @@ class VideoTranscriber:
             # 加载模型
             self.load_model()
             
+            # 添加进度回调函数
+            import time
+            start_time = time.time()
+            last_progress_time = start_time
+            
+            def progress_callback(chunk_idx, total_chunks):
+                nonlocal last_progress_time
+                current_time = time.time()
+                if current_time - last_progress_time >= 10:  # 每10秒输出一次进度
+                    elapsed = current_time - start_time
+                    progress = (chunk_idx / total_chunks) * 100 if total_chunks > 0 else 0
+                    print(f"语音识别进度: {progress:.1f}% ({chunk_idx}/{total_chunks}), 已用时: {elapsed:.1f}秒", file=sys.stderr)
+                    last_progress_time = current_time
+            
+            print(f"开始Whisper转换，预计处理帧数: 约{27483}帧", file=sys.stderr)
+            
             # 转换 - 极致优化参数提高速度
             result = self.model.transcribe(
                 video_path,
                 language="zh",  # 中文
                 task="transcribe",
-                verbose=False,
+                verbose=True,  # 开启详细输出以便调试
                 fp16=False,  # 禁用fp16以提高兼容性
                 temperature=0,  # 使用确定性解码，更快
                 compression_ratio_threshold=2.4,  # 降低阈值
@@ -132,6 +153,10 @@ class VideoTranscriber:
                 word_timestamps=False,  # 禁用单词时间戳
                 condition_on_previous_text=False  # 不依赖前文，更快
             )
+            
+            end_time = time.time()
+            total_time = end_time - start_time
+            print(f"Whisper处理完成，总用时: {total_time:.1f}秒", file=sys.stderr)
             
             # 将繁体转换为简体
             if 'text' in result:
@@ -148,6 +173,132 @@ class VideoTranscriber:
         except Exception as e:
             logger.error(f"语音转换失败: {str(e)}")
             raise
+    
+    def transcribe_audio_chunked(self, video_path, chunk_duration=60):
+        """
+        分段处理音频以提高速度和稳定性
+        
+        Args:
+            video_path (str): 视频文件路径
+            chunk_duration (int): 每段的时长（秒）
+            
+        Returns:
+            dict: 转换结果
+        """
+        import time
+        import subprocess
+        import os
+        
+        start_time = time.time()
+        
+        try:
+            # 加载模型
+            self.load_model()
+            
+            # 获取音频总时长
+            try:
+                cmd = ['ffprobe', '-v', 'quiet', '-show_entries', 'format=duration', 
+                       '-of', 'csv=p=0', video_path]
+                result = subprocess.run(cmd, capture_output=True, text=True)
+                total_duration = float(result.stdout.strip()) if result.stdout.strip() else 0
+            except:
+                # 如果ffprobe失败，回退到原始方法
+                print("无法获取音频时长，使用原始处理方法", file=sys.stderr)
+                return self.transcribe_audio(video_path)
+            
+            print(f"音频总时长: {total_duration:.1f}秒，将分{int(total_duration/chunk_duration)+1}段处理", file=sys.stderr)
+            
+            # 如果视频很短，直接使用原始方法
+            if total_duration <= chunk_duration:
+                print("视频较短，使用原始方法处理", file=sys.stderr)
+                return self.transcribe_audio(video_path)
+            
+            # 计算分段数量
+            num_chunks = int(total_duration / chunk_duration) + 1
+            
+            all_segments = []
+            full_text_parts = []
+            
+            for i in range(num_chunks):
+                chunk_start = i * chunk_duration
+                chunk_end = min((i + 1) * chunk_duration, total_duration)
+                
+                if chunk_start >= total_duration:
+                    break
+                    
+                print(f"处理分段 {i+1}/{num_chunks} ({chunk_start:.1f}s - {chunk_end:.1f}s)", file=sys.stderr)
+                
+                # 提取音频片段
+                chunk_path = os.path.join(os.path.dirname(video_path), f'chunk_{i}.wav')
+                cmd = ['ffmpeg', '-y', '-i', video_path, '-ss', str(chunk_start), 
+                       '-t', str(chunk_duration), '-acodec', 'pcm_s16le', '-ar', '16000', chunk_path]
+                subprocess.run(cmd, capture_output=True, stderr=subprocess.DEVNULL)
+                
+                try:
+                    # 转换当前分段
+                    chunk_result = self.model.transcribe(
+                        chunk_path,
+                        language="zh",
+                        task="transcribe",
+                        verbose=False,  # 减少输出
+                        fp16=False,
+                        temperature=0,
+                        compression_ratio_threshold=2.4,
+                        logprob_threshold=-1.0,
+                        no_speech_threshold=0.6,
+                        beam_size=1,
+                        best_of=1,
+                        word_timestamps=False,
+                        condition_on_previous_text=False
+                    )
+                    
+                    # 调整时间戳并添加到总结果
+                    if 'segments' in chunk_result:
+                        for segment in chunk_result['segments']:
+                            segment['start'] += chunk_start
+                            segment['end'] += chunk_start
+                            # 转换繁体到简体
+                            if 'text' in segment:
+                                segment['text'] = self.cc.convert(segment['text'])
+                            all_segments.append(segment)
+                    
+                    # 添加文本部分
+                    if 'text' in chunk_result and chunk_result['text'].strip():
+                        text = self.cc.convert(chunk_result['text'])
+                        full_text_parts.append(text)
+                    
+                    progress = ((i + 1) / num_chunks) * 100
+                    elapsed = time.time() - start_time
+                    print(f"分段处理进度: {progress:.1f}%, 已用时: {elapsed:.1f}秒", file=sys.stderr)
+                    
+                except Exception as chunk_error:
+                    print(f"分段{i+1}处理失败: {chunk_error}, 跳过", file=sys.stderr)
+                    
+                finally:
+                    # 清理临时文件
+                    if os.path.exists(chunk_path):
+                        try:
+                            os.remove(chunk_path)
+                        except:
+                            pass
+            
+            # 合并结果
+            result = {
+                'text': ' '.join(full_text_parts),
+                'segments': all_segments,
+                'language': 'zh'
+            }
+            
+            end_time = time.time()
+            total_time = end_time - start_time
+            print(f"分段处理完成，总用时: {total_time:.1f}秒", file=sys.stderr)
+            
+            return result
+            
+        except Exception as e:
+            print(f"分段处理失败: {str(e)}, 回退到原始方法", file=sys.stderr)
+            # 回退到原始方法
+            return self.transcribe_audio(video_path)
     
     def format_transcript(self, result, title=""):
         """
@@ -214,8 +365,8 @@ class VideoTranscriber:
             print(f"视频下载完成: {title} ({duration}秒)", file=sys.stderr)
             
             print("开始语音识别...", file=sys.stderr)
-            # 转换为文字
-            result = self.transcribe_audio(video_path)
+            # 转换为文字 - 使用分段处理提高速度
+            result = self.transcribe_audio_chunked(video_path)
             print("语音识别完成", file=sys.stderr)
             
             print("格式化结果...", file=sys.stderr)
