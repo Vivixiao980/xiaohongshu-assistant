@@ -34,6 +34,7 @@ class CloudVideoTranscriber:
     def get_baidu_access_token(self):
         """获取百度API访问令牌"""
         if not self.baidu_api_key or not self.baidu_secret_key:
+            print("百度API密钥未配置", file=sys.stderr)
             return None
             
         url = "https://aip.baidubce.com/oauth/2.0/token"
@@ -44,9 +45,16 @@ class CloudVideoTranscriber:
         }
         
         try:
-            response = requests.post(url, params=params)
-            return response.json().get("access_token")
-        except:
+            print("正在获取百度API访问令牌...", file=sys.stderr)
+            response = requests.post(url, params=params, timeout=30)
+            token = response.json().get("access_token")
+            if token:
+                print("百度API访问令牌获取成功", file=sys.stderr)
+            else:
+                print(f"百度API访问令牌获取失败: {response.json()}", file=sys.stderr)
+            return token
+        except Exception as e:
+            print(f"获取百度API访问令牌异常: {e}", file=sys.stderr)
             return None
     
     def download_video(self, url, output_path):
@@ -99,7 +107,15 @@ class CloudVideoTranscriber:
         
         access_token = self.get_baidu_access_token()
         if not access_token:
-            raise Exception("百度API配置错误")
+            raise Exception("百度API访问令牌获取失败")
+        
+        # 检查音频文件大小 (百度API限制60秒或8MB)
+        file_size = os.path.getsize(audio_path)
+        max_size = 8 * 1024 * 1024  # 8MB
+        
+        if file_size > max_size:
+            print(f"音频文件过大 ({file_size} bytes > {max_size} bytes)，跳过百度API", file=sys.stderr)
+            raise Exception("音频文件超过百度API大小限制")
         
         # 读取音频文件
         with open(audio_path, 'rb') as f:
@@ -122,22 +138,32 @@ class CloudVideoTranscriber:
         }
         
         try:
-            response = requests.post(url, json=payload, headers=headers)
+            print(f"发送音频到百度API，大小: {len(audio_data)} bytes", file=sys.stderr)
+            response = requests.post(url, json=payload, headers=headers, timeout=60)
             result = response.json()
             
+            print(f"百度API响应: {result}", file=sys.stderr)
+            
             if result.get('err_no') == 0:
-                text = result.get('result', [''])[0]
-                # 转换为简体中文
-                text = self.cc.convert(text)
-                
-                return {
-                    'text': text,
-                    'segments': [{'start': 0, 'end': 0, 'text': text}],
-                    'language': 'zh'
-                }
+                text = result.get('result', [''])[0] if result.get('result') else ''
+                if text:
+                    # 转换为简体中文
+                    text = self.cc.convert(text)
+                    print(f"识别结果: {text[:100]}...", file=sys.stderr)
+                    
+                    return {
+                        'text': text,
+                        'segments': [{'start': 0, 'end': 0, 'text': text}],
+                        'language': 'zh'
+                    }
+                else:
+                    raise Exception("百度API返回空结果")
             else:
-                raise Exception(f"百度API错误: {result.get('err_msg')}")
+                error_msg = result.get('err_msg', '未知错误')
+                raise Exception(f"百度API错误 (code: {result.get('err_no')}): {error_msg}")
                 
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"网络请求失败: {str(e)}")
         except Exception as e:
             raise Exception(f"语音识别失败: {str(e)}")
     
@@ -189,22 +215,45 @@ class CloudVideoTranscriber:
             
             # 方案1: 百度云语音识别
             try:
-                if self.baidu_api_key:
+                if self.baidu_api_key and self.baidu_secret_key:
+                    print(f"使用百度云API，音频文件大小: {os.path.getsize(audio_path)} bytes", file=sys.stderr)
                     result = self.transcribe_with_baidu(audio_path)
                     print("百度云识别完成", file=sys.stderr)
+                else:
+                    print("百度API密钥未配置，跳过百度云识别", file=sys.stderr)
             except Exception as e:
                 print(f"百度云识别失败: {e}", file=sys.stderr)
             
             # 方案2: OpenAI Whisper API (备用)
             if not result:
                 try:
-                    result = self.transcribe_with_openai_api(audio_path)
-                    print("OpenAI识别完成", file=sys.stderr)
+                    openai_key = os.getenv('OPENAI_API_KEY')
+                    if openai_key:
+                        result = self.transcribe_with_openai_api(audio_path)
+                        print("OpenAI识别完成", file=sys.stderr)
+                    else:
+                        print("OpenAI API密钥未配置，跳过OpenAI识别", file=sys.stderr)
                 except Exception as e:
                     print(f"OpenAI识别失败: {e}", file=sys.stderr)
             
+            # 方案3: 回退到本地Whisper处理
             if not result:
-                raise Exception("所有云端识别方案都失败了")
+                print("所有云端识别方案都失败，回退到本地Whisper处理", file=sys.stderr)
+                try:
+                    # 导入本地Whisper处理器
+                    import sys
+                    sys.path.append(os.path.dirname(__file__))
+                    from video_transcriber import VideoTranscriber
+                    
+                    local_transcriber = VideoTranscriber(model_size="tiny")
+                    result = local_transcriber.transcribe_audio(audio_path)
+                    print("本地Whisper处理完成", file=sys.stderr)
+                except Exception as e:
+                    print(f"本地Whisper处理也失败: {e}", file=sys.stderr)
+                    raise Exception("所有识别方案都失败了")
+            
+            if not result:
+                raise Exception("无法获取识别结果")
             
             # 格式化结果
             formatted_result = self.format_transcript(result, title)
