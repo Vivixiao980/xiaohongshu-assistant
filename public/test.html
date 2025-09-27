@@ -1,64 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
+    <title>Railway部署测试</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录按钮测试</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body class="bg-gray-100 p-8">
-    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-4">登录按钮测试</h1>
-        
-        <button id="login-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-4 w-full">
-            登录/注册
-        </button>
-        
-        <button id="test-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">
-            测试按钮
-        </button>
-        
-        <div id="log" class="mt-4 p-4 bg-gray-100 rounded">
-            <h3 class="font-bold">日志:</h3>
-            <div id="log-content"></div>
-        </div>
-    </div>
-
+<body>
+    <h1>🚀 Railway部署测试成功！</h1>
+    <p>如果你能看到这个页面，说明服务器正在运行。</p>
+    <p>当前时间: <span id="time"></span></p>
+    
+    <h2>功能测试</h2>
+    <ul>
+        <li><a href="/video-transcribe.html">视频转文字工具</a></li>
+        <li><a href="/health">健康检查</a></li>
+        <li><a href="/api/video-transcribe" onclick="return false;">API端点 (需要POST)</a></li>
+    </ul>
+    
     <script>
-        function log(message) {
-            const logContent = document.getElementById('log-content');
-            logContent.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + message + '</div>';
-        }
-
-        $(document).ready(function() {
-            log('页面加载完成');
-            
-            // 测试jQuery是否工作
-            $('#test-btn').on('click', function() {
-                log('测试按钮点击 - jQuery工作正常');
-                alert('测试按钮工作正常！');
-            });
-            
-            // 测试登录按钮 - 方法1: jQuery
-            $('#login-btn').on('click', function(e) {
-                e.preventDefault();
-                log('登录按钮点击 - jQuery方法');
-                alert('登录按钮工作正常！即将跳转...');
-                window.location.href = '/auth.html';
-            });
-            
-            // 测试登录按钮 - 方法2: 原生JavaScript
-            const loginBtn = document.getElementById('login-btn');
-            if (loginBtn) {
-                log('找到登录按钮元素');
-                loginBtn.addEventListener('click', function(e) {
-                    log('登录按钮点击 - 原生JavaScript方法');
-                });
-            } else {
-                log('未找到登录按钮元素');
-            }
-        });
+        document.getElementById('time').textContent = new Date().toLocaleString();
     </script>
 </body>
-</html> 
+</html>
