@@ -49,9 +49,37 @@ app.get('/healthz', (req, res) => {
   res.status(200).send('OK');
 });
 
-// 基本中间件 - 临时禁用CSP以解决兼容性问题
+// 基本中间件 - 配置宽松的CSP以支持开发工具
 app.use(helmet({
-  contentSecurityPolicy: false  // 临时禁用CSP，确保所有JavaScript功能正常工作
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'", 
+        "'unsafe-inline'", 
+        "'unsafe-eval'",  // 允许eval，支持Tailwind CSS等工具
+        "https://cdn.tailwindcss.com",
+        "https://cdnjs.cloudflare.com",
+        "https://code.jquery.com",
+        "https:",
+        "data:",
+        "blob:"
+      ],
+      styleSrc: [
+        "'self'", 
+        "'unsafe-inline'", 
+        "https://cdn.tailwindcss.com",
+        "https://cdnjs.cloudflare.com",
+        "https:"
+      ],
+      imgSrc: ["'self'", "data:", "https:", "blob:"],
+      connectSrc: ["'self'", "https:", "wss:", "ws:"],
+      fontSrc: ["'self'", "https:", "data:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'", "data:", "blob:", "https:"],
+      frameSrc: ["'self'", "https:"],
+    },
+  }
 }));
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
