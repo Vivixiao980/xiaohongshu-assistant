@@ -225,6 +225,21 @@ ${contentType === 'image' ?
   }
 });
 
+// 简单测试端点
+router.get('/test-api', (req, res) => {
+  console.log('收到测试API请求');
+  res.json({
+    success: true,
+    message: 'API正常工作',
+    timestamp: new Date().toISOString(),
+    env: {
+      USE_CLOUD_API: process.env.USE_CLOUD_API,
+      BAIDU_API_KEY_EXISTS: !!process.env.BAIDU_API_KEY,
+      NODE_ENV: process.env.NODE_ENV
+    }
+  });
+});
+
 // 视频转文字服务
 router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
   body('videoUrl').isURL().withMessage('请提供有效的视频链接')
