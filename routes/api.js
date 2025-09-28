@@ -474,7 +474,7 @@ router.post('/video-transcribe', authMiddleware, checkCreditsMiddleware, [
       });
 
       // 根据处理方式设置不同的超时时间
-      const timeoutDuration = useCloudAPI ? 2 * 60 * 1000 : 8 * 60 * 1000; // 云端API: 2分钟，本地: 8分钟
+      const timeoutDuration = useCloudAPI ? 5 * 60 * 1000 : 10 * 60 * 1000; // 云端API: 5分钟，本地: 10分钟
       const timeoutHandle = setTimeout(() => {
         if (isCompleted) return; // 防止重复处理
         isCompleted = true;

@@ -70,7 +70,7 @@ class CloudVideoTranscriber:
             'quiet': True,
             'no_warnings': True,
             'no_check_certificate': True,
-            'socket_timeout': 30,
+            'socket_timeout': 60,   # 增加超时时间
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'wav',
@@ -112,6 +112,8 @@ class CloudVideoTranscriber:
         # 检查音频文件大小 (百度API限制60秒或8MB)
         file_size = os.path.getsize(audio_path)
         max_size = 8 * 1024 * 1024  # 8MB
+        
+        print(f"音频文件大小: {file_size} bytes ({file_size/1024/1024:.2f} MB)", file=sys.stderr)
         
         if file_size > max_size:
             print(f"音频文件过大 ({file_size} bytes > {max_size} bytes)，跳过百度API", file=sys.stderr)
